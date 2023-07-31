@@ -1,6 +1,6 @@
 ---
-	import Stack from "../lib/cms";
-	import MainLayout from '../layouts/main.astro';
+	import Stack from "../../lib/cms";
+	import MainLayout from "../../layouts/main.astro"
 	
 	const entries = await Stack.getEntry({
     	contentTypeUid: 'unit',
@@ -14,11 +14,9 @@
 			url
 		}
 	});
-
-	console.log(units)
 ---
 
-<MainLayout title={`Berklee Open`}>
+<MainLayout title={`Berklee Open: Units`}>
 	{units.map((unit) => (
 		<li>
 			<a href={`/units/${unit.url}`}>{unit.title}</a>	

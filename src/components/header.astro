@@ -1,0 +1,32 @@
+---
+import Strip from "./strip";
+const { header } = Astro.props;
+---
+
+<header class="border-b border-gray-300">
+  <Strip />
+  <div class="flex">
+    <div class="w-1/4 px-4 py-4">
+      {
+        header && (
+          <a href="/" class="logo-tag" title={header.title}>
+            <img
+              class="logo"
+              src={header.logo.url}
+              alt={header.title}
+              title={header.title}
+            />
+          </a>
+        )
+      }
+    </div>
+
+    <nav class="flex w-1/2">
+      <ul class="flex items-center justify-center w-full gap-x-6 font-bold tracking-wider">
+        <li><a href="/units">Units</a></li>
+      </ul>
+    </nav>
+    
+    <div class="w-1/4"></div>
+  </div>
+</header>

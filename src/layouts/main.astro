@@ -1,0 +1,27 @@
+---
+import {getHeaderRes} from "../lib/header"
+import Header from "../components/header.astro";
+import type { HeaderProps } from "../type/layout";
+
+let header: HeaderProps | undefined = undefined;
+
+try {
+  header = await getHeaderRes();
+} catch (e) {
+  console.error(e);
+}
+
+const { title } = Astro.props
+---
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+    <Header header={header} />
+    <main class="container mx-auto py-8">
+        <slot />
+    </main>
+  </body>
+</html>

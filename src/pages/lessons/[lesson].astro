@@ -1,0 +1,36 @@
+---
+import Stack from "../../lib/cms";
+import MainLayout from "../../layouts/main.astro"
+
+export async function getStaticPaths() {
+  const entries = await Stack.getEntry({
+    contentTypeUid: 'lesson',
+    referenceFieldPath: [
+      'activities'
+    ]
+  });
+
+  const lessons = [];
+
+  entries[0].map((lesson) => {
+    lessons.push({
+      params: {lesson: lesson.url},
+      props: lesson
+    });
+  });
+
+  return lessons;
+}
+
+const {title, activities} = Astro.props;
+---
+
+<MainLayout title={title}>
+	<h1>{title}</h1>
+    <h2 class="mt-10">Lessons</h2>
+    <ul>
+    {activities.map((activity) => (
+        <li>{activity.title}</li>
+    ))}
+    </ul>
+</MainLayout>
