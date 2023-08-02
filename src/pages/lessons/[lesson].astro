@@ -14,7 +14,7 @@ export async function getStaticPaths() {
 
   entries[0].map((lesson) => {
     lessons.push({
-      params: {lesson: lesson.url},
+      params: {lesson: lesson.url.replace('/', '')},
       props: lesson
     });
   });
