@@ -9,7 +9,8 @@ export async function getStaticPaths() {
     contentTypeUid: 'unit',
     referenceFieldPath: [
       'lessons',
-      'lessons.activities'
+      'lessons.activities',
+      'related.related_units'
     ]
   });
 
@@ -25,7 +26,8 @@ export async function getStaticPaths() {
   return units;
 }
 
-const {title, lessons, grade_level, time_to_completion, intro, content, url, level} = Astro.props;
+const {title, lessons, grade_level, time_to_completion, intro, content, related, level, standards} = Astro.props;
+console.log(related)
 ---
 
 <MainLayout title={title}>
@@ -50,8 +52,24 @@ const {title, lessons, grade_level, time_to_completion, intro, content, url, lev
         })}
       </div>
     </div>
-    <div class="w-1/3 bg-gray-200">
-      Sidebar!
+    <div class="w-1/3">
+      {related.related_units && related.related_units.length > 0 && (
+        <div class="pb-8 border-b border-gray-500">
+          <h4 class="font-bold text-xl mb-2">Related Modules</h4>
+          <ul>
+            {related.related_units.map((unit) => {
+              console.log(unit.title)
+              return <li class="mt-1"><a href={`/units/${unit.url}`} class="text-lg">{unit.title}</a></li>
+            })}
+          </ul>
+        </div>
+      )}
+      {standards && (
+        <div class="py-8 border-b border-gray-500">
+          <h4 class="font-bold text-xl mb-2">National Standards</h4>
+          <p>{standards}</p>
+        </div>
+      )}
     </div>
   </div>
   <div class="border-t border-gray-400 pt-12 mt-12">

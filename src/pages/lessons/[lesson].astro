@@ -1,6 +1,7 @@
 ---
 import Stack from "../../lib/cms";
 import MainLayout from "../../layouts/main.astro"
+import Activity from "../../components/sidebar/activity";
 
 export async function getStaticPaths() {
   const entries = await Stack.getEntry({
@@ -26,11 +27,24 @@ const {title, activities} = Astro.props;
 ---
 
 <MainLayout title={title}>
-	<h1>{title}</h1>
-    <h2 class="mt-10">Lessons</h2>
-    <ul>
-    {activities.map((activity) => (
-        <li>{activity.title}</li>
-    ))}
-    </ul>
+	<div class="flex gap-20">
+    <div class="w-1/4">
+      {activities.map((activity) => {
+        return <Activity activity={activity} />
+      })}
+    </div>
+    <div class="w-3/4">
+      {activities.map((activity) => {
+        return (
+          <div>
+            <h2 class="font-bold text-4xl">{activity.title}</h2>
+            {activity.section.map((section, index) => (
+              <div key={index}>{section.section_title}</div>
+              <div key={index} set:html={section.section_content}></div>
+            ))}
+          </div>
+        )
+      })}
+    </div>
+  </div>
 </MainLayout>
