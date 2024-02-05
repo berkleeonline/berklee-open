@@ -12,7 +12,7 @@ const UnitCard: React.FC<UnitCardProps> = ({ unit }) => {
 	console.log(unit);
 	
     return (
-		<a href={`/units/${unit.url}`} className="border border-gray-300 flex flex-col">
+		<a href={`/units/${unit.sys.id}`} className="border border-gray-300 flex flex-col">
 	    	<div></div>
 			<div className="border-t border-gray-300 p-4">
 				<h4 className="text-xl font-bold mb-2">{unit.title}</h4>

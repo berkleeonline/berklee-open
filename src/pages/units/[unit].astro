@@ -1,94 +1,37 @@
 ---
-import Stack from "../../lib/cms";
+import { contentfulClient } from "../../lib/contentful";
+import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
+import type { Unit } from "../../type/content-blocks";
+
 import MainLayout from "../../layouts/main.astro"
 import Time from "../../components/time"
 import ContentBlock from "../../components/content-block"
 
 export async function getStaticPaths() {
-  const entries = await Stack.getEntry({
-    contentTypeUid: 'unit',
-    referenceFieldPath: [
-      'lessons',
-      'lessons.activities',
-      'related.related_units'
-    ]
-  });
+  const units = await contentfulClient.getEntries<Unit>({
+  		content_type: "unit",
+	});
 
-  const units = [];
+  let unitsToPublish = [];
 
-  entries[0].map((unit) => {
-    units.push({
-      params: {unit: unit.url},
+  units.items.map((unit) => {
+    unitsToPublish.push({
+      params: {unit: unit.sys.id},
       props: unit
     });
   });
 
-  return units;
+  return unitsToPublish;
 }
 
-const {title, lessons, grade_level, time_to_completion, intro, content, related, level, standards} = Astro.props;
-console.log(related)
+const {unit_title} = Astro.props.fields;
 ---
 
-<MainLayout title={title}>
+<MainLayout title={unit_title}>
   <div class="flex gap-20">
     <div class="w-2/3">
-      <h1 class="text-5xl font-bold mb-4">{title}</h1>
-      <div class="flex gap-8 flex-column md:flex-row mb-8">
-        <div class="font-bold">Grade: {grade_level}</div>
-        <div class="font-bold">Level: {level}</div>
-        <div class="font-bold">
-          <Time totalMinutes={time_to_completion} />
-        </div>
-      </div>
-      <div class="text-xl text-gray-500">{intro}</div>
-      <div>
-        {content.map((block, index) => {
-          return (
-              <div class={`mt-10`}>
-                  <ContentBlock block={block} />
-              </div>
-          )
-        })}
-      </div>
+      <h1 class="text-5xl font-bold mb-4">{unit_title}</h1>
     </div>
-    <div class="w-1/3">
-      {related.related_units && related.related_units.length > 0 && (
-        <div class="pb-8 border-b border-gray-500">
-          <h4 class="font-bold text-xl mb-2">Related Modules</h4>
-          <ul>
-            {related.related_units.map((unit) => {
-              console.log(unit.title)
-              return <li class="mt-1"><a href={`/units/${unit.url}`} class="text-lg">{unit.title}</a></li>
-            })}
-          </ul>
-        </div>
-      )}
-      {standards && (
-        <div class="py-8 border-b border-gray-500">
-          <h4 class="font-bold text-xl mb-2">National Standards</h4>
-          <p>{standards}</p>
-        </div>
-      )}
-    </div>
-  </div>
-  <div class="border-t border-gray-400 pt-12 mt-12">
-    <h2 class="font-bold text-2xl">Concepts</h2>
-    {lessons.map((lesson) => {
-      return (
-        <div class="border border-gray-200 p-4 mt-6">
-          <h3 class="font-bold text-lg"><a href={`/lessons/${lesson.url}`}>{lesson.title}</a></h3>
-          <div><Time totalMinutes={lesson.estimated_time} /></div>
-          {lesson.activities && lesson.activities.length > 0 && (
-            <ol class="mt-2 list-decimal ml-6">
-              {lesson.activities.map((activity) => (
-                <li><a href={`/lessons/${lesson.url}`}>{activity.title}</a></li>
-              ))}
-            </ol>
-          )}
-        </div>
-      )
-    })}
   </div>
 </MainLayout>
 

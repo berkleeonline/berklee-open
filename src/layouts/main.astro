@@ -1,17 +1,10 @@
 ---
-import {getHeaderRes} from "../lib/header"
 import Header from "../components/header.astro";
 import type { HeaderProps } from "../type/layout";
 
 let header: HeaderProps | undefined = undefined;
 
-try {
-  header = await getHeaderRes();
-} catch (e) {
-  console.error(e);
-}
-
-const { title } = Astro.props
+const { title } = Astro.props;
 ---
 <html lang="en">
   <head>

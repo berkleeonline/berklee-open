@@ -1,50 +1,39 @@
 ---
-import Stack from "../../lib/cms";
+import { contentfulClient } from "../../lib/contentful";
+import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
+import type { Unit } from "../../type/content-blocks";
+
 import MainLayout from "../../layouts/main.astro"
-import Activity from "../../components/sidebar/activity";
+import Time from "../../components/time"
+import ContentBlock from "../../components/content-block"
 
 export async function getStaticPaths() {
-  const entries = await Stack.getEntry({
-    contentTypeUid: 'lesson',
-    referenceFieldPath: [
-      'activities'
-    ]
-  });
+  const units = await contentfulClient.getEntries<Unit>({
+  		content_type: "unit",
+	});
 
-  const lessons = [];
+  let unitsToPublish = [];
 
-  entries[0].map((lesson) => {
-    lessons.push({
-      params: {lesson: lesson.url.replace('/', '')},
-      props: lesson
+  units.items.map((unit) => {
+    unitsToPublish.push({
+      params: {lesson: unit.sys.id},
+      props: unit
     });
   });
 
-  return lessons;
+  return unitsToPublish;
 }
 
-const {title, activities} = Astro.props;
+const {unit_title} = Astro.props.fields;
 ---
 
-<MainLayout title={title}>
+<MainLayout title={unit_title}>
 	<div class="flex gap-20">
     <div class="w-1/4">
-      {activities.map((activity) => {
-        return <Activity activity={activity} />
-      })}
+      activities here
     </div>
     <div class="w-3/4">
-      {activities.map((activity) => {
-        return (
-          <div>
-            <h2 class="font-bold text-4xl">{activity.title}</h2>
-            {activity.section.map((section, index) => (
-              <div key={index}>{section.section_title}</div>
-              <div key={index} set:html={section.section_content}></div>
-            ))}
-          </div>
-        )
-      })}
+      more details here
     </div>
   </div>
 </MainLayout>

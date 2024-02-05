@@ -1,14 +1,13 @@
 ---
-	import Stack from "../../lib/cms";
+	import { contentfulClient } from "../../lib/contentful";
+	import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
+	import type { Unit } from "../../type/content-blocks";
+	
 	import MainLayout from "../../layouts/main.astro"
 	import UnitCard from "../../components/cards/unit"
-	
-	const entries = await Stack.getEntry({
-    	contentTypeUid: 'unit',
-  	});
 
-	const units = entries[0].map((item) => {
-		return item;
+	const units = await contentfulClient.getEntries<Unit>({
+  		content_type: "unit",
 	});
 ---
 
@@ -17,8 +16,8 @@
 		<div class="w-1/4"></div>
 		<div class="w-3/4">
 			<div class="grid grid-cols-2 gap-8">
-		  		{units.map((unit) => (
-			  	<UnitCard unit={unit} />
+		  		{units.items.map((unit) => (
+			  		<UnitCard unit={unit} />
 		  		))}
 			</div>
 		</div>

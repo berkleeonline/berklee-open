@@ -1,19 +1,7 @@
 ---
-	import Stack from "../lib/cms";
 	import MainLayout from '../layouts/main.astro';
-	
-	const entries = await Stack.getEntry({
-    	contentTypeUid: 'unit',
-  	});
 
-	const units = entries[0].map((item) => {
-		const { title, url } = item;
-
-		return {
-			title,
-			url
-		}
-	});
+	const units = [];
 ---
 
 <MainLayout title={`Berklee Open`}>
