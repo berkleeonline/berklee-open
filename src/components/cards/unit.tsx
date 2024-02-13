@@ -9,19 +9,14 @@ type UnitCardProps = {
 };
 
 const UnitCard: React.FC<UnitCardProps> = ({ unit }) => {
-	console.log(unit);
+	console.log("==================");
+	
+	const {unit_title} = unit.fields;
 	
     return (
 		<a href={`/units/${unit.sys.id}`} className="border border-gray-300 flex flex-col">
-	    	<div></div>
 			<div className="border-t border-gray-300 p-4">
-				<h4 className="text-xl font-bold mb-2">{unit.title}</h4>
-				<div className="mb-1">{unit.intro}</div>
-				<div className="flex gap-2">
-					<div className="text-sm capitalize">{unit.level}</div>
-					<div className="text-sm capitalize">{unit.grade_level}</div>
-					<div className="text-sm capitalize"><Time showIcon={false} totalMinutes={unit.time_to_completion} /></div>
-				</div>
+				<h4 className="text-xl font-bold mb-2">{unit_title}</h4>
 			</div>
 		</a>
     );
