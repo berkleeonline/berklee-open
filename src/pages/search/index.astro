@@ -1,0 +1,35 @@
+---
+	import MainLayout from "../../layouts/main.astro";
+---
+
+<MainLayout title={`Berklee Open: Search`}>
+    <div id="search" class="mb-10"></div>
+    <div id="hits" class="mb-10"></div>
+</MainLayout>
+
+<script>
+    import algoliasearch from 'algoliasearch';
+    import instantsearch from 'instantsearch.js';
+    import { searchBox, hits } from 'instantsearch.js/es/widgets';
+
+    export const searchClient = algoliasearch(
+        'AHDTI74E4C',
+        '8a286c5cd2c0c5f5cbd68e8a8e4eeda2',
+    );
+
+    const search = instantsearch({
+        indexName: 'BerkleeOpen',
+        searchClient,
+    });
+
+    search.addWidgets([
+        searchBox({
+            container: "#search"
+        }),
+        hits({
+            container: "#hits"
+        })
+    ]);
+
+    search.start();
+</script>
