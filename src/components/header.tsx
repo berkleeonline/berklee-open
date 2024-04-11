@@ -49,7 +49,7 @@ const Header = (props: HeaderProps) => {
           </Link>
         </NavbarItem>
         <NavbarItem>
-          <App />
+          <App client:load />
         </NavbarItem>
       </NavbarContent>
       <NavbarMenu>
