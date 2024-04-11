@@ -1,6 +1,7 @@
 import React from "react";
 import {Navbar, NavbarBrand, NavbarContent, NavbarItem, NavbarMenuToggle, NavbarMenu, NavbarMenuItem, Link, Button} from "@nextui-org/react";
 import Logo from "./logo";
+import App from "./app"
 
 type HeaderProps = {
   text: string;
@@ -43,9 +44,12 @@ const Header = (props: HeaderProps) => {
           </Link>
         </NavbarItem>
         <NavbarItem>
-          <Button as={Link} href="#" variant="flat">
-            Log in
-          </Button>
+          <Link color="foreground" href="/search">
+            Search
+          </Link>
+        </NavbarItem>
+        <NavbarItem>
+          <App />
         </NavbarItem>
       </NavbarContent>
       <NavbarMenu>
