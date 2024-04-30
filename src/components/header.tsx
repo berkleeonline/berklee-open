@@ -48,9 +48,6 @@ const Header = (props: HeaderProps) => {
             Search
           </Link>
         </NavbarItem>
-        <NavbarItem>
-          <App client:load />
-        </NavbarItem>
       </NavbarContent>
       <NavbarMenu>
         {menuItems.map((item, index) => (
