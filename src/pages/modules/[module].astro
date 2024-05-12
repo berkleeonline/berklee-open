@@ -1,0 +1,145 @@
+---
+import { contentfulClient } from "../../lib/contentful";
+import { calculateLevel } from "../../lib/calculateLevel";
+import { calculateDuration } from "../../lib/calculateDuration";
+import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
+import type { Module } from "../../type/content-blocks";
+
+import MainLayout from "../../layouts/authenticated.astro"
+
+export async function getStaticPaths() {
+  const modules = await contentfulClient.getEntries<Module>({
+  		content_type: "module",
+	});
+
+  let modulesToPublish = [];
+
+  modules.items.map((module) => {
+    modulesToPublish.push({
+      params: {module: module.sys.id},
+      props: module
+    });
+  });
+
+  return modulesToPublish;
+}
+
+const {
+  module_title,
+  module_description,
+  module_units,
+  module_level
+} = Astro.props.fields;
+
+let level = '';
+
+if (module_level.length > 0) {
+  level = calculateLevel(module_level);
+}
+
+let lessonTime = [];
+let outcomes = [];
+let evidences = [];
+let repertoires = [];
+
+if (module_units.length > 0) {
+  await Promise.all(module_units.map(async (unit) => {
+    await Promise.all(unit.fields.unit_lesson.map(async (lessonLink) => {
+      const lessonEntry = await contentfulClient.getEntry(lessonLink.sys.id);
+      if (lessonEntry.fields.lesson_duration) {
+        lessonTime.push(...lessonEntry.fields.lesson_duration);
+      }
+
+      if (lessonEntry?.fields?.lesson_outcome?.content) {
+        lessonEntry?.fields?.lesson_outcome?.content.forEach((outcome) => {
+          outcome.content.forEach((item) => {
+            if (item.content && item.content.length > 0) {
+              outcomes.push(item.content[0].content[0].value);
+            }
+          });
+        });
+      }
+
+      if (lessonEntry?.fields?.lesson_evidence?.content) {
+        lessonEntry?.fields?.lesson_evidence?.content.forEach((evidence) => {
+          evidence.content.forEach((item) => {
+            if (item.content && item.content.length > 0) {
+              evidences.push(item.content[0].content[0].value);
+            }
+          });
+        });
+      }
+
+      if (lessonEntry?.fields?.lesson_repertoire?.content) {
+        lessonEntry?.fields?.lesson_repertoire?.content.forEach((repertoire) => {
+          repertoire.content.forEach((item) => {
+            if (item.content && item.content.length > 0) {
+              repertoires.push(item.content[0].content[0].value);
+            }
+          });
+        });
+      }
+    }));
+  }));
+}
+
+if (lessonTime.length > 0) {
+  lessonTime = calculateDuration(lessonTime);
+}
+---
+
+<MainLayout title={module_title} cssClass="bg-gradient-to-b from-[rgb(214,243,255)] via-white to-slate-white">
+  <div class="grid grid-cols-12 p-24 gap-20">
+    <div class="col-span-8">
+      <div class="flex gap-2 text-xl font-bold mb-4">
+        <a href="/modules" class="underline">Modules</a>
+        <span>/</span>
+        <span>{ module_title }</span>
+      </div>
+      <h1 class="text-5xl font-bold mb-8">{ module_title }</h1>
+      <div class="text-xl">{ module_description.content[0].content[0].value }</div>
+      <div class="my-12 text-xl border border-[rgb(214,243,255)] rounded-lg p-4 font-bold flex items-center justify-center gap-10">
+        <span>Level: { level }</span>
+        <span>{ lessonTime }</span>
+      </div>
+      <div class="mb-12">
+        <h2 id="learningOutcomes" class="text-xl font-bold">Learning Outcomes</h2>
+        <ul>
+          { outcomes.map((outcome) => (
+            <li class="mt-4">{ outcome }</li>
+          ))}
+        </ul>
+      </div>
+      <div class="mb-12">
+        <h2 id="evidenceOfLearning" class="text-xl font-bold">Evidence of Learning</h2>
+        <ul>
+          { evidences.map((outcome) => (
+            <li class="mt-4">{ outcome }</li>
+          ))}
+        </ul>
+      </div>
+      <div class="mb-12">
+        <h2 id="suggestedRepertoire" class="text-xl font-bold">Suggested Repertoire</h2>
+        <ul>
+          { repertoires.map((repertoire) => (
+            <li class="mt-4">{ repertoire }</li>
+          ))}
+        </ul>
+      </div>
+    </div>
+    <div class="self-start sticky top-24 col-span-4">
+      <div class="border rounded-lg bg-white">
+        <img src="https://via.placeholder.com/640x360" alt="Module Image" class="w-full rounded-t-lg" />
+        <ul class="flex flex-col sticky top-20">
+          <li><a class="p-2 px-4 block font-bold text-sm hover:underline" href="#overview">Overview</a></li>
+          <li><a class="p-2 px-4 block font-bold text-sm hover:underline" href="#learningOutcomes">Learning Outcomes</a></li>
+          <li><a class="p-2 px-4 block font-bold text-sm hover:underline" href="#evidenceOfLearning">Evidence of Learning</a></li>
+          <li><a class="p-2 px-4 block font-bold text-sm hover:underline" href="#suggestedRepertoire">Suggested Repertoire</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</MainLayout>
+
+
+

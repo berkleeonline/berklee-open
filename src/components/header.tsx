@@ -1,7 +1,6 @@
 import React from "react";
 import {Navbar, NavbarBrand, NavbarContent, NavbarItem, NavbarMenuToggle, NavbarMenu, NavbarMenuItem, Link, Button} from "@nextui-org/react";
 import Logo from "./logo";
-import App from "./app"
 
 type HeaderProps = {
   text: string;
@@ -24,7 +23,7 @@ const Header = (props: HeaderProps) => {
   ];
 
   return (
-    <Navbar onMenuOpenChange={setIsMenuOpen}>
+    <Navbar onMenuOpenChange={setIsMenuOpen} maxWidth={`2xl`}>
       <NavbarContent>
         <NavbarMenuToggle
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
