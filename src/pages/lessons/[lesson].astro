@@ -1,39 +1,111 @@
 ---
 import { contentfulClient } from "../../lib/contentful";
-import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
-import type { Unit } from "../../type/content-blocks";
+import {Chip} from "@nextui-org/chip";
+import {Button} from "@nextui-org/button";
+import type { Lesson } from "../../type/content-blocks";
 
 import MainLayout from "../../layouts/main.astro"
-import Time from "../../components/time"
-import ContentBlock from "../../components/content-block"
 
 export async function getStaticPaths() {
-  const units = await contentfulClient.getEntries<Unit>({
-  		content_type: "unit",
+  const lessons = await contentfulClient.getEntries({
+  		content_type: "lesson",
 	});
 
-  let unitsToPublish = [];
+  let lessonsToPublish = [];
 
-  units.items.map((unit) => {
-    unitsToPublish.push({
-      params: {lesson: unit.sys.id},
-      props: unit
+  lessons.items.map((lesson) => {
+    lessonsToPublish.push({
+      params: {lesson: lesson.sys.id},
+      props: lesson
     });
   });
 
-  return unitsToPublish;
+  return lessonsToPublish;
 }
 
-const {unit_title} = Astro.props.fields;
+const {
+  lesson_title,
+  lesson_audience,
+  lesson_step,
+  lesson_duration,
+  lesson_concepts,
+  lesson_outcome,
+  lesson_prerequisites
+} = Astro.props.fields;
 ---
 
-<MainLayout title={unit_title}>
-	<div class="flex gap-20">
-    <div class="w-1/4">
-      activities here
+<MainLayout title={lesson_title}>
+  <div class="grid grid-cols-12 p-24 gap-20">
+    <div class="col-span-8">
+      <div class="mb-4">
+        <Chip color="default">Lesson</Chip>
+      </div>
+      <div class="mb-12">
+        <h1 class="text-5xl font-bold mb-8">{lesson_title}</h1>
+        <div class="flex gap-4 mb-6">
+          <div class="font-bold">{lesson_audience[0]}</div>
+          <div class="font-bold">{lesson_duration[0]}</div>
+          <div class="font-bold">{lesson_step[0]}</div>
+        </div>
+        <div class="flex gap-4 items-center">
+          <div>
+            <Button color="primary">Button</Button>
+          </div>
+          <div>
+            <a href="#share">Share</Button>
+          </div>
+          <div>
+            <a href="#pdf">PDF</Button>
+          </div>
+        </div>
+      </div>
+      <div class="mb-8">
+        <h2 id="presentationOptions" class="text-xl font-bold mb-2">Presentation Options</h2>
+        <div>NEED THIS</div>
+      </div>
+      {lesson_concepts && lesson_concepts.length > 0 && (
+        <div class="mb-8">
+          <h2 id="conceptsCovered" class="text-xl font-bold mb-4">Concepts Covered</h2>
+          <div class="flex gap-4 items-center">
+            {lesson_concepts.map((concept, index) => {
+              return <Chip key={index}>{concept.fields.concept_name}</Chip>
+            })}
+          </div>
+        </div>
+      )}
+      {lesson_outcome && lesson_outcome.content.length > 0 && (
+        <div class="mb-8">
+          <h2 id="learningOutcomes" class="text-xl font-bold mb-4">Learning Outcomes</h2>
+          <div class="flex gap-4 items-center">
+            <ul>
+              {lesson_outcome.content.map((outcome, index) => {
+                if (outcome.nodeType === 'unordered-list') {
+                  return outcome.content.map((item, idx) => {
+                    return <li>{item.content[0].content[0].value}</li>
+                  });
+                }
+              })}
+            </ul>
+          </div>
+        </div>
+      )}
+      {lesson_prerequisites && lesson_prerequisites.content.length > 0 && (
+        <div class="mb-8">
+          <h2 id="learningOutcomes" class="text-xl font-bold mb-4">Prerequisites</h2>
+          <div class="flex gap-4 items-center">
+            <ul>
+              {lesson_prerequisites.content.map((prerequisite, index) => {
+                if (prerequisite.nodeType === 'unordered-list') {
+                  return prerequisite.content.map((item, idx) => {
+                    return <li>{item.content[0].content[0].value}</li>
+                  });
+                }
+              })}
+            </ul>
+          </div>
+        </div>
+      )}
     </div>
-    <div class="w-3/4">
-      more details here
-    </div>
+    <div class="col-span-4"></div>
   </div>
 </MainLayout>
