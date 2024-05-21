@@ -6,19 +6,18 @@
 	import UnitCard from "../../components/cards/unit"
 
 	const units = await contentfulClient.getEntries<Unit>({
-  		content_type: "unit",
+  	content_type: "unit",
 	});
 ---
 
 <MainLayout title={`Berklee Open: Units`}>
-	<div class="flex gap-20">
-		<div class="w-1/4"></div>
-		<div class="w-3/4">
-			<div class="grid grid-cols-2 gap-8">
-		  		{units.items.map((unit) => (
-			  		<UnitCard unit={unit} />
-		  		))}
-			</div>
-		</div>
-	</div>
+  <div class="flex gap-20">
+    <div class="w-full">
+      <div class="grid grid-cols-2 gap-8">
+        {units.items.map((unit) => (
+          <UnitCard unit={unit} />
+        ))}
+      </div>
+    </div>
+  </div>
 </MainLayout>

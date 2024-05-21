@@ -34,9 +34,16 @@ const {
 } = Astro.props.fields;
 ---
 
-<MainLayout title={lesson_title}>
-  <div class="grid grid-cols-12 p-24 gap-20">
+<MainLayout title={lesson_title} cssClass="bg-gradient-to-b from-[rgb(214,243,255)] via-white to-slate-white">
+  <div class="grid grid-cols-12 gap-20">
     <div class="col-span-8">
+      <!-- <div class="flex gap-2 text-xl font-bold mb-4">
+        <a href="/modules" class="underline">Modules</a>
+        <span>/</span>
+        <span>[ To-do: Get Module Title ]</span>
+        <span>/</span>
+        <span>{ lesson_title }</span>
+      </div> -->
       <div class="mb-4">
         <Chip color="default">Lesson</Chip>
       </div>

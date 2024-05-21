@@ -30,7 +30,7 @@ const Header = (props: HeaderProps) => {
           className="sm:hidden"
         />
         <NavbarBrand>
-          <Link color="foreground" href="/units">
+          <Link color="foreground" href="/">
             <Logo />
           </Link>
         </NavbarBrand>
@@ -40,6 +40,11 @@ const Header = (props: HeaderProps) => {
         <NavbarItem>
           <Link color="foreground" href="/units">
             Units
+          </Link>
+        </NavbarItem>
+        <NavbarItem>
+          <Link color="foreground" href="/modules">
+            Modules
           </Link>
         </NavbarItem>
         <NavbarItem>

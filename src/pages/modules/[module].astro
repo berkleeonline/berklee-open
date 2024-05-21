@@ -4,6 +4,8 @@ import { calculateLevel } from "../../lib/calculateLevel";
 import { calculateDuration } from "../../lib/calculateDuration";
 import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
 import type { Module } from "../../type/content-blocks";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCoffee } from '@fortawesome/pro-light-svg-icons'; 
 
 import MainLayout from "../../layouts/authenticated.astro"
 
@@ -14,7 +16,7 @@ export async function getStaticPaths() {
 
   let modulesToPublish = [];
 
-  modules.items.map((module) => {
+  modules.items.forEach((module) => {
     modulesToPublish.push({
       params: {module: module.sys.id},
       props: module
@@ -27,8 +29,8 @@ export async function getStaticPaths() {
 const {
   module_title,
   module_description,
-  module_units,
-  module_level
+  module_units = [],
+  module_level = []
 } = Astro.props.fields;
 
 let level = '';
@@ -45,45 +47,47 @@ let repertoires = [];
 
 if (module_units.length > 0) {
   await Promise.all(module_units.map(async (unit) => {
-    await Promise.all(unit.fields.unit_lesson.map(async (lessonLink) => {
-      const lessonEntry = await contentfulClient.getEntry(lessonLink.sys.id);
+    if (unit.fields.unit_lesson && Array.isArray(unit.fields.unit_lesson)) {
+      await Promise.all(unit.fields.unit_lesson.map(async (lessonLink) => {
+        const lessonEntry = await contentfulClient.getEntry(lessonLink.sys.id);
 
-      lessons.push(lessonEntry);
+        lessons.push(lessonEntry);
 
-      if (lessonEntry.fields.lesson_duration) {
-        lessonTime.push(...lessonEntry.fields.lesson_duration);
-      }
+        if (lessonEntry.fields.lesson_duration) {
+          lessonTime.push(...lessonEntry.fields.lesson_duration);
+        }
 
-      if (lessonEntry?.fields?.lesson_outcome?.content) {
-        lessonEntry?.fields?.lesson_outcome?.content.forEach((outcome) => {
-          outcome.content.forEach((item) => {
-            if (item.content && item.content.length > 0) {
-              outcomes.push(item.content[0].content[0].value);
-            }
+        if (lessonEntry?.fields?.lesson_outcome?.content) {
+          lessonEntry.fields.lesson_outcome.content.forEach((outcome) => {
+            outcome.content.forEach((item) => {
+              if (item.content && item.content.length > 0) {
+                outcomes.push(item.content[0].content[0].value);
+              }
+            });
           });
-        });
-      }
+        }
 
-      if (lessonEntry?.fields?.lesson_evidence?.content) {
-        lessonEntry?.fields?.lesson_evidence?.content.forEach((evidence) => {
-          evidence.content.forEach((item) => {
-            if (item.content && item.content.length > 0) {
-              evidences.push(item.content[0].content[0].value);
-            }
+        if (lessonEntry?.fields?.lesson_evidence?.content) {
+          lessonEntry.fields.lesson_evidence.content.forEach((evidence) => {
+            evidence.content.forEach((item) => {
+              if (item.content && item.content.length > 0) {
+                evidences.push(item.content[0].content[0].value);
+              }
+            });
           });
-        });
-      }
+        }
 
-      if (lessonEntry?.fields?.lesson_repertoire?.content) {
-        lessonEntry?.fields?.lesson_repertoire?.content.forEach((repertoire) => {
-          repertoire.content.forEach((item) => {
-            if (item.content && item.content.length > 0) {
-              repertoires.push(item.content[0].content[0].value);
-            }
+        if (lessonEntry?.fields?.lesson_repertoire?.content) {
+          lessonEntry.fields.lesson_repertoire.content.forEach((repertoire) => {
+            repertoire.content.forEach((item) => {
+              if (item.content && item.content.length > 0) {
+                repertoires.push(item.content[0].content[0].value);
+              }
+            });
           });
-        });
-      }
-    }));
+        }
+      }));
+    }
   }));
 }
 
@@ -93,7 +97,7 @@ if (lessonTime.length > 0) {
 ---
 
 <MainLayout title={module_title} cssClass="bg-gradient-to-b from-[rgb(214,243,255)] via-white to-slate-white">
-  <div class="grid grid-cols-12 p-24 gap-20">
+  <div class="grid grid-cols-12 gap-20">
     <div class="col-span-8">
       <div class="flex gap-2 text-xl font-bold mb-4">
         <a href="/modules" class="underline">Modules</a>
@@ -117,8 +121,8 @@ if (lessonTime.length > 0) {
       <div class="mb-12">
         <h2 id="evidenceOfLearning" class="text-xl font-bold">Evidence of Learning</h2>
         <ul>
-          { evidences.map((outcome) => (
-            <li class="mt-4">{ outcome }</li>
+          { evidences.map((evidence) => (
+            <li class="mt-4">{ evidence }</li>
           ))}
         </ul>
       </div>
@@ -154,6 +158,3 @@ if (lessonTime.length > 0) {
     </div>
   </div>
 </MainLayout>
-
-
-
