@@ -1,21 +1,28 @@
 ---
 import { contentfulClient } from "../../lib/contentful";
-import {Chip} from "@nextui-org/chip";
-import {Button} from "@nextui-org/button";
+import { documentToHtmlString } from '@contentful/rich-text-html-renderer';
+import { Button } from "@nextui-org/button";
+import { Chip } from "@nextui-org/chip";
 import type { Lesson } from "../../type/content-blocks";
-
-import MainLayout from "../../layouts/main.astro"
+import { IconChip } from "../../elements/IconChip";
+import MainLayout from "../../layouts/main.astro";
+import { FontAwesomeIcon, FontAwesomeIconProps } from '@fortawesome/react-fontawesome';
+import { faScroll, faCircleCheck, faPresentationScreen, faCompass, faStar, faMusic, faFileArrowDown, faClock, faSeedling, faShare, faSignal4, faChalkboard, faChalkboardUser, faSquareCheck, faCompass } from '@fortawesome/pro-light-svg-icons';
+import SwiperCarousel from '../../components/carousel/swiper';
+import { listboxItem } from "@nextui-org/react";
+import styles from './lesson.module.scss';
+import { fade } from "astro:transitions";
 
 export async function getStaticPaths() {
   const lessons = await contentfulClient.getEntries({
-  		content_type: "lesson",
-	});
+    content_type: "lesson",
+  });
 
   let lessonsToPublish = [];
 
   lessons.items.map((lesson) => {
     lessonsToPublish.push({
-      params: {lesson: lesson.sys.id},
+      params: { lesson: lesson.sys.id },
       props: lesson
     });
   });
@@ -25,94 +32,131 @@ export async function getStaticPaths() {
 
 const {
   lesson_title,
+  lesson_summary,
   lesson_audience,
   lesson_step,
+  lesson_outline,
+  lesson_essential_questions,
+  lesson_repertoire,
+  lesson_prep,
   lesson_duration,
   lesson_concepts,
   lesson_outcome,
   lesson_prerequisites
 } = Astro.props.fields;
+
+//console.log(Astro.props.fields);
+console.log(lesson_prep);
+
 ---
 
 <MainLayout title={lesson_title} cssClass="bg-gradient-to-b from-[rgb(214,243,255)] via-white to-slate-white">
   <div class="grid grid-cols-12 gap-20">
     <div class="col-span-8">
-      <!-- <div class="flex gap-2 text-xl font-bold mb-4">
-        <a href="/modules" class="underline">Modules</a>
-        <span>/</span>
-        <span>[ To-do: Get Module Title ]</span>
-        <span>/</span>
-        <span>{ lesson_title }</span>
-      </div> -->
       <div class="mb-4">
-        <Chip color="default">Lesson</Chip>
+        <IconChip icon={faScroll} label="Lesson" contentType="lesson" />
       </div>
       <div class="mb-12">
-        <h1 class="text-5xl font-bold mb-8">{lesson_title}</h1>
+        <h1 class="text-5xl font-bold mb-6">{lesson_title}</h1>
+        <div class="mb-7" set:html={documentToHtmlString(lesson_summary)}></div>
+        {lesson_concepts && lesson_concepts.length > 0 && (
+          <div class="flex gap-4 mb-8">
+            {lesson_concepts.map((concept, index) => (
+              <Chip key={index} variant="flat">{concept.fields.concept_name}</Chip>
+            ))}
+          </div>
+        )}
         <div class="flex gap-4 mb-6">
-          <div class="font-bold">{lesson_audience[0]}</div>
-          <div class="font-bold">{lesson_duration[0]}</div>
-          <div class="font-bold">{lesson_step[0]}</div>
+          <div class="flex flex-row font-bold"><FontAwesomeIcon className="w-4 mr-1" icon={faSignal4} />{lesson_audience[0]}</div>
+          <div class="flex flex-row font-bold"><FontAwesomeIcon className="w-4 mr-2" icon={faClock} /> {lesson_duration[0]}</div>
+          <div class="flex flex-row font-bold"><FontAwesomeIcon className="w-5 mr-2" icon={faChalkboardUser} /> {lesson_step[0]}</div>
         </div>
         <div class="flex gap-4 items-center">
-          <div>
-            <Button color="primary">Button</Button>
-          </div>
-          <div>
-            <a href="#share">Share</Button>
-          </div>
-          <div>
-            <a href="#pdf">PDF</Button>
-          </div>
+          <Button color="primary"><FontAwesomeIcon icon={faPresentationScreen} /> Start Lesson</Button>
+          <Button color="primary" variant="bordered"><FontAwesomeIcon icon={faFileArrowDown} /> Download as PDF</Button>
+          <a href="#share"><FontAwesomeIcon icon={faShare} /></a>
         </div>
       </div>
+
+
+      {lesson_outcome && lesson_outcome.content.length > 0 && (
+        <div class="mb-8">
+          <h2 id="learningOutcomes" class={`text-xl font-bold mb-4 ${styles.iconHeader}`}><FontAwesomeIcon icon={faSeedling} /> Learning Outcomes</h2>
+          <ul class="list-disc list-outside ml-10 pl-4">
+            {lesson_outcome.content.map((outcome, index) => (
+              outcome.nodeType === 'unordered-list' && outcome.content.map((item, idx) => (
+                <li class="pb-3" key={idx}>{item.content[0].content[0].value}</li>
+              ))
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {lesson_outline && lesson_outline.content.length > 0 && (
+        <div class="mb-8">
+          <h2 id="lessonOutline" class={`text-xl font-bold mb-4 ${styles.iconHeader}`}><FontAwesomeIcon icon={faCompass} /> Learning Outcomes</h2>
+          <ol class="list-decimal list-outside ml-10 pl-4">
+            {lesson_outline.content.map((outline, index) => (
+              outline.nodeType === 'ordered-list' && outline.content.map((item, idx) => (
+                <li class="pb-3" key={idx}>{item.content[0].content[0].value}</li>
+              ))
+            ))}
+          </ol>
+        </div>
+      )}
+
+
+      {lesson_essential_questions && lesson_essential_questions.length > 0 && (
+        <div class="mb-8">
+          <h2 id="lessonEssentialQuestions" class={`text-xl font-bold mb-4 ${styles.iconHeader}`}>
+            <FontAwesomeIcon icon={faStar} /> Essential Questions
+          </h2>
+          <ol class="list-decimal list-outside ml-10 pl-4">
+            {lesson_essential_questions.map((question, index) => (
+              <li class="pb-3" key={index}>
+                {question.fields.question}
+              </li>
+            ))}
+          </ol>
+        </div>
+      )}
+
+      {lesson_repertoire && lesson_repertoire.content.length > 0 && (
+        <div class="mb-8">
+          <h2 id="lessonRepertoire" class={`text-xl font-bold mb-4 ${styles.iconHeader}`}><FontAwesomeIcon icon={faMusic} /> Learning Repertoire</h2>
+          <div class="mb-7" set:html={documentToHtmlString(lesson_repertoire)}></div>
+        </div>
+      )}
+
+      {lesson_prep && lesson_prep.content.length > 0 && (
+        <div class="mb-8">
+          <h2 id="lessonPrep" class={`text-xl font-bold mb-4 ${styles.iconHeader}`}><FontAwesomeIcon icon={faChalkboard} /> Preparation</h2>
+          <div class="mb-7" set:html={documentToHtmlString(lesson_prep)}></div>
+        </div>
+      )}
+
+      {lesson_prerequisites && lesson_prerequisites.content.length > 0 && (
+        <div class="mb-8">
+          <h2 id="learningOutcomes" class={`text-xl font-bold mb-4 ${styles.iconHeader}`}><FontAwesomeIcon icon={faSquareCheck} /> Prerequisites</h2>
+          <ul class="list-disc list-outside ml-10 pl-4">
+            {lesson_prerequisites.content.map((prerequisite, index) => (
+              prerequisite.nodeType === 'unordered-list' && prerequisite.content.map((item, idx) => (
+                <li class="pb-3" key={idx}>{item.content[0].content[0].value}</li>
+              ))
+            ))}
+          </ul>
+        </div>
+      )}
+
       <div class="mb-8">
         <h2 id="presentationOptions" class="text-xl font-bold mb-2">Presentation Options</h2>
         <div>NEED THIS</div>
       </div>
-      {lesson_concepts && lesson_concepts.length > 0 && (
-        <div class="mb-8">
-          <h2 id="conceptsCovered" class="text-xl font-bold mb-4">Concepts Covered</h2>
-          <div class="flex gap-4 items-center">
-            {lesson_concepts.map((concept, index) => {
-              return <Chip key={index}>{concept.fields.concept_name}</Chip>
-            })}
-          </div>
-        </div>
-      )}
-      {lesson_outcome && lesson_outcome.content.length > 0 && (
-        <div class="mb-8">
-          <h2 id="learningOutcomes" class="text-xl font-bold mb-4">Learning Outcomes</h2>
-          <div class="flex gap-4 items-center">
-            <ul>
-              {lesson_outcome.content.map((outcome, index) => {
-                if (outcome.nodeType === 'unordered-list') {
-                  return outcome.content.map((item, idx) => {
-                    return <li>{item.content[0].content[0].value}</li>
-                  });
-                }
-              })}
-            </ul>
-          </div>
-        </div>
-      )}
-      {lesson_prerequisites && lesson_prerequisites.content.length > 0 && (
-        <div class="mb-8">
-          <h2 id="learningOutcomes" class="text-xl font-bold mb-4">Prerequisites</h2>
-          <div class="flex gap-4 items-center">
-            <ul>
-              {lesson_prerequisites.content.map((prerequisite, index) => {
-                if (prerequisite.nodeType === 'unordered-list') {
-                  return prerequisite.content.map((item, idx) => {
-                    return <li>{item.content[0].content[0].value}</li>
-                  });
-                }
-              })}
-            </ul>
-          </div>
-        </div>
-      )}
+
+
     </div>
-    <div class="col-span-4"></div>
+    <div class="col-span-4">
+      <SwiperCarousel client:load />
+    </div>
   </div>
 </MainLayout>

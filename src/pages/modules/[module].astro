@@ -5,7 +5,6 @@ import { calculateDuration } from "../../lib/calculateDuration";
 import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
 import type { Module } from "../../type/content-blocks";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCoffee } from '@fortawesome/pro-light-svg-icons'; 
 
 import MainLayout from "../../layouts/authenticated.astro"
 
@@ -102,7 +101,6 @@ if (lessonTime.length > 0) {
       <div class="flex gap-2 text-xl font-bold mb-4">
         <a href="/modules" class="underline">Modules</a>
         <span>/</span>
-        <span>{ module_title }</span>
       </div>
       <h1 class="text-5xl font-bold mb-8">{ module_title }</h1>
       <div class="text-xl">{ module_description.content[0].content[0].value }</div>
