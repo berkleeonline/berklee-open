@@ -64,7 +64,7 @@ const {
 } = Astro.props.fields;
 
 //console.log(Astro.props.fields);
-console.log(Astro.props.fields);
+
 
 ---
 
@@ -72,7 +72,7 @@ console.log(Astro.props.fields);
   <div class="grid grid-cols-12 gap-20">
     <div class="col-span-8">
       <div class="mb-4">
-        <IconChip icon={faScroll} label="Lesson" contentType="lesson" />
+        <IconChip icon={faScroll} label="Lesson" contentType="lesson" href="/lessons" />
       </div>
       <div class="mb-16">
         <h1 class="text-5xl font-bold mb-6">{lesson_title}</h1>

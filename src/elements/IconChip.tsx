@@ -9,14 +9,23 @@ interface IconChipProps {
   label: string;
   contentType?: string;
   size?: SizeProp;
+  href?: string; // Adding href to props for the link
   [key: string]: any; // To accept any additional props
 }
 
-export const IconChip: FC<IconChipProps> = ({ icon, label, contentType, size = 'sm', ...props }) => {
-  return (
+export const IconChip: FC<IconChipProps> = ({ icon, label, contentType, size = 'sm', href, ...props }) => {
+  const chipContent = (
     <Chip {...props} className={styles.iconChip} type={contentType}>
-      <FontAwesomeIcon icon={icon} size={size} /> 
+      <FontAwesomeIcon icon={icon} size={size} />
       <div>{label}</div>
     </Chip>
+  );
+
+  return href ? (
+    <a href={href} className="no-underline">
+      {chipContent}
+    </a>
+  ) : (
+    chipContent
   );
 };
