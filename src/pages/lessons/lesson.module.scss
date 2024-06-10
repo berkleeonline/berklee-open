@@ -1,10 +1,37 @@
-.iconHeader {
-  display: flex;
 
+
+.richContentInnerStyles {
+
+  margin-left: 2.4rem;
+  
+  h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+  }
+
+  ul, ol {
+    margin: .75rem 0 .75rem 1.25rem;
+    li {
+      padding: .5rem;
+    }
+  }
+  ul {
+    list-style-type: disc;
+  }
+
+  ol {
+    list-style-type: decimal;
+  }
+
+  hr {
+    margin: 1.5rem 0;
+  }
+}
+
+.lessonActions {
   svg {
-    margin-right: 1rem;
-    height: 1.5rem;
-    width: 1.5rem;
+    font-weight: 900;
+    width: 1rem;
   }
 }
 
