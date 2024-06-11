@@ -5,6 +5,27 @@ import { calculateDuration } from "../../lib/calculateDuration";
 import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
 import type { Module } from "../../type/content-blocks";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { IconChip } from "../../elements/IconChip";
+import { IconHeader } from "../../elements/IconHeader";
+import {faScroll,
+        faBooks,
+        faPresentationScreen, 
+        faCompass, 
+        faStar, 
+        faHeart, 
+        faTrafficCone, 
+        faMusicMagnifyingGlass, 
+        faMusic, 
+        faFileArrowDown, 
+        faClock, 
+        faSeedling, 
+        faShare, 
+        faSignal4, 
+        faChalkboard, 
+        faChalkboardUser, 
+        faSquareCheck, 
+        faCompass } 
+          from '@fortawesome/pro-light-svg-icons';
 
 import MainLayout from "../../layouts/authenticated.astro"
 
@@ -95,12 +116,11 @@ if (lessonTime.length > 0) {
 }
 ---
 
-<MainLayout title={module_title} cssClass="bg-gradient-to-b from-[rgb(214,243,255)] via-white to-slate-white">
+<MainLayout title={module_title} cssClass=" via-white to-slate-white">
   <div class="grid grid-cols-12 gap-20">
     <div class="col-span-8">
-      <div class="flex gap-2 text-xl font-bold mb-4">
-        <a href="/modules" class="underline">Modules</a>
-        <span>/</span>
+      <div class="mb-4">
+        <IconChip icon={faBooks} label="Module" contentType="module" href="/modules" />
       </div>
       <h1 class="text-5xl font-bold mb-8">{ module_title }</h1>
       <div class="text-xl">{ module_description.content[0].content[0].value }</div>
@@ -109,7 +129,7 @@ if (lessonTime.length > 0) {
         <span>{ lessonTime }</span>
       </div>
       <div class="mb-12">
-        <h2 id="learningOutcomes" class="text-xl font-bold">Learning Outcomes</h2>
+        <IconHeader headerId="learningOutcomes" icon={faSeedling} label="Learning Outcomes" />
         <ul>
           { outcomes.map((outcome) => (
             <li class="mt-4">{ outcome }</li>
@@ -117,7 +137,7 @@ if (lessonTime.length > 0) {
         </ul>
       </div>
       <div class="mb-12">
-        <h2 id="evidenceOfLearning" class="text-xl font-bold">Evidence of Learning</h2>
+        <IconHeader headerId="lessonEssentialQuestions" icon={faStar} label="Evidence of Learning" />
         <ul>
           { evidences.map((evidence) => (
             <li class="mt-4">{ evidence }</li>
