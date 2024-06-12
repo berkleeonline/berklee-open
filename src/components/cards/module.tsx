@@ -51,7 +51,7 @@ const ModuleCard: React.FC<ModuleCardProps> = ({ module, index }) => {
           <div className="description mb-4 text-left">{module_short_description}</div>
           <div className="flex w-full justify-start items-center">
             <p className="text-xs gap-1 pr-2">
-              {module_level.map(level => level.charAt(0).toUpperCase() + level.slice(1)).join(', ')}
+              {module_level?.map(level => level.charAt(0).toUpperCase() + level.slice(1)).join(', ')}
             </p>
             •
             <p className="text-xs gap-1 pr-2 pl-2">

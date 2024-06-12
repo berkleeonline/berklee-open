@@ -6,7 +6,7 @@ import type { Lesson } from "../../type/content-blocks";
 import { IconChip } from "../../elements/IconChip";
 import { IconHeader } from "../../elements/IconHeader";
 import MainLayout from "../../layouts/main.astro";
-import { FontAwesomeIcon, FontAwesomeIconProps } from '@fortawesome/react-fontawesome';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faScroll, 
         faPresentationScreen, 
         faCompass, 
@@ -22,9 +22,8 @@ import {faScroll,
         faSignal4, 
         faChalkboard, 
         faChalkboardUser, 
-        faSquareCheck, 
-        faCompass } 
-          from '@fortawesome/pro-light-svg-icons';
+        faSquareCheck } 
+        from '@fortawesome/pro-light-svg-icons';
 import SwiperCarousel from '../../components/carousel/swiper';
 import styles from './lesson.module.scss';
 
@@ -115,6 +114,7 @@ const {
       {lesson_outcome && lesson_outcome.content.length > 0 && (
         <div class="mb-16">
           <IconHeader headerId="learningOutcomes" icon={faSeedling} label="Learning Outcomes" />
+          <h4 class="text-md font-bold pl-10">Upon completion of this lesson, students will be able to:</h4>
           <ul class="list-disc list-outside ml-10 pl-4">
             {lesson_outcome.content.map((outcome, index) => (
               outcome.nodeType === 'unordered-list' && outcome.content.map((item, idx) => (
@@ -202,6 +202,17 @@ const {
     </div>
     <div class="col-span-4">
       <SwiperCarousel client:load />
+      <div class="self-start sticky top-24 col-span-4">
+        <div class="border rounded-lg bg-white">
+          <img src="https://via.placeholder.com/640x360" alt="Module Image" class="w-full rounded-t-lg" />
+          <ul class="flex flex-col sticky top-20">
+            <li><a class="p-2 px-4 block font-bold text-sm hover:underline" href="#overview">Overview</a></li>
+            <li><a class="p-2 px-4 block font-bold text-sm hover:underline" href="#learningOutcomes">Learning Outcomes</a></li>
+            <li><a class="p-2 px-4 block font-bold text-sm hover:underline" href="#evidenceOfLearning">Evidence of Learning</a></li>
+            <li><a class="p-2 px-4 block font-bold text-sm hover:underline" href="#suggestedRepertoire">Suggested Repertoire</a></li>
+          </ul>
+        </div>
+      </div>
     </div>
   </div>
 </MainLayout>

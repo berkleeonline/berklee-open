@@ -2,7 +2,6 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styles from './IconHeader.module.scss'; // Import the CSS module
 
-
 interface IconHeaderProps {
   headerId: string;
   icon: string;

@@ -13,9 +13,10 @@
 <MainLayout title={`Berklee Open: Units`}>
   <div class="flex gap-20">
     <div class="w-full">
-      <div class="grid grid-cols-2 gap-8">
-        {units.items.map((unit) => (
-          <UnitCard unit={unit} />
+      <h1 class="text-4xl font-bold mb-8">Units</h1>
+      <div class="grid grid-cols-3 gap-8">
+        {units.items.map((unit, index) => (
+          <UnitCard unit={unit} index={index} />
         ))}
       </div>
     </div>

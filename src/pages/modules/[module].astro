@@ -2,6 +2,7 @@
 import { contentfulClient } from "../../lib/contentful";
 import { calculateLevel } from "../../lib/calculateLevel";
 import { calculateDuration } from "../../lib/calculateDuration";
+import { Button, Tooltip } from "@nextui-org/react";
 import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
 import type { Module } from "../../type/content-blocks";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -23,11 +24,12 @@ import {faScroll,
         faSignal4, 
         faChalkboard, 
         faChalkboardUser, 
-        faSquareCheck, 
-        faCompass } 
+        faSquareCheck } 
           from '@fortawesome/pro-light-svg-icons';
 
 import MainLayout from "../../layouts/authenticated.astro"
+import UnitCard from "../../components/cards/unit"
+import styles from './module.module.scss';
 
 export async function getStaticPaths() {
   const modules = await contentfulClient.getEntries<Module>({
@@ -50,7 +52,8 @@ const {
   module_title,
   module_description,
   module_units = [],
-  module_level = []
+  module_level = [],
+  Module_essential_questions = [],
 } = Astro.props.fields;
 
 let level = '';
@@ -122,37 +125,60 @@ if (lessonTime.length > 0) {
       <div class="mb-4">
         <IconChip icon={faBooks} label="Module" contentType="module" href="/modules" />
       </div>
-      <h1 class="text-5xl font-bold mb-8">{ module_title }</h1>
-      <div class="text-xl">{ module_description.content[0].content[0].value }</div>
-      <div class="my-12 text-xl border border-[rgb(214,243,255)] rounded-lg p-4 font-bold flex items-center justify-center gap-10">
-        <span>Level: { level }</span>
-        <span>{ lessonTime }</span>
+      <h1 class="text-5xl font-bold mb-6">{module_title}</h1>
+      <div class="mb-5" set:html={documentToHtmlString(module_description)}></div>
+      <div class="flex gap-4 mb-6">
+        <div class="flex flex-row font-bold"><FontAwesomeIcon className="w-4 mr-1" icon={faSignal4} />{ level }</div>
+        <div class="flex flex-row font-bold"><FontAwesomeIcon className="w-4 mr-2" icon={faClock} /> { lessonTime }</div>
       </div>
+
+      <div class={`flex flex-row gap-4 mb-16 items-center ${styles.lessonActions}`}>
+        <Button color="primary" className="font-bold w-36" aria-label="Start Module">
+          <FontAwesomeIcon icon={faPresentationScreen} class="text-sm" />
+          Start Module
+        </Button>
+        <Tooltip placement="bottom" content="Save to Library" color="default">
+          <Button isIconOnly className="p-2" radius="full" variant="bordered" color="default" aria-label="Save to Library">
+            <FontAwesomeIcon icon={faHeart} />
+          </Button>
+        </Tooltip>
+        <Tooltip placement="bottom" content="Share Module" color="default">
+          <Button isIconOnly className="p-2" radius="full" variant="bordered" color="default" aria-label="Share Module">
+            <FontAwesomeIcon icon={faShare} />
+          </Button>
+        </Tooltip>
+      </div>
+      
       <div class="mb-12">
         <IconHeader headerId="learningOutcomes" icon={faSeedling} label="Learning Outcomes" />
-        <ul>
+        <h4 class="text-lg font-bold pl-10">Upon completion of this module, students will be able to:</h4>
+        <ul class="list-disc list-outside ml-10 pl-4">
           { outcomes.map((outcome) => (
             <li class="mt-4">{ outcome }</li>
           ))}
         </ul>
       </div>
       <div class="mb-12">
-        <IconHeader headerId="lessonEssentialQuestions" icon={faStar} label="Evidence of Learning" />
-        <ul>
-          { evidences.map((evidence) => (
-            <li class="mt-4">{ evidence }</li>
+        <IconHeader headerId="essentialQuestions" icon={faStar} label="Essential Questions" />
+        <ul class="list-disc list-outside ml-10 pl-4">
+          { Module_essential_questions.map((question, index) => (
+            <li class="mt-4" key={index}>{ question.fields.question }</li>
           ))}
         </ul>
       </div>
+
       <div class="mb-12">
-        <h2 id="suggestedRepertoire" class="text-xl font-bold">Suggested Repertoire</h2>
-        <ul>
-          { repertoires.map((repertoire) => (
-            <li class="mt-4">{ repertoire }</li>
+        <IconHeader headerId="unitsCovered" icon={} label="Units Covered" />
+        <p class="mt-2 mb-8">Below is a variety of units covered within this modulem, varying from introductory activities that present a new concept for the first time, practice activities that contain ear training, recognizing, and identifying a concept, and reinforcing activities that include creating with, producing with or performing a concept.</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {module_units.map((unit, index) => (
+            <UnitCard key={index} unit={unit} />
           ))}
-        </ul>
+        </div>
       </div>
-      <div class="mb-12">
+
+
+      <!-- <div class="mb-12">
         <h2 id="lessons" class="text-xl font-bold">Lessons</h2>
         <ul>
           { lessons.map((lesson) => (
@@ -161,18 +187,20 @@ if (lessonTime.length > 0) {
             </li>
           ))}
         </ul>
+      </div> -->
+    </div>
+    <div class="col-span-4">
+      <div class="self-start sticky top-24 col-span-4">
+        <div class="border rounded-lg bg-white">
+          <ul class="flex flex-col sticky top-40">
+            <li><a class="p-2 px-4 block font-bold text-sm hover:underline" href="#overview">Overview</a></li>
+            <li><a class="p-2 px-4 block font-bold text-sm hover:underline" href="#learningOutcomes">Learning Outcomes</a></li>
+            <li><a class="p-2 px-4 block font-bold text-sm hover:underline" href="#essentialQuestions">Essential Questions</a></li>
+            <li><a class="p-2 px-4 block font-bold text-sm hover:underline" href="#unitsCovered">Units Covered</a></li>
+          </ul>
+        </div>
       </div>
     </div>
-    <div class="self-start sticky top-24 col-span-4">
-      <div class="border rounded-lg bg-white">
-        <img src="https://via.placeholder.com/640x360" alt="Module Image" class="w-full rounded-t-lg" />
-        <ul class="flex flex-col sticky top-20">
-          <li><a class="p-2 px-4 block font-bold text-sm hover:underline" href="#overview">Overview</a></li>
-          <li><a class="p-2 px-4 block font-bold text-sm hover:underline" href="#learningOutcomes">Learning Outcomes</a></li>
-          <li><a class="p-2 px-4 block font-bold text-sm hover:underline" href="#evidenceOfLearning">Evidence of Learning</a></li>
-          <li><a class="p-2 px-4 block font-bold text-sm hover:underline" href="#suggestedRepertoire">Suggested Repertoire</a></li>
-        </ul>
-      </div>
-    </div>
+    
   </div>
 </MainLayout>

@@ -1,9 +1,27 @@
 ---
 import { contentfulClient } from "../../lib/contentful";
-import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
-import type { Unit } from "../../type/content-blocks";
-
 import MainLayout from "../../layouts/authenticated.astro"
+import type { Unit } from "../../type/content-blocks";
+import { IconChip } from "../../elements/IconChip";
+import { IconHeader } from "../../elements/IconHeader";
+import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
+import {faBookBlank, 
+        faPresentationScreen, 
+        faCompass, 
+        faStar, 
+        faHeart, 
+        faTrafficCone, 
+        faMusicMagnifyingGlass, 
+        faMusic, 
+        faFileArrowDown, 
+        faClock, 
+        faSeedling, 
+        faShare, 
+        faSignal4, 
+        faChalkboard, 
+        faChalkboardUser, 
+        faSquareCheck } 
+        from '@fortawesome/pro-light-svg-icons';
 import Time from "../../components/time"
 import ContentBlock from "../../components/content-block"
 
@@ -27,18 +45,21 @@ export async function getStaticPaths() {
 const {
   unit_description,
   unit_title,
-  unit_activities
+  unit_lesson,
 } = Astro.props.fields;
 
-console.log(unit_activities);
+console.log(Astro.props.fields);
 ---
 
 <MainLayout title={unit_title}>
   <div class="flex gap-20">
     <div class="w-2/3">
+      <div class="mb-4">
+        <IconChip icon={faBookBlank} label="Unit" contentType="unit" href="/units" />
+      </div>
       <h1 class="text-5xl font-bold mb-4">{unit_title}</h1>
       <div set:html={documentToHtmlString(unit_description)}></div>
-      <div class="mb-4">{unit_activities && unit_activities.length !== undefined ? unit_activities.length + " Activities" : "No Activities"}</div>
+      <div class="mt-16 mb-4">{unit_lesson && unit_lesson.length !== undefined ? unit_lesson.length + " Lessons" : "No Lessons"}</div>
     </div>
   </div>
 </MainLayout>

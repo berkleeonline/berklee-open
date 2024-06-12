@@ -38,13 +38,13 @@ const Header = (props: HeaderProps) => {
 
       <NavbarContent className="hidden sm:flex gap-4" justify="end">
         <NavbarItem>
-          <Link color="foreground" href="/units">
-            Units
+          <Link color="foreground" href="/modules">
+            Modules
           </Link>
         </NavbarItem>
         <NavbarItem>
-          <Link color="foreground" href="/modules">
-            Modules
+          <Link color="foreground" href="/units">
+            Units
           </Link>
         </NavbarItem>
         <NavbarItem>
