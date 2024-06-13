@@ -24,7 +24,7 @@ import {faScroll,
         faChalkboardUser, 
         faSquareCheck } 
         from '@fortawesome/pro-light-svg-icons';
-import SwiperCarousel from '../../components/carousel/swiper';
+import SwiperCarousel from '../../components/carousel/carousel';
 import styles from './lesson.module.scss';
 
 
@@ -62,14 +62,14 @@ const {
   lesson_prerequisites
 } = Astro.props.fields;
 
-//console.log(Astro.props.fields);
+console.log(Astro.props.fields);
 
 
 ---
 
 <MainLayout title={lesson_title} cssClass="bg-gradient-to-b from-[rgb(214,243,255)] via-white to-slate-white">
   <div class="grid grid-cols-12 gap-20">
-    <div class="col-span-8">
+    <div class="col-span-7">
       <div class="mb-4">
         <IconChip icon={faScroll} label="Lesson" contentType="lesson" href="/lessons" />
       </div>
@@ -200,11 +200,10 @@ const {
 
 
     </div>
-    <div class="col-span-4">
+    <div class="col-span-5">
       <SwiperCarousel client:load />
       <div class="self-start sticky top-24 col-span-4">
         <div class="border rounded-lg bg-white">
-          <img src="https://via.placeholder.com/640x360" alt="Module Image" class="w-full rounded-t-lg" />
           <ul class="flex flex-col sticky top-20">
             <li><a class="p-2 px-4 block font-bold text-sm hover:underline" href="#overview">Overview</a></li>
             <li><a class="p-2 px-4 block font-bold text-sm hover:underline" href="#learningOutcomes">Learning Outcomes</a></li>
