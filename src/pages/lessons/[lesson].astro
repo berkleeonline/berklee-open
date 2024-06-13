@@ -74,7 +74,7 @@ const {
         <IconChip icon={faScroll} label="Lesson" contentType="lesson" href="/lessons" />
       </div>
       <div class="mb-16">
-        <h1 class="text-5xl font-bold mb-6">{lesson_title}</h1>
+        <h1 class="text-4xl font-bold mb-6">{lesson_title}</h1>
         <div class="mb-5" set:html={documentToHtmlString(lesson_summary)}></div>
         {lesson_concepts && lesson_concepts.length > 0 && (
           <div class="flex gap-4 mb-6">
@@ -114,7 +114,7 @@ const {
       {lesson_outcome && lesson_outcome.content.length > 0 && (
         <div class="mb-16">
           <IconHeader headerId="learningOutcomes" icon={faSeedling} label="Learning Outcomes" />
-          <h4 class="text-md font-bold pl-10">Upon completion of this lesson, students will be able to:</h4>
+          <h4 class="text-md font-bold pl-10 mb-2">Upon completion of this lesson, students will be able to:</h4>
           <ul class="list-disc list-outside ml-10 pl-4">
             {lesson_outcome.content.map((outcome, index) => (
               outcome.nodeType === 'unordered-list' && outcome.content.map((item, idx) => (

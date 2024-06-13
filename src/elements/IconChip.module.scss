@@ -10,9 +10,10 @@
   }
   span {
     display: flex;
+    align-items: center;
     svg {
       margin-right: .5rem;
-      width: 1.05rem;
+      height: .9rem;
     }
   }
 }
