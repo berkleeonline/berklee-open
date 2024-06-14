@@ -4,6 +4,7 @@ import { SlideFlashCard } from './slide-types/SlideFlashCard';
 import { SlideExitTicket } from './slide-types/SlideExitTicket';
 import { SlideImage } from './slide-types/SlideImage';
 import { SlideText } from './slide-types/SlideText';
+import { SlideVideo } from './slide-types/SlideVideo';
 
 type SlideProps = {
   slide: {
@@ -25,7 +26,8 @@ type SlideProps = {
         title?: string;
         description?: string;
         questions?: string[];
-        content: {}
+        content?: {}
+        embed?: string;
     }
   };
 }
@@ -61,6 +63,15 @@ export const Slide: React.FC<SlideProps> = ({ slide }) => {
         const content = slide?.fields.content || '';
         slideContent = <SlideText title={title} text={content} />;
     }
+
+    if (slideType === 'slideVideo') {
+        console.log(slide);
+        const title = slide.fields.title || '';
+        const embed = slide?.fields.embed || '';
+        slideContent = <SlideVideo title={title} embed={embed} />;
+    }
+
+    console.log(slideType);
 
     return (
         <div className="flex flex-col">

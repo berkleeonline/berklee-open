@@ -1,14 +1,12 @@
-import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Chip } from '@nextui-org/chip';
-import { IconProp, SizeProp } from '@fortawesome/fontawesome-svg-core';
 import styles from './IconChip.module.scss'; // Import the CSS module
 
 interface IconChipProps {
-  icon: IconProp;
+  icon: string;
   label: string;
   contentType?: string;
-  size?: SizeProp;
+  size?: string;
   href?: string; // Adding href to props for the link
   [key: string]: any; // To accept any additional props
 }

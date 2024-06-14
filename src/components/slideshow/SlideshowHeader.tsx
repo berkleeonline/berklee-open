@@ -57,14 +57,9 @@ export const SlideshowHeader: React.FC<SlideshowHeaderProps> = ({
           </button>
         </NavbarContent>
         <NavbarContent justify="end" className="sm:flex">
-          <NavbarItem className="hidden lg:flex">
+          <NavbarItem className="hidden lg:flex border-r pr-5">
             <Button onClick={() => setShowKeyboard(!showKeyboard)} isIconOnly className="bg-white text-xl">
               <FontAwesomeIcon icon={faPianoKeyboard} />
-            </Button>
-          </NavbarItem>
-          <NavbarItem className="hidden lg:flex border-r pr-5">
-            <Button isIconOnly className="bg-white text-xl">
-              M
             </Button>
           </NavbarItem>
           <NavbarItem className="hidden lg:flex">

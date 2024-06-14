@@ -1,7 +1,7 @@
 ---
 import { contentfulClient } from "../../lib/contentful";
 import { documentToHtmlString } from '@contentful/rich-text-html-renderer';
-import { Button, Chip, Tooltip } from "@nextui-org/react";
+import { Button, Chip, Tooltip, Link } from "@nextui-org/react";
 import type { Lesson } from "../../type/content-blocks";
 import { IconChip } from "../../elements/IconChip";
 import { IconHeader } from "../../elements/IconHeader";
@@ -62,7 +62,9 @@ const {
   lesson_prerequisites
 } = Astro.props.fields;
 
-console.log(Astro.props.fields);
+const id = Astro.props.sys.id;
+
+console.log(Astro.props);
 
 
 ---
@@ -89,7 +91,7 @@ console.log(Astro.props.fields);
           <div class="flex flex-row font-bold"><FontAwesomeIcon className="w-5 mr-2" icon={faChalkboardUser} /> {lesson_step[0]}</div>
         </div>
         <div class={`flex flex-row gap-4 items-center ${styles.lessonActions}`}>
-          <Button color="primary" className="font-bold w-36" aria-label="Start Lesson">
+          <Button href={`/slideshows/${id}`} as={Link} color="primary" className="font-bold w-36" aria-label="Start Lesson">
             <FontAwesomeIcon icon={faPresentationScreen} class="text-sm" />
             Start Lesson
           </Button>
