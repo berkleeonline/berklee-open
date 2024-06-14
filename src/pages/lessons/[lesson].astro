@@ -1,39 +1,207 @@
 ---
 import { contentfulClient } from "../../lib/contentful";
-import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
-import type { Unit } from "../../type/content-blocks";
+import { documentToHtmlString } from '@contentful/rich-text-html-renderer';
+import { Button, Chip, Tooltip } from "@nextui-org/react";
+import type { Lesson } from "../../type/content-blocks";
+import { IconChip } from "../../elements/IconChip";
+import { IconHeader } from "../../elements/IconHeader";
+import MainLayout from "../../layouts/main.astro";
+import { FontAwesomeIcon, FontAwesomeIconProps } from '@fortawesome/react-fontawesome';
+import {faScroll, 
+        faPresentationScreen, 
+        faCompass, 
+        faStar, 
+        faHeart, 
+        faTrafficCone, 
+        faMusicMagnifyingGlass, 
+        faMusic, 
+        faFileArrowDown, 
+        faClock, 
+        faSeedling, 
+        faShare, 
+        faSignal4, 
+        faChalkboard, 
+        faChalkboardUser, 
+        faSquareCheck, 
+        faCompass } 
+          from '@fortawesome/pro-light-svg-icons';
+import SwiperCarousel from '../../components/carousel/swiper';
+import styles from './lesson.module.scss';
 
-import MainLayout from "../../layouts/main.astro"
-import Time from "../../components/time"
-import ContentBlock from "../../components/content-block"
 
 export async function getStaticPaths() {
-  const units = await contentfulClient.getEntries<Unit>({
-  		content_type: "unit",
-	});
+  const lessons = await contentfulClient.getEntries({
+    content_type: "lesson",
+  });
 
-  let unitsToPublish = [];
+  let lessonsToPublish = [];
 
-  units.items.map((unit) => {
-    unitsToPublish.push({
-      params: {lesson: unit.sys.id},
-      props: unit
+  lessons.items.map((lesson) => {
+    lessonsToPublish.push({
+      params: { lesson: lesson.sys.id },
+      props: lesson
     });
   });
 
-  return unitsToPublish;
+  return lessonsToPublish;
 }
 
-const {unit_title} = Astro.props.fields;
+const {
+  lesson_title,
+  lesson_summary,
+  lesson_audience,
+  lesson_step,
+  lesson_outline,
+  lesson_essential_questions,
+  lesson_repertoire,
+  lesson_prep,
+  lesson_sticking_points,
+  lesson_evidence,
+  lesson_duration,
+  lesson_concepts,
+  lesson_outcome,
+  lesson_prerequisites
+} = Astro.props.fields;
+
+//console.log(Astro.props.fields);
+console.log(Astro.props.fields);
+
 ---
 
-<MainLayout title={unit_title}>
-	<div class="flex gap-20">
-    <div class="w-1/4">
-      activities here
+<MainLayout title={lesson_title} cssClass="bg-gradient-to-b from-[rgb(214,243,255)] via-white to-slate-white">
+  <div class="grid grid-cols-12 gap-20">
+    <div class="col-span-8">
+      <div class="mb-4">
+        <IconChip icon={faScroll} label="Lesson" contentType="lesson" />
+      </div>
+      <div class="mb-16">
+        <h1 class="text-5xl font-bold mb-6">{lesson_title}</h1>
+        <div class="mb-5" set:html={documentToHtmlString(lesson_summary)}></div>
+        {lesson_concepts && lesson_concepts.length > 0 && (
+          <div class="flex gap-4 mb-6">
+            {lesson_concepts.map((concept, index) => (
+              <Chip key={index} variant="flat">{concept.fields.concept_name}</Chip>
+            ))}
+          </div>
+        )}
+        <div class="flex gap-4 mb-6">
+          <div class="flex flex-row font-bold"><FontAwesomeIcon className="w-4 mr-1" icon={faSignal4} />{lesson_audience[0]}</div>
+          <div class="flex flex-row font-bold"><FontAwesomeIcon className="w-4 mr-2" icon={faClock} /> {lesson_duration[0]}</div>
+          <div class="flex flex-row font-bold"><FontAwesomeIcon className="w-5 mr-2" icon={faChalkboardUser} /> {lesson_step[0]}</div>
+        </div>
+        <div class={`flex flex-row gap-4 items-center ${styles.lessonActions}`}>
+          <Button color="primary" className="font-bold w-36" aria-label="Start Lesson">
+            <FontAwesomeIcon icon={faPresentationScreen} class="text-sm" />
+            Start Lesson
+          </Button>
+          <Button color="default" className="font-bold w-41" variant="bordered" aria-label="Download as PDF">
+            <FontAwesomeIcon icon={faFileArrowDown} class="text-sm" />
+            Download as PDF
+          </Button>
+          <Tooltip placement="bottom" content="Save to Library" color="default">
+            <Button isIconOnly className="p-2" radius="full" variant="bordered" color="default" aria-label="Save to Library">
+              <FontAwesomeIcon icon={faHeart} />
+            </Button>
+          </Tooltip>
+          <Tooltip placement="bottom" content="Save to Library" color="default">
+            <Button isIconOnly className="p-2" radius="full" variant="bordered" color="default" aria-label="Share">
+              <FontAwesomeIcon icon={faShare} />
+            </Button>
+          </Tooltip>
+        </div>
+      </div>
+
+
+      {lesson_outcome && lesson_outcome.content.length > 0 && (
+        <div class="mb-16">
+          <IconHeader headerId="learningOutcomes" icon={faSeedling} label="Learning Outcomes" />
+          <ul class="list-disc list-outside ml-10 pl-4">
+            {lesson_outcome.content.map((outcome, index) => (
+              outcome.nodeType === 'unordered-list' && outcome.content.map((item, idx) => (
+                <li class="pb-3" key={idx}>{item.content[0].content[0].value}</li>
+              ))
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {lesson_outline && lesson_outline.content.length > 0 && (
+        <div class="mb-16">
+          <IconHeader headerId="lessonOutline" icon={faCompass} label="Lesson Outline" />
+          <ol class="list-decimal list-outside ml-10 pl-4">
+            {lesson_outline.content.map((outline, index) => (
+              outline.nodeType === 'ordered-list' && outline.content.map((item, idx) => (
+                <li class="pb-3" key={idx}>{item.content[0].content[0].value}</li>
+              ))
+            ))}
+          </ol>
+        </div>
+      )}
+
+
+      {lesson_essential_questions && lesson_essential_questions.length > 0 && (
+        <div class="mb-16">
+          <IconHeader headerId="lessonEssentialQuestions" icon={faStar} label="Essential Questions" />
+          <ol class="list-decimal list-outside ml-10 pl-4">
+            {lesson_essential_questions.map((question, index) => (
+              <li class="pb-3" key={index}>
+                {question.fields.question}
+              </li>
+            ))}
+          </ol>
+        </div>
+      )}
+
+      {lesson_repertoire && lesson_repertoire.content.length > 0 && (
+        <div class="mb-16">
+          <IconHeader headerId="lessonRepertoire" icon={faMusic} label="Repertoire" />
+          <div class={`mb-7 ${styles.richContentInnerStyles}`} set:html={documentToHtmlString(lesson_repertoire)}></div>
+        </div>
+      )}
+
+      {lesson_prep && lesson_prep.content.length > 0 && (
+        <div class="mb-16">
+          <IconHeader headerId="lessonPreparation" icon={faChalkboard} label="Preparation" />
+          <div class={`mb-7 ${styles.richContentInnerStyles}`} set:html={documentToHtmlString(lesson_prep)}></div>
+        </div>
+      )}
+
+      {lesson_prep && lesson_prep.content.length > 0 && (
+        <div class="mb-16">
+          <IconHeader headerId="lessonStickingPoints" icon={faTrafficCone} label="Sticking Points" />
+          <div class={`mb-7 ${styles.richContentInnerStyles}`} set:html={documentToHtmlString(lesson_sticking_points)}></div>
+        </div>
+      )}
+
+      {lesson_prep && lesson_prep.content.length > 0 && (
+        <div class="mb-16">
+          <IconHeader headerId="lessonEvidence" icon={faMusicMagnifyingGlass} label="Lesson Evidence" />
+          <div class={`mb-7 ${styles.richContentInnerStyles}`} set:html={documentToHtmlString(lesson_evidence)}></div>
+        </div>
+      )}
+
+      {lesson_prerequisites && lesson_prerequisites.content.length > 0 && (
+        <div class="mb-16">
+          <IconHeader headerId="learningPrerequisites" icon={faSquareCheck} label="Prerequisites" />
+          <ul class="list-disc list-outside ml-10 pl-4">
+            {lesson_prerequisites.content.map((prerequisite, index) => (
+              prerequisite.nodeType === 'unordered-list' && prerequisite.content.map((item, idx) => (
+                <li class="pb-3" key={idx}>{item.content[0].content[0].value}</li>
+              ))
+            ))}
+          </ul>
+        </div>
+      )}
+
+      <div class="mb-8 p-8 bg-default-100 rounded-lg border">
+        <h2 id="presentationOptions" class="text-xl font-bold mb-2">Presentation Options</h2>
+        <div>Coming soon.</div>
+      </div>
+
+
     </div>
-    <div class="w-3/4">
-      more details here
+    <div class="col-span-4">
+      <SwiperCarousel client:load />
     </div>
   </div>
 </MainLayout>

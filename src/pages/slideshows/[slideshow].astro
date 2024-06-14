@@ -1,0 +1,43 @@
+---
+import { contentfulClient } from "../../lib/contentful";
+import Slideshow from "../../components/slideshow/Slideshow";
+
+export async function getStaticPaths() {
+  const lessons = await contentfulClient.getEntries({
+  		content_type: "lesson",
+	});
+
+  let lessonsToPublish = [];
+
+  lessons.items.map((lesson) => {
+    lessonsToPublish.push({
+      params: {slideshow: lesson.sys.id},
+      props: lesson
+    });
+  });
+
+  return lessonsToPublish;
+}
+
+const {
+  lesson_sections,
+} = Astro.props.fields;
+---
+
+<div>
+  {await Promise.all(lesson_sections.map(async (section) => {
+    const lessonEntry = await contentfulClient.getEntry(section.fields.interactiveContent.sys.id);
+    
+    for (const slide of lessonEntry.fields.slides) {
+      if (slide.fields.flashCards) {
+        const cards = await contentfulClient.getEntry(slide.fields.flashCards.sys.id);
+        slide.fields.flashCards = cards.fields.flashCards;
+      }
+    }
+
+    if (lessonEntry.sys.contentType.sys.id === "slideshow") {
+      return <Slideshow content={lessonEntry} client:only />
+    }
+  }))}
+</div>
+

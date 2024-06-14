@@ -1,0 +1,23 @@
+---
+	import { contentfulClient } from "../../lib/contentful";
+	import type { Module } from "../../type/content-blocks";
+	
+	import MainLayout from "../../layouts/authenticated.astro"
+	import ModuleCard from "../../components/cards/module"
+
+	const modules = await contentfulClient.getEntries<Module>({
+  		content_type: "module",
+	});
+---
+
+<MainLayout title={`Berklee Open: Units`}>
+	<div class="flex gap-20">
+		<div class="w-full">
+			<div class="grid grid-cols-2 gap-8">
+		  		{modules.items.map((module) => (
+			  		<ModuleCard module={module} />
+		  		))}
+			</div>
+		</div>
+	</div>
+</MainLayout>

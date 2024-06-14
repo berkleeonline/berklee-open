@@ -28,6 +28,19 @@ export interface TakeawaysData {
   };
 }
 
+export interface Module {
+  contentTypeId: "module",
+  fields: {
+    module_title: EntryFieldTypes.Text
+    module_description: EntryFieldTypes.RichText,
+    module_level: EntryFieldTypes.Array,
+    module_units: EntryFieldTypes.Array,
+    module_related: EntryFieldTypes.Array,
+    module_id: EntryFieldTypes.Text,
+    module_image: EntryFieldTypes.AssetLink
+  }
+}
+
 export interface Unit {
   contentTypeId: "unit",
   fields: {

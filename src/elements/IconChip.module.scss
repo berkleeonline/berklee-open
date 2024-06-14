@@ -1,0 +1,18 @@
+.iconChip {
+  &[type="module"] {
+    background: rgb(215,204,255);
+  }
+  &[type="unit"] {
+    background: rgb(253,208,213);
+  }
+  &[type="lesson"] {
+    background: rgb(203,233,244);
+  }
+  span {
+    display: flex;
+    svg {
+      margin-right: .5rem;
+      width: 1.05rem;
+    }
+  }
+}

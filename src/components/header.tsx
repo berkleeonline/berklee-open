@@ -23,14 +23,14 @@ const Header = (props: HeaderProps) => {
   ];
 
   return (
-    <Navbar onMenuOpenChange={setIsMenuOpen}>
+    <Navbar onMenuOpenChange={setIsMenuOpen} maxWidth={`2xl`}>
       <NavbarContent>
         <NavbarMenuToggle
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
           className="sm:hidden"
         />
         <NavbarBrand>
-          <Link color="foreground" href="/units">
+          <Link color="foreground" href="/">
             <Logo />
           </Link>
         </NavbarBrand>
@@ -43,9 +43,14 @@ const Header = (props: HeaderProps) => {
           </Link>
         </NavbarItem>
         <NavbarItem>
-          <Button as={Link} href="#" variant="flat">
-            Log in
-          </Button>
+          <Link color="foreground" href="/modules">
+            Modules
+          </Link>
+        </NavbarItem>
+        <NavbarItem>
+          <Link color="foreground" href="/search">
+            Search
+          </Link>
         </NavbarItem>
       </NavbarContent>
       <NavbarMenu>
