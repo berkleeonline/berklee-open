@@ -15,5 +15,5 @@ export const LearningObjectives: React.FC<LearningObjectivesData> = ({ learning_
         })}
       </ul>
     </div>
-  )
+  )     
 };

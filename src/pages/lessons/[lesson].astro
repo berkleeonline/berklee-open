@@ -85,11 +85,28 @@ console.log(Astro.props);
             ))}
           </div>
         )}
-        <div class="flex gap-4 mb-6">
-          <div class="flex flex-row font-bold"><FontAwesomeIcon className="w-4 mr-1" icon={faSignal4} />{lesson_audience[0]}</div>
-          <div class="flex flex-row font-bold"><FontAwesomeIcon className="w-4 mr-2" icon={faClock} /> {lesson_duration[0]}</div>
-          <div class="flex flex-row font-bold"><FontAwesomeIcon className="w-5 mr-2" icon={faChalkboardUser} /> {lesson_step[0]}</div>
+        
+        <div className="flex gap-4 mb-6">
+          {lesson_audience && lesson_audience[0] && (
+            <div className="flex flex-row font-bold">
+              <FontAwesomeIcon className="w-4 mr-1" icon={faSignal4} />
+              {lesson_audience[0]}
+            </div>
+          )}
+          {lesson_duration && lesson_duration[0] && (
+            <div className="flex flex-row font-bold">
+              <FontAwesomeIcon className="w-4 mr-2" icon={faClock} />
+              {lesson_duration[0]}
+            </div>
+          )}
+          {lesson_step && lesson_step[0] && (
+            <div className="flex flex-row font-bold">
+              <FontAwesomeIcon className="w-5 mr-2" icon={faChalkboardUser} />
+              {lesson_step[0]}
+            </div>
+          )}
         </div>
+        
         <div class={`flex flex-row gap-4 items-center ${styles.lessonActions}`}>
           <Button href={`/slideshows/${id}`} as={Link} color="primary" className="font-bold w-36" aria-label="Start Lesson">
             <FontAwesomeIcon icon={faPresentationScreen} class="text-sm" />
@@ -184,7 +201,7 @@ console.log(Astro.props);
 
       {lesson_prerequisites && lesson_prerequisites.content.length > 0 && (
         <div class="mb-16">
-          <IconHeader headerId="learningPrerequisites" icon={faSquareCheck} label="Prerequisites" />
+          <IconHeader headerId="lessonPrerequisites" icon={faSquareCheck} label="Prerequisites" />
           <ul class="list-disc list-outside ml-10 pl-4">
             {lesson_prerequisites.content.map((prerequisite, index) => (
               prerequisite.nodeType === 'unordered-list' && prerequisite.content.map((item, idx) => (
@@ -209,8 +226,14 @@ console.log(Astro.props);
           <ul class="flex flex-col sticky top-20">
             <li><a class="p-2 px-4 block font-bold text-sm hover:underline" href="#overview">Overview</a></li>
             <li><a class="p-2 px-4 block font-bold text-sm hover:underline" href="#learningOutcomes">Learning Outcomes</a></li>
-            <li><a class="p-2 px-4 block font-bold text-sm hover:underline" href="#evidenceOfLearning">Evidence of Learning</a></li>
-            <li><a class="p-2 px-4 block font-bold text-sm hover:underline" href="#suggestedRepertoire">Suggested Repertoire</a></li>
+            <li><a class="p-2 px-4 block font-bold text-sm hover:underline" href="#lessonOutline">Lesson Outline</a></li>
+            <li><a class="p-2 px-4 block font-bold text-sm hover:underline" href="#lessonEssentialQuestions">Essential Questions</a></li>
+            <li><a class="p-2 px-4 block font-bold text-sm hover:underline" href="#lessonRepertoire">Repertoire</a></li>
+            <li><a class="p-2 px-4 block font-bold text-sm hover:underline" href="#lessonPreparation">Preparation</a></li>
+            <li><a class="p-2 px-4 block font-bold text-sm hover:underline" href="#lessonStickingPoints">Sticking Points</a></li>
+            <li><a class="p-2 px-4 block font-bold text-sm hover:underline" href="#lessonEvidence">Lesson Evidence</a></li>
+            <li><a class="p-2 px-4 block font-bold text-sm hover:underline" href="#lessonPrerequisites">Prerequisites</a></li>
+            <li><a class="p-2 px-4 block font-bold text-sm hover:underline" href="#presentationOptions">Presentation Options</a></li>
           </ul>
         </div>
       </div>
