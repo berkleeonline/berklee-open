@@ -32,12 +32,27 @@ const Slideshow = ({ content }: SlideshowProps) => {
                 `);
             }
         }
-    }
+    };
 
     useEffect(() => {
-        const notesExist:boolean = slides[currentSlide].fields.slide_instructor_notes ? true : false;
-        setHasNotes(notesExist) 
-    }, [currentSlide]);
+        const notesExist: boolean = slides[currentSlide].fields.slide_instructor_notes ? true : false;
+        setHasNotes(notesExist);
+      }, [currentSlide]);
+    
+      useEffect(() => {
+        const handleKeyDown = (event: KeyboardEvent) => {
+          if (event.key === 'ArrowRight') {
+            goToNextSlide();
+          } else if (event.key === 'ArrowLeft') {
+            goToPreviousSlide();
+          }
+        };
+    
+        window.addEventListener('keydown', handleKeyDown);
+        return () => {
+          window.removeEventListener('keydown', handleKeyDown);
+        };
+      }, [currentSlide]);
 
     return (
         <div className={`h-screen w-screen bg-red-500 flex flex-col`}>
