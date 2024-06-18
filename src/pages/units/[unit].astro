@@ -9,25 +9,16 @@ import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styles from './unit.module.scss';
 import {faScroll,
-        faBookBlank, 
-        faPresentationScreen, 
-        faCompass, 
-        faStar, 
-        faHeart, 
-        faTrafficCone, 
-        faMusicMagnifyingGlass, 
-        faMusic, 
-        faFileArrowDown, 
-        faClock, 
-        faSeedling, 
-        faShare, 
-        faSignal4, 
-        faChalkboard, 
-        faChalkboardUser, 
+        faBookBlank,
+        faPresentationScreen,
+        faStar,
+        faHeart,
+        faSeedling,
+        faShare,
+        faSignal4,
         faSquareCheck } 
         from '@fortawesome/pro-light-svg-icons';
 
-import ContentBlock from "../../components/content-block"
 import SyllabusLesson from "../../components/syllabus-lesson"
 
 export async function getStaticPaths() {
@@ -54,7 +45,7 @@ const {
   unit_concept,
   Unit_essential_questions,
   unit_prerequisite,
-  unit_lesson,
+  unit_lessons,
 } = Astro.props.fields;
 
 
@@ -72,8 +63,8 @@ const {
       <div class="flex gap-6 mb-6">
         <div class="flex flex-row font-bold"><FontAwesomeIcon className="w-4 mr-1" icon={faSignal4} />Beginner</div>
         <div class="flex flex-row font-bold"><FontAwesomeIcon className="w-5 mr-2" icon={faScroll} />
-          {unit_lesson && unit_lesson.length !== undefined 
-            ? `${unit_lesson.length} ${unit_lesson.length === 1 ? "Lesson" : "Lessons"}` 
+          {unit_lessons && unit_lessons.length !== undefined 
+            ? `${unit_lessons.length} ${unit_lessons.length === 1 ? "Lesson" : "Lessons"}` 
             : "No Lessons"}
         </div>
       </div>
@@ -149,8 +140,8 @@ const {
       <div class="mt-16 mb-16">
         <h2 id="syllabus" class="text-xl font-bold mb-2">
           Unit Syllabus
-          ({unit_lesson && unit_lesson.length !== undefined 
-            ? `${unit_lesson.length} ${unit_lesson.length === 1 ? "Lesson" : "Lessons"}` 
+          ({unit_lessons && unit_lessons.length !== undefined 
+            ? `${unit_lessons.length} ${unit_lessons.length === 1 ? "Lesson" : "Lessons"}` 
             : "No Lessons"})
         </h2>
         <p class="text-md">
@@ -159,9 +150,9 @@ const {
         </p>
       </div>
 
-      {unit_lesson && unit_lesson.length > 0 && (
+      {unit_lessons && unit_lessons.length > 0 && (
         <ul>
-          {unit_lesson.map((lesson, index) => (
+          {unit_lessons.map((lesson, index) => (
             <SyllabusLesson key={index} lesson={lesson} />
           ))}
         </ul>

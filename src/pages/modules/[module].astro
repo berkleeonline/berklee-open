@@ -8,39 +8,21 @@ import type { Module } from "../../type/content-blocks";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IconChip } from "../../elements/IconChip";
 import { IconHeader } from "../../elements/IconHeader";
-import {faScroll,
-        faBooks,
-        faPresentationScreen, 
-        faCompass, 
-        faStar, 
-        faHeart, 
-        faTrafficCone, 
-        faMusicMagnifyingGlass, 
-        faMusic, 
-        faFileArrowDown, 
-        faClock, 
-        faSeedling, 
-        faShare, 
-        faSignal4, 
-        faChalkboard, 
-        faChalkboardUser, 
-        faSquareCheck } 
-          from '@fortawesome/pro-light-svg-icons';
-
-import MainLayout from "../../layouts/authenticated.astro"
-import UnitCard from "../../components/cards/unit"
+import { faBooks, faPresentationScreen, faStar, faHeart, faClock, faSeedling, faShare, faSignal4 } from '@fortawesome/pro-light-svg-icons';
+import MainLayout from "../../layouts/authenticated.astro";
+import SyllabusUnit from "../../components/syllabus-unit";
 import styles from './module.module.scss';
 
 export async function getStaticPaths() {
   const modules = await contentfulClient.getEntries<Module>({
-  		content_type: "module",
-	});
+    content_type: "module",
+  });
 
   let modulesToPublish = [];
 
   modules.items.forEach((module) => {
     modulesToPublish.push({
-      params: {module: module.sys.id},
+      params: { module: module.sys.id },
       props: module
     });
   });
@@ -70,12 +52,16 @@ let repertoires = [];
 
 if (module_units.length > 0) {
   await Promise.all(module_units.map(async (unit) => {
-    if (unit.fields.unit_lesson && Array.isArray(unit.fields.unit_lesson)) {
-      await Promise.all(unit.fields.unit_lesson.map(async (lessonLink) => {
+    if (unit.fields.unit_lessons && Array.isArray(unit.fields.unit_lessons)) {
+      const unitLessons = await Promise.all(unit.fields.unit_lessons.map(async (lessonLink) => {
         const lessonEntry = await contentfulClient.getEntry(lessonLink.sys.id);
-
         lessons.push(lessonEntry);
+        return lessonEntry;
+      }));
+      unit.fields.unit_lessons = unitLessons; // Replace links with full lesson data
 
+      // Collect additional data
+      unitLessons.forEach((lessonEntry) => {
         if (lessonEntry.fields.lesson_duration) {
           lessonTime.push(...lessonEntry.fields.lesson_duration);
         }
@@ -109,7 +95,15 @@ if (module_units.length > 0) {
             });
           });
         }
+      });
+    }
+
+    if (unit.fields.unit_concept && Array.isArray(unit.fields.unit_concept)) {
+      const unitConcepts = await Promise.all(unit.fields.unit_concept.map(async (conceptLink) => {
+        const conceptEntry = await contentfulClient.getEntry(conceptLink.sys.id);
+        return conceptEntry;
       }));
+      unit.fields.unit_concept = unitConcepts; // Replace links with full concept data
     }
   }));
 }
@@ -117,9 +111,10 @@ if (module_units.length > 0) {
 if (lessonTime.length > 0) {
   lessonTime = calculateDuration(lessonTime);
 }
+
 ---
 
-<MainLayout title={module_title} cssClass=" via-white to-slate-white">
+<MainLayout title={module_title} cssClass="via-white to-slate-white">
   <div class="grid grid-cols-12 gap-20">
     <div class="col-span-8">
       <div class="mb-4">
@@ -172,34 +167,41 @@ if (lessonTime.length > 0) {
         </div>
       )}
 
-      {module_units && module_units.length > 0 && (
-        <div class="mb-12">
-          <IconHeader headerId="unitsCovered" icon={} label="Units Covered" />
-          <p class="mt-2 mb-8">
-            Below is a variety of units covered within this module, varying from introductory activities that 
-            present a new concept for the first time, practice activities that contain ear training, recognizing, 
-            and identifying a concept, and reinforcing activities that include creating with, producing with or 
-            performing a concept.
-          </p>
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {module_units.map((unit, index) => (
-              <UnitCard key={index} unit={unit} />
-            ))}
-          </div>
+      
+      <div class="mb-12">
+        <IconHeader headerId="moduleSyllabus" label="Module Syllabus" />
+        <p class="mt-2 mb-8">
+          Below is a map of lessons within units, in the order of suggested presentation. You will
+          find a variety of introductory lessons that present a new concept for the first time, practice activities
+          that contain ear training, recognizing, and identifying a concept, and reinforcing activities that include
+          creating with, producing with or performing a concept.
+        </p>
+        <div class="grid grid-cols-1 gap-6">
+          {module_units && module_units.length > 0 ? (
+            <ul>
+              {module_units.map((unit, index) => (
+                <SyllabusUnit
+                  key={index}
+                  unit={{
+                    sys: unit.sys,
+                    fields: {
+                      unit_title: unit.fields.unit_title,
+                      unit_description: unit.fields.unit_description,
+                      unit_concept: unit.fields.unit_concept,
+                      unit_lessons: unit.fields.unit_lessons,
+                    }
+                  }}
+                  index={index}
+                  client:load
+                />
+              ))}
+            </ul>
+          ) : (
+            <p>No units available</p>
+          )}
         </div>
-      )}
+      </div>
 
-
-      <!-- <div class="mb-12">
-        <h2 id="lessons" class="text-xl font-bold">Lessons</h2>
-        <ul>
-          { lessons.map((lesson) => (
-            <li class="mt-4">
-              <a href={`/lessons/${lesson.sys.id}`}>{ lesson.fields.lesson_title }</a>
-            </li>
-          ))}
-        </ul>
-      </div> -->
     </div>
     <div class="col-span-4">
       <div class="self-start sticky top-24 col-span-4">

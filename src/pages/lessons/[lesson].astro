@@ -64,7 +64,7 @@ const {
 
 const id = Astro.props.sys.id;
 
-console.log(Astro.props);
+
 
 
 ---
@@ -86,21 +86,21 @@ console.log(Astro.props);
           </div>
         )}
         
-        <div className="flex gap-4 mb-6">
+        <div class="flex flex-row gap-4 mb-6">
           {lesson_audience && lesson_audience[0] && (
-            <div className="flex flex-row font-bold">
+            <div class="flex flex-row font-bold">
               <FontAwesomeIcon className="w-4 mr-1" icon={faSignal4} />
               {lesson_audience[0]}
             </div>
           )}
           {lesson_duration && lesson_duration[0] && (
-            <div className="flex flex-row font-bold">
+            <div class="flex flex-row font-bold">
               <FontAwesomeIcon className="w-4 mr-2" icon={faClock} />
               {lesson_duration[0]}
             </div>
           )}
           {lesson_step && lesson_step[0] && (
-            <div className="flex flex-row font-bold">
+            <div class="flex flex-row font-bold">
               <FontAwesomeIcon className="w-5 mr-2" icon={faChalkboardUser} />
               {lesson_step[0]}
             </div>
