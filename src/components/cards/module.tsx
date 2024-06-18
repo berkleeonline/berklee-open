@@ -38,7 +38,7 @@ const ModuleCard: React.FC<ModuleCardProps> = ({ module, index }) => {
             width="100%"
             alt={module_title}
             className="w-full object-cover h-[140px] opacity-100"
-            src="https://picsum.photos/v2/list"
+            src="https://placehold.co/450x140"
           />
         </CardBody>
         <CardFooter className="text-small flex-col">
