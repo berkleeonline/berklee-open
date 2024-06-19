@@ -19,7 +19,7 @@ import {faScroll,
         faSquareCheck } 
         from '@fortawesome/pro-light-svg-icons';
 
-import SyllabusLesson from "../../components/syllabus-lesson"
+import SyllabusLesson from "../../components/syllabus/syllabus-lesson"
 
 export async function getStaticPaths() {
   const units = await contentfulClient.getEntries<Unit>({
@@ -70,17 +70,17 @@ const {
       </div>
 
       <div class={`flex flex-row gap-4 mb-16 items-center ${styles.unitActions}`}>
-        <Button color="primary" className="font-bold w-32" aria-label="Start Lesson">
+        <Button client:load color="primary" className="font-bold w-32" aria-label="Start Lesson">
           <FontAwesomeIcon icon={faPresentationScreen} class="text-sm" />
           Start Unit
         </Button>
-        <Tooltip placement="bottom" content="Save to Library" color="default">
-          <Button isIconOnly className="p-2" radius="full" variant="bordered" color="default" aria-label="Save to Library">
+        <Tooltip client:load placement="bottom" content="Save to Library" color="default">
+          <Button client:load isIconOnly className="p-2" radius="full" variant="bordered" color="default" aria-label="Save to Library">
             <FontAwesomeIcon icon={faHeart} />
           </Button>
         </Tooltip>
-        <Tooltip placement="bottom" content="Save to Library" color="default">
-          <Button isIconOnly className="p-2" radius="full" variant="bordered" color="default" aria-label="Share">
+        <Tooltip client:load placement="bottom" content="Save to Library" color="default">
+          <Button client:load isIconOnly className="p-2" radius="full" variant="bordered" color="default" aria-label="Share">
             <FontAwesomeIcon icon={faShare} />
           </Button>
         </Tooltip>

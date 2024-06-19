@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Chip, Button } from "@nextui-org/react";
-import { IconChip } from "../elements/IconChip";
+import { IconChip } from "../../elements/IconChip";
 import SyllabusLesson from './syllabus-lesson';
 import { faBookBlank, faChevronDown, faChevronUp } from '@fortawesome/pro-light-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

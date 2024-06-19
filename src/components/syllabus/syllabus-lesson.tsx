@@ -1,6 +1,6 @@
 import React from 'react';
 import { Chip } from "@nextui-org/react";
-import { IconChip } from "../elements/IconChip";
+import { IconChip } from "../../elements/IconChip";
 import { faScroll } from '@fortawesome/pro-light-svg-icons';
 
 interface SyllabusLessonProps {

@@ -10,7 +10,7 @@ import { IconChip } from "../../elements/IconChip";
 import { IconHeader } from "../../elements/IconHeader";
 import { faBooks, faPresentationScreen, faStar, faHeart, faClock, faSeedling, faShare, faSignal4 } from '@fortawesome/pro-light-svg-icons';
 import MainLayout from "../../layouts/authenticated.astro";
-import SyllabusUnit from "../../components/syllabus-unit";
+import SyllabusUnitWrapper from '../../components/syllabus/syllabus-unit-wrapper';
 import styles from './module.module.scss';
 
 export async function getStaticPaths() {
@@ -112,33 +112,44 @@ if (lessonTime.length > 0) {
   lessonTime = calculateDuration(lessonTime);
 }
 
+// Simplify the units data to avoid cyclic references
+const simplifiedUnits = module_units.map(unit => ({
+  sys: unit.sys,
+  fields: {
+    unit_title: unit.fields.unit_title,
+    unit_description: unit.fields.unit_description,
+    unit_concept: unit.fields.unit_concept,
+    unit_lessons: unit.fields.unit_lessons,
+  }
+}));
+
 ---
 
 <MainLayout title={module_title} cssClass="via-white to-slate-white">
   <div class="grid grid-cols-12 gap-20">
-    <div class="col-span-8">
+    <div class="col-span-7">
       <div class="mb-4">
         <IconChip icon={faBooks} label="Module" contentType="module" href="/modules" />
       </div>
       <h1 class="text-4xl font-bold mb-6">{module_title}</h1>
       <div class="mb-5" set:html={documentToHtmlString(module_description)}></div>
       <div class="flex gap-4 mb-6">
-        <div class="flex flex-row font-bold"><FontAwesomeIcon className="w-4 mr-1" icon={faSignal4} />{ level }</div>
-        <div class="flex flex-row font-bold"><FontAwesomeIcon className="w-4 mr-2" icon={faClock} /> { lessonTime }</div>
+        <div class="flex flex-row content-center font-bold"><FontAwesomeIcon className="w-5 mr-1" icon={faSignal4} />{ level }</div>
+        <div class="flex flex-row content-center font-bold"><FontAwesomeIcon className="w-5 mr-2" icon={faClock} /> { lessonTime }</div>
       </div>
 
-      <div class={`flex flex-row gap-4 mb-16 items-center ${styles.lessonActions}`}>
-        <Button color="primary" className="font-bold w-36" aria-label="Start Module">
+      <div class={`flex flex-row gap-4 mb-16 items-center ${styles.moduleActions}`}>
+        <Button client:load color="primary" className="font-bold w-36" aria-label="Start Module">
           <FontAwesomeIcon icon={faPresentationScreen} class="text-sm" />
           Start Module
         </Button>
-        <Tooltip placement="bottom" content="Save to Library" color="default">
-          <Button isIconOnly className="p-2" radius="full" variant="bordered" color="default" aria-label="Save to Library">
+        <Tooltip client:load placement="bottom" content="Save to Library" color="default">
+          <Button client:load isIconOnly className="p-2" radius="full" variant="bordered" color="default" aria-label="Save to Library">
             <FontAwesomeIcon icon={faHeart} />
           </Button>
         </Tooltip>
-        <Tooltip placement="bottom" content="Share Module" color="default">
-          <Button isIconOnly className="p-2" radius="full" variant="bordered" color="default" aria-label="Share Module">
+        <Tooltip client:load placement="bottom" content="Share Module" color="default">
+          <Button client:load isIconOnly className="p-2" radius="full" variant="bordered" color="default" aria-label="Share Module">
             <FontAwesomeIcon icon={faShare} />
           </Button>
         </Tooltip>
@@ -177,33 +188,12 @@ if (lessonTime.length > 0) {
           creating with, producing with or performing a concept.
         </p>
         <div class="grid grid-cols-1 gap-6">
-          {module_units && module_units.length > 0 ? (
-            <ul>
-              {module_units.map((unit, index) => (
-                <SyllabusUnit
-                  key={index}
-                  unit={{
-                    sys: unit.sys,
-                    fields: {
-                      unit_title: unit.fields.unit_title,
-                      unit_description: unit.fields.unit_description,
-                      unit_concept: unit.fields.unit_concept,
-                      unit_lessons: unit.fields.unit_lessons,
-                    }
-                  }}
-                  index={index}
-                  client:load
-                />
-              ))}
-            </ul>
-          ) : (
-            <p>No units available</p>
-          )}
+          <SyllabusUnitWrapper module_units={simplifiedUnits} client:load />
         </div>
       </div>
 
     </div>
-    <div class="col-span-4">
+    <div class="col-span-5">
       <div class="self-start sticky top-24 col-span-4">
         <div class="border rounded-lg bg-white">
           <ul class="flex flex-col sticky top-40">
