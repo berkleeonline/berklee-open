@@ -28,7 +28,7 @@ const LessonCard: React.FC<LessonCardProps> = ({ lesson, index }) => {
   console.log(lesson.fields);
 	
   return (
-    <a href={`/lesson/${lesson.sys.id}`} className="no-underline flex flex-col">
+    <a href={`/lessons/${lesson.sys.id}`} className="no-underline flex flex-col">
       <Card shadow="0" key={index} isPressable>
         <CardBody className="overflow-visible p-0">
           <Image

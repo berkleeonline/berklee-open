@@ -22,7 +22,13 @@ import {faScroll,
         faSignal4, 
         faChalkboard, 
         faChalkboardUser, 
-        faSquareCheck } 
+        faSquareCheck,
+        faFile,
+        faPianoKeyboard,
+        faPhotoFilmMusic,
+        faQuestionCircle,
+        faDrum, 
+        faTriangleInstrument} 
         from '@fortawesome/pro-light-svg-icons';
 import SwiperCarousel from '../../components/carousel/carousel';
 import styles from './lesson.module.scss';
@@ -51,6 +57,7 @@ const {
   lesson_audience,
   lesson_step,
   lesson_outline,
+  lesson_materials,
   lesson_essential_questions,
   lesson_repertoire,
   lesson_prep,
@@ -63,9 +70,17 @@ const {
 } = Astro.props.fields;
 
 const id = Astro.props.sys.id;
+console.log(Astro.props.fields);
 
-
-
+// Materials get an icon assigned manually. Add as needed here.
+const materialIcons = {
+  "Handouts": faFile,
+  "Keyboard": faPianoKeyboard,
+  "Audio / Video": faPhotoFilmMusic,
+  "Unpitched Instrument": faDrum,
+  "Metronome" : faTriangleInstrument
+  // Add more mappings as needed
+};
 
 ---
 
@@ -178,12 +193,30 @@ const id = Astro.props.sys.id;
         </div>
       )}
 
-      {lesson_prep && lesson_prep.content.length > 0 && (
+      {(lesson_prep || lesson_materials.length > 0) && (
         <div class="mb-16">
           <IconHeader headerId="lessonPreparation" icon={faChalkboard} label="Preparation" />
-          <div class={`mb-7 ${styles.richContentInnerStyles}`} set:html={documentToHtmlString(lesson_prep)}></div>
+
+          {lesson_materials.length > 0 && (
+            <div class={`mb-7 border-b pb-7 ${styles.richContentInnerStyles}`}>
+              <h3 class="font-bold text-lg mb-4">Required Materials</h3>
+              <div class="grid grid-cols-2 gap-4">
+                {lesson_materials.map((material, index) => (
+                  <div key={index} class="mb-1 flex flex-row items-center">
+                    <FontAwesomeIcon icon={materialIcons[material] || faQuestionCircle} className="mr-3 w-4 h-4 text-center" />
+                    {material}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {lesson_prep && lesson_prep.content.length > 0 && (
+            <div class={`mb-7 ${styles.richContentInnerStyles}`} set:html={documentToHtmlString(lesson_prep)}></div>
+          )}
         </div>
       )}
+
 
       {lesson_prep && lesson_prep.content.length > 0 && (
         <div class="mb-16">

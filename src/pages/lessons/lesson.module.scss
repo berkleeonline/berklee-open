@@ -2,6 +2,10 @@
 
 .richContentInnerStyles {
   margin-left: 2.4rem;
+
+  p:not(li p) {
+    margin: 0 0 1.5rem 0;
+  }
   
   h3 {
     font-size: 1.1rem;
