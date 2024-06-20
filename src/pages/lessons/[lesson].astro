@@ -83,7 +83,7 @@ const materialIcons = {
 };
 
 ---
-
+<a id="overview"></a>
 <MainLayout title={lesson_title} cssClass="bg-gradient-to-b from-[rgb(214,243,255)] via-white to-slate-white">
   <div class="grid grid-cols-12 gap-20">
     <div class="col-span-7">
@@ -127,17 +127,17 @@ const materialIcons = {
             <FontAwesomeIcon icon={faPresentationScreen} class="text-sm" />
             Start Lesson
           </Button>
-          <Button color="default" className="font-bold w-41" variant="bordered" aria-label="Download as PDF">
+          <Button client:load color="default" className="font-bold w-41" variant="bordered" aria-label="Download as PDF">
             <FontAwesomeIcon icon={faFileArrowDown} class="text-sm" />
             Download as PDF
           </Button>
-          <Tooltip placement="bottom" content="Save to Library" color="default">
-            <Button isIconOnly className="p-2" radius="full" variant="bordered" color="default" aria-label="Save to Library">
+          <Tooltip client:load  placement="bottom" content="Save to Library" color="default">
+            <Button client:load isIconOnly className="p-2" radius="full" variant="bordered" color="default" aria-label="Save to Library">
               <FontAwesomeIcon icon={faHeart} />
             </Button>
           </Tooltip>
-          <Tooltip placement="bottom" content="Save to Library" color="default">
-            <Button isIconOnly className="p-2" radius="full" variant="bordered" color="default" aria-label="Share">
+          <Tooltip client:load placement="bottom" content="Save to Library" color="default">
+            <Button client:load isIconOnly className="p-2" radius="full" variant="bordered" color="default" aria-label="Share">
               <FontAwesomeIcon icon={faShare} />
             </Button>
           </Tooltip>
@@ -245,11 +245,6 @@ const materialIcons = {
         </div>
       )}
 
-      <div class="mb-8 p-8 bg-default-100 rounded-lg border">
-        <h2 id="presentationOptions" class="text-xl font-bold mb-2">Presentation Options</h2>
-        <div>Coming soon.</div>
-      </div>
-
 
     </div>
     <div class="col-span-5 relative">
@@ -265,9 +260,7 @@ const materialIcons = {
             <li><a class="p-2 px-4 block font-bold text-sm hover:underline" href="#lessonPreparation">Preparation</a></li>
             <li><a class="p-2 px-4 block font-bold text-sm hover:underline" href="#lessonStickingPoints">Sticking Points</a></li>
             <li><a class="p-2 px-4 block font-bold text-sm hover:underline" href="#lessonEvidence">Lesson Evidence</a></li>
-            <li><a class="p-2 px-4 block font-bold text-sm hover:underline" href="#lessonPrerequisites">Prerequisites</a></li>
-            <li><a class="p-2 px-4 block font-bold text-sm hover:underline" href="#presentationOptions">Presentation Options</a></li>
-          </ul>
+            <li><a class="p-2 px-4 block font-bold text-sm hover:underline" href="#lessonPrerequisites">Prerequisites</a></li>          </ul>
         </div>
       </div>
     </div>

@@ -13,12 +13,12 @@ const { title } = Astro.props;
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <link href="/favicon.svg" rel="shortcut icon" type="image/x-icon">
+    <link href="/pulbic/favicon.svg" rel="shortcut icon" type="image/x-icon">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="noindex, nofollow" />
   </head>
   <body>
-    <Header />
+    <Header text={title} />
     <main class="px-6 mx-auto pt-16 max-w-[1536px]" transition:animate="slide">
       <slot />
     </main>
