@@ -219,8 +219,8 @@ const id = Astro.props.sys.id;
 
 
     </div>
-    <div class="col-span-5">
-      <SwiperCarousel client:load />
+    <div class="col-span-5 relative">
+      <SwiperCarousel client:load className="absolute top-0 right-0 zIndex3"/>
       <div class="self-start sticky top-24 col-span-4">
         <div class="border rounded-lg bg-white">
           <ul class="flex flex-col sticky top-20">
