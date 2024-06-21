@@ -25,7 +25,7 @@ const UnitCard: React.FC<UnitCardProps> = ({ unit }) => {
     <a href={`/units/${unit.sys.id}`} className="no-underline flex flex-col">
       <Card shadow="0" isPressable>
         <CardBody className="overflow-visible p-0 relative">
-          <div class="absolute bottom-[-15px] left-0 z-20"><IconChip icon={faBookBlank} label="Unit" contentType="unit" href="" /></div>
+          <div className="absolute bottom-[-15px] left-0 z-20"><IconChip icon={faBookBlank} label="Unit" contentType="unit" href="" /></div>
           <Image
             radius="lg"
             width="100%"
