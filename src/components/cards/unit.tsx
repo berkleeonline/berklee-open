@@ -23,7 +23,7 @@ const UnitCard: React.FC<UnitCardProps> = ({ unit }) => {
 
   return (
     <a href={`/units/${unit.sys.id}`} className="no-underline flex flex-col">
-      <Card shadow="0" isPressable>
+      <Card className="h-full w-full" shadow="0" isPressable>
         <CardBody className="overflow-visible p-0 relative">
           <div className="absolute bottom-[-15px] left-0 z-20"><IconChip icon={faBookBlank} label="Unit" contentType="unit" href="" /></div>
           <Image
@@ -31,12 +31,12 @@ const UnitCard: React.FC<UnitCardProps> = ({ unit }) => {
             width="100%"
             alt={unit_title}
             className="w-full object-cover h-[140px] opacity-100"
-            src="https://picsum.photos/200/300"
+            src="https://placehold.co/290x150"
           />
         </CardBody>
-        <CardFooter className="text-small flex-col">
+        <CardFooter className="h-full text-small flex-col">
           <div className="flex w-full mb-2 justify-between">
-            <h3 className="font-bold text-lg text-left mt-2">{unit_title}</h3>
+            <h3 className="font-bold text-lg text-left mt-4">{unit_title}</h3>
             <p className="text-default-500 w-4">
               <FontAwesomeIcon icon={faHeart} />
             </p>

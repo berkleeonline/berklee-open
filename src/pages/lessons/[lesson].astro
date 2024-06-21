@@ -5,6 +5,8 @@ import { Button, Chip, Tooltip, Link } from "@nextui-org/react";
 import type { Lesson } from "../../type/content-blocks";
 import { IconChip } from "../../elements/IconChip";
 import { IconHeader } from "../../elements/IconHeader";
+import { AddToLibraryButton } from "../../elements/AddToLibraryButton";
+import { ShareButton } from "../../elements/ShareButton";
 import MainLayout from "../../layouts/main.astro";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faScroll, 
@@ -70,7 +72,6 @@ const {
 } = Astro.props.fields;
 
 const id = Astro.props.sys.id;
-console.log(Astro.props.fields);
 
 // Materials get an icon assigned manually. Add as needed here.
 const materialIcons = {
@@ -131,16 +132,8 @@ const materialIcons = {
             <FontAwesomeIcon icon={faFileArrowDown} class="text-sm" />
             Download as PDF
           </Button>
-          <Tooltip client:load  placement="bottom" content="Save to Library" color="default">
-            <Button client:load isIconOnly className="p-2" radius="full" variant="bordered" color="default" aria-label="Save to Library">
-              <FontAwesomeIcon icon={faHeart} />
-            </Button>
-          </Tooltip>
-          <Tooltip client:load placement="bottom" content="Save to Library" color="default">
-            <Button client:load isIconOnly className="p-2" radius="full" variant="bordered" color="default" aria-label="Share">
-              <FontAwesomeIcon icon={faShare} />
-            </Button>
-          </Tooltip>
+          <AddToLibraryButton type="lesson" hrefId={`${id}`} client:load />
+          <ShareButton type="lesson" hrefId={`${id}`} client:load />
         </div>
       </div>
 

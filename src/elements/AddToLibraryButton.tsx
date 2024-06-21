@@ -6,14 +6,14 @@ import { faHeart, faShare } from '@fortawesome/pro-light-svg-icons';
 interface AddToLibraryButtonProps {
   headerId: string;
   type: string;
-  href: string;
+  hrefId: string;
   [key: string]: any; // To accept any additional props
 }
 
-export const AddToLibraryButton: FC<AddToLibraryButtonProps> = ({ headerId, type, href, ...props }) => {
+export const AddToLibraryButton: FC<AddToLibraryButtonProps> = ({ headerId, type, hrefId, ...props }) => {
   return (
     <>
-      <Tooltip client:load  placement="bottom" content="Save to Library" color="default">
+      <Tooltip client:load  placement="bottom" content={`${type} ${hrefId}`} color="default">
         <Button client:load isIconOnly className="p-2" radius="full" variant="bordered" color="default" aria-label="Save to Library">
           <FontAwesomeIcon icon={faHeart} />
         </Button>

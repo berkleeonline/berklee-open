@@ -1,13 +1,60 @@
 ---
-	import MainLayout from '../layouts/main.astro';
+import React, { useEffect, useState } from 'react';
+import { contentfulClient } from "../lib/contentful";
+import type { Unit } from "../type/content-blocks";
+import { Button, Tooltip } from "@nextui-org/react";
+import UnitCard from "../components/cards/unit";
+import LessonCard from "../components/cards/lesson";
+import MainLayout from '../layouts/main.astro';
 
-	const units = [];
+
+const lessons = await contentfulClient.getEntries<Lesson>({
+  content_type: "lesson",
+  limit: 4,
+
+});
+
+const units = await contentfulClient.getEntries<Unit>({
+  content_type: "unit",
+  limit: 4,
+});
+
 ---
 
 <MainLayout title={`Berklee Open`}>
-	<div class="flex gap-20">
-		<div class="w-full">
-			<h1 class="text-xl text-bold text-center">Berklee Open Home Page</h1>
-		</div>
-	</div>
+  <div class="mb-32">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 h-500">
+      <!-- Left side -->
+      <div class="flex flex-col justify-center">
+        <h1 class="text-6xl font-bold mb-4">Music Education Resources for Your Classroom</h1>
+        <p class="text-large mb-6">Berklee Open supports educators and students in the classroom through access to engaging and relevant music lessons.</p>
+        <div class="flex space-x-4">
+          <Button color="primary" variant="solid" className="font-bold mr-4" client:load>Sign Up for Early Access</Button>
+          <Button color="primary" variant="bordered" className="font-bold" client:load>Learn More</Button>
+        </div>
+      </div>
+      <!-- Right side -->
+      <div class="relative -mr-16" style="height:850px;">
+        <img src="//assets.online.berklee.edu/berklee-open-placeholder/bo-home-hero-placeholder.jpg" alt="Berklee Open Home Page Hero" class="absolute inset-0 w-full h-full object-cover" />
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <h2 class="text-4xl font-bold mb-8">Resources</h2>
+    <h3 class="text-2xl font-bold mb-8">Lessons</h3>
+    <div class="grid grid-cols-4 gap-8">
+      {lessons.items.map((lesson, index) => (
+        <LessonCard key={index} lesson={lesson} />
+      ))}
+    </div>
+
+    <h3 class="mt-16 text-2xl font-bold mb-8">Units</h3>
+    <div class="grid grid-cols-4 gap-8 mb-64">
+      {units.items.map((unit, index) => (
+        <UnitCard unit={unit} index={index} />
+      ))}
+    </div>
+  </div>
+
 </MainLayout>

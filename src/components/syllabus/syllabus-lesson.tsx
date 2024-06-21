@@ -39,7 +39,6 @@ const SyllabusLesson: React.FC<SyllabusLessonProps> = ({ lesson, index }) => {
           <div className="flex flex-col gap-1">
             <a href={`/lessons/${lesson.sys.id}`} className="no-underline hover:text-blue-800">
               <div className="text-md font-bold">{lesson_title}</div>
-              <div className="text-sm text-default-50">{lesson_short_description}</div>
               <div className="text-sm text-default-500">{lesson_audience} • {lesson_duration}</div>
             </a>
             <div className="mt-2">
