@@ -24,7 +24,6 @@ const SyllabusUnit: React.FC<SyllabusUnitProps> = ({ unit, index }) => {
   const [collapsed, setCollapsed] = useState(true);
 
   const handleToggle = () => {
-    console.log("Toggle expand called"); // Debugging log
     setCollapsed(!collapsed);
   };
 

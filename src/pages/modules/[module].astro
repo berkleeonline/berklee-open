@@ -52,12 +52,13 @@ let repertoires = [];
 
 if (module_units.length > 0) {
   await Promise.all(module_units.map(async (unit) => {
-    if (unit.fields.unit_lessons && Array.isArray(unit.fields.unit_lessons)) {
+    if (unit.fields && unit.fields.unit_lessons && Array.isArray(unit.fields.unit_lessons)) {
       const unitLessons = await Promise.all(unit.fields.unit_lessons.map(async (lessonLink) => {
         const lessonEntry = await contentfulClient.getEntry(lessonLink.sys.id);
         lessons.push(lessonEntry);
         return lessonEntry;
       }));
+
       unit.fields.unit_lessons = unitLessons; // Replace links with full lesson data
 
       // Collect additional data
@@ -98,7 +99,7 @@ if (module_units.length > 0) {
       });
     }
 
-    if (unit.fields.unit_concept && Array.isArray(unit.fields.unit_concept)) {
+    if (unit.fields && unit.fields.unit_concept && Array.isArray(unit.fields.unit_concept)) {
       const unitConcepts = await Promise.all(unit.fields.unit_concept.map(async (conceptLink) => {
         const conceptEntry = await contentfulClient.getEntry(conceptLink.sys.id);
         return conceptEntry;
@@ -108,7 +109,7 @@ if (module_units.length > 0) {
   }));
 }
 
-if (lessonTime.length > 0) {
+if (lessonTime && lessonTime.length > 0) {
   lessonTime = calculateDuration(lessonTime);
 }
 
@@ -116,10 +117,10 @@ if (lessonTime.length > 0) {
 const simplifiedUnits = module_units.map(unit => ({
   sys: unit.sys,
   fields: {
-    unit_title: unit.fields.unit_title,
-    unit_description: unit.fields.unit_description,
-    unit_concept: unit.fields.unit_concept,
-    unit_lessons: unit.fields.unit_lessons,
+    unit_title: unit.fields?.unit_title,
+    unit_description: unit.fields?.unit_description,
+    unit_concept: unit.fields?.unit_concept,
+    unit_lessons: unit.fields?.unit_lessons,
   }
 }));
 
