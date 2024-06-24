@@ -131,9 +131,11 @@ const {
       {unit_concept && unit_concept.length > 0 && (
         <div class="mb-16">
           <IconHeader headerId="conceptsCovered" icon={} label="Concepts Covered" />
-          {unit_concept.map((concept, index) => (
-            <Chip key={index} variant="flat" className="mb-3 mr-3">{concept.fields.concept_name}</Chip>
-          ))}
+          {unit_concept.map((concept, index) => {
+            if (concept.fields && concept.fields.concept_name) {
+              return (<Chip key={index} variant="flat" className="mb-3 mr-3">{concept.fields.concept_name}</Chip>);
+            }
+          })} 
         </div>
       )}
 
