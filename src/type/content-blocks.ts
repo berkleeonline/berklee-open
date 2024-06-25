@@ -28,6 +28,19 @@ export interface TakeawaysData {
   };
 }
 
+export interface Module {
+  contentTypeId: "module",
+  fields: {
+    module_title: EntryFieldTypes.Text
+    module_description: EntryFieldTypes.RichText,
+    module_level: EntryFieldTypes.Array,
+    module_units: EntryFieldTypes.Array,
+    module_related: EntryFieldTypes.Array,
+    module_id: EntryFieldTypes.Text,
+    module_image: EntryFieldTypes.AssetLink
+  }
+}
+
 export interface Unit {
   contentTypeId: "unit",
   fields: {
@@ -38,5 +51,18 @@ export interface Unit {
     unit_prerequisites: EntryFieldTypes.Array,
     Unit_essential_questions: EntryFieldTypes.Array,
     Unit_image: EntryFieldTypes.AssetLink
+  }
+}
+
+export interface Lesson {
+  contentTypeId: "lesson",
+  fields: {
+    lesson_title: EntryFieldTypes.Text
+    lesson_short_description: EntryFieldTypes.RichText,
+    lesson_grade: EntryFieldTypes.Text,
+    lesson_summary: EntryFieldTypes.Array,
+    lesson_audience: EntryFieldTypes.Array,
+    lesson_materials: EntryFieldTypes.Array,
+    lesson_image: EntryFieldTypes.AssetLink
   }
 }

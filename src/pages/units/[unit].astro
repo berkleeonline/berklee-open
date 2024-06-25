@@ -1,11 +1,27 @@
 ---
 import { contentfulClient } from "../../lib/contentful";
-import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
+import MainLayout from "../../layouts/authenticated.astro"
+import { Button, Chip, Tooltip } from "@nextui-org/react";
 import type { Unit } from "../../type/content-blocks";
+import { IconChip } from "../../elements/IconChip";
+import { IconHeader } from "../../elements/IconHeader";
+import { AddToLibraryButton } from "../../elements/AddToLibraryButton";
+import { ShareButton } from "../../elements/ShareButton";
+import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import styles from './_unit.module.scss';
+import {faScroll,
+        faBookBlank,
+        faPresentationScreen,
+        faStar,
+        faHeart,
+        faSeedling,
+        faShare,
+        faSignal4,
+        faSquareCheck } 
+        from '@fortawesome/pro-light-svg-icons';
 
-import MainLayout from "../../layouts/main.astro"
-import Time from "../../components/time"
-import ContentBlock from "../../components/content-block"
+import SyllabusLesson from "../../components/syllabus/syllabus-lesson"
 
 export async function getStaticPaths() {
   const units = await contentfulClient.getEntries<Unit>({
@@ -27,20 +43,133 @@ export async function getStaticPaths() {
 const {
   unit_description,
   unit_title,
-  unit_activities
+  unit_learning_outcomes,
+  unit_concept,
+  Unit_essential_questions,
+  unit_prerequisite,
+  unit_lessons,
 } = Astro.props.fields;
 
-console.log(unit_activities);
+const id = Astro.props.sys.id;
 ---
 
 <MainLayout title={unit_title}>
   <div class="flex gap-20">
-    <div class="w-2/3">
-      <h1 class="text-5xl font-bold mb-4">{unit_title}</h1>
-      <div set:html={documentToHtmlString(unit_description)}></div>
-      <div class="mb-4">{unit_activities.length} Acitivties</div>
+    <div class="w-2/3 pb-32">
+      <div class="mb-4">
+        <IconChip icon={faBookBlank} label="Unit" contentType="unit" href="/units" />
+      </div>
+      <h1 class="text-4xl font-bold mb-2">{unit_title}</h1>
+      <div class="text-md mb-4" set:html={documentToHtmlString(unit_description)}></div>
+
+      <div class="flex gap-6 mb-6">
+        <div class="flex flex-row font-bold"><FontAwesomeIcon className="w-4 mr-1" icon={faSignal4} />Beginner</div>
+        <div class="flex flex-row font-bold"><FontAwesomeIcon className="w-5 mr-2" icon={faScroll} />
+          {unit_lessons && unit_lessons.length !== undefined 
+            ? `${unit_lessons.length} ${unit_lessons.length === 1 ? "Lesson" : "Lessons"}` 
+            : "No Lessons"}
+        </div>
+      </div>
+
+      <div class={`flex flex-row gap-4 mb-16 items-center ${styles.unitActions}`}>
+        <Button client:load color="primary" className="font-bold w-32" aria-label="Start Lesson">
+          <FontAwesomeIcon icon={faPresentationScreen} class="text-sm" />
+          Start Unit
+        </Button>
+        <AddToLibraryButton type="unit" href={`${id}`} client:load />
+        <ShareButton type="unit" href={`${id}`} client:load />
+      </div>
+
+
+      {unit_learning_outcomes && unit_learning_outcomes.content.length > 0 && (
+        <div class="mb-16">
+          <IconHeader headerId="learningOutcomes" icon={faSeedling} label="Learning Outcomes" />
+          <h4 class="text-md font-bold pl-10 mb-2">Upon completion of this Unit, students will be able to:</h4>
+          <ul class="list-disc list-outside ml-10 pl-4">
+            {unit_learning_outcomes.content.map((outcome, index) => (
+              outcome.nodeType === 'unordered-list' && outcome.content.map((item, idx) => (
+                <li class="pb-3" key={idx}>{item.content[0].content[0].value}</li>
+              ))
+            ))}
+          </ul>
+        </div>
+      )}
+      
+      {Unit_essential_questions && Unit_essential_questions.length > 0 && (
+        <div class="mb-16">
+          <IconHeader headerId="essentialQuestions" icon={faStar} label="Essential Questions" />
+          <ol class="list-decimal list-outside ml-10 pl-4">
+            {Unit_essential_questions.map((question, index) => (
+              <li class="pb-3" key={index}>
+                {question.fields.question}
+              </li>
+            ))}
+          </ol>
+        </div>
+      )}
+
+      {unit_prerequisite && unit_prerequisite.content.length > 0 && (
+        <div class="mb-16">
+          <IconHeader headerId="learningPrerequisites" icon={faSquareCheck} label="Prerequisites" />
+          <ul class="list-disc list-outside ml-10 pl-4">
+            {unit_prerequisite.content.map((prerequisite, index) => (
+              prerequisite.nodeType === 'unordered-list' && prerequisite.content.map((item, idx) => (
+                <li class="pb-3" key={idx}>{item.content[0].content[0].value}</li>
+              ))
+            ))}
+          </ul>
+        </div>
+      )}
+
+
+      {unit_concept && unit_concept.length > 0 && (
+        <div class="mb-16">
+          <IconHeader headerId="conceptsCovered" icon={} label="Concepts Covered" />
+          {unit_concept.map((concept, index) => {
+            if (concept.fields && concept.fields.concept_name) {
+              return (<Chip key={index} variant="flat" className="mb-3 mr-3">{concept.fields.concept_name}</Chip>);
+            }
+          })} 
+        </div>
+      )}
+
+      <div class="mt-16 mb-16">
+        <h2 id="syllabus" class="text-xl font-bold mb-2">
+          Unit Syllabus
+          ({unit_lessons && unit_lessons.length !== undefined 
+            ? `${unit_lessons.length} ${unit_lessons.length === 1 ? "Lesson" : "Lessons"}` 
+            : "No Lessons"})
+        </h2>
+        <p class="text-md">
+          Below is a map of lessons in the order of suggested presentation. You will find a variety of introductory lessons that present a new concept
+          for the first time, practice lessons that contain ear training, recognizing, and identifying a concept, and reinforcing lessons that include creating with, producing with, or performing a concept.
+        </p>
+      </div>
+
+      {unit_lessons && unit_lessons.length > 0 && (
+        <ul>
+          {unit_lessons.map((lesson, index) => (
+            <SyllabusLesson key={index} lesson={lesson} />
+          ))}
+        </ul>
+      )}
+    </div>
+    <div class="w-1/3">
+      <div class="self-start sticky top-24 col-span-4">
+        <div class="border rounded-lg bg-white">
+          <ul class="flex flex-col sticky top-20">
+            <li><a class="p-2 px-4 block font-bold text-sm hover:underline" href="#overview">Overview</a></li>
+            <li><a class="p-2 px-4 block font-bold text-sm hover:underline" href="#learningOutcomes">Learning Outcomes</a></li>
+            <li><a class="p-2 px-4 block font-bold text-sm hover:underline" href="#essentialQuestions">Essential Questions</a></li>
+            <li><a class="p-2 px-4 block font-bold text-sm hover:underline" href="#learningPrerequisites">Prerequisites</a></li>
+            <li><a class="p-2 px-4 block font-bold text-sm hover:underline" href="#conceptsCovered">Concepts Covered</a></li>
+            <li><a class="p-2 px-4 block font-bold text-sm hover:underline" href="#conceptsCovered">Unit Syllabus</a></li>
+          </ul>
+        </div>
+      </div>
     </div>
   </div>
+
 </MainLayout>
 
 

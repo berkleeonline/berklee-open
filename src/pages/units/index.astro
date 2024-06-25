@@ -2,23 +2,23 @@
 	import { contentfulClient } from "../../lib/contentful";
 	import type { Unit } from "../../type/content-blocks";
 	
-	import MainLayout from "../../layouts/main.astro"
+	import MainLayout from "../../layouts/authenticated.astro"
 	import UnitCard from "../../components/cards/unit"
 
 	const units = await contentfulClient.getEntries<Unit>({
-  		content_type: "unit",
+  	content_type: "unit",
 	});
 ---
 
 <MainLayout title={`Berklee Open: Units`}>
-	<div class="flex gap-20">
-		<div class="w-1/4"></div>
-		<div class="w-3/4">
-			<div class="grid grid-cols-2 gap-8">
-		  		{units.items.map((unit) => (
-			  		<UnitCard unit={unit} />
-		  		))}
-			</div>
-		</div>
-	</div>
+  <div class="flex gap-20">
+    <div class="w-full">
+      <h1 class="text-4xl font-bold mb-8">Units</h1>
+      <div class="grid grid-cols-4 gap-8">
+        {units.items.map((unit, index) => (
+          <UnitCard unit={unit} index={index} />
+        ))}
+      </div>
+    </div>
+  </div>
 </MainLayout>
