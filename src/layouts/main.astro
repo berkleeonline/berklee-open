@@ -1,20 +1,26 @@
 ---
+import '@fontsource-variable/nunito-sans'; // Supports weights 200-900
 import Header from "../components/header";
 import type { HeaderProps } from "../type/layout";
+import '../fontAwesome'; // Import the Font Awesome configuration
+import '../css/global.scss';
 
 let header: HeaderProps | undefined = undefined;
 
 const { title } = Astro.props;
+
 ---
 <html lang="en">
   <head>
     <meta charset="utf-8">
+    <link href="/public/favicon.svg" rel="shortcut icon" type="image/x-icon">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex, nofollow" />
   </head>
   <body>
-    <Header header={header} />
-    <main class="container mx-auto py-8">
-        <slot />
+    <Header text={title} />
+    <main class="px-6 mx-auto pt-16 max-w-[1536px]" transition:animate="slide">
+      <slot />
     </main>
   </body>
 </html>

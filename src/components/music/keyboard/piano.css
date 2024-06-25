@@ -1,0 +1,404 @@
+/*Default Piano Keys*/
+.pianoContainer {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+  
+  .blackKey {
+    background: black;
+    z-index: 2;
+  }
+  .blackKey p {
+    color: white;
+    text-align: center;
+  }
+  
+  .whiteKey {
+    background: white;
+    z-index: 1;
+  }
+  .whiteKey p {
+    color: black;
+    text-align: center;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+  
+  .blackKey, .whiteKey {
+    cursor: pointer;
+    position: relative;
+    border: 1px solid black;
+    float: left;
+    border-radius: 2;
+    border-top: 5px solid black;
+  
+    -webkit-transition: background-color .25s;
+    transition: background-color .25s;
+  }
+  
+  .whiteKey:before, .blackKey:before {
+    content: attr(shortcut);
+    text-align: center;
+    width: 100%;
+    position: absolute;
+    color: #737373;
+    font-size: 13px;
+    top: 50%;
+  
+  }
+  
+  .blackKey:hover, .whiteKey:hover {
+    background-color: #C7C7C7;
+  }
+  
+  .blackKey p, .whiteKey p {
+    font-family: Arial, Helvetica, sans-serif;
+  }
+  
+  .blackKey:active, .whiteKey:active,
+  .pianoContainer.filled .blackKey, .pianoContainer.filled .whiteKey  {
+    background-color: #C7C7C7;
+    cursor: default;
+  }
+  
+  .middleC {
+    border-bottom: 4px solid red;
+  }
+  
+  .pianoContainer .blackKey.selected, .pianoContainer .whiteKey.selected {
+    background-color: #3097E0;
+    cursor: pointer;
+  }
+  
+  .pianoContainer .blackKey.correct, .pianoContainer .whiteKey.correct {
+    background-color: #FFED35;
+  }
+  
+  .pianoContainer .blackKey.incorrect, .pianoContainer .whiteKey.incorrect {
+    background-color: #E03030;
+  }
+  
+  .pianoContainer .blackKey.incorrect.correct, .pianoContainer .whiteKey.incorrect.correct {
+    background-color: #30E06E;
+  }
+  
+  .blackKey.selected:before, .whiteKey.selected:before {
+    content: attr(order);
+    color: #fff;
+    text-align: center;
+    display: block;
+  }
+  
+  /*Toolbar Piano*/
+  .piano-toolbar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0.7;
+  }
+  
+  #pianoPlacement {
+    width: 100%;
+    overflow-x: scroll;
+  }
+  
+  #pianoPlacement .pianoHideBtn {
+    position: absolute;
+    top: -31px;
+    right: 10px;
+    width: 31px;
+    height: 31px;
+    background-color: white;
+    background: url('/theme/berkleemusic3/pix/piano.png');
+    cursor: pointer;
+  }
+  
+  .pianoOctaveDown:before {
+    content: "OCTAVES";
+    position: absolute;
+    top: -40px;
+    z-index: 10px;
+    left: -1px;
+    font-size: 12px;
+    background: black;
+    padding: 9px;
+    border: 1px solid white;
+    pointer-events: none;
+  }
+  
+  #pianoPlacement .pianoOctaveDown,
+  #pianoPlacement .pianoOctaveUp,
+  #pianoPlacement #pianoHelp,
+  #pianoPlacement #pianoHelpDialog {
+    position: absolute;
+    top: -31px;
+    left: 10px;
+    width: 31px;
+    padding: 5px 0;
+    font-size: 18px;
+    background-color: black;
+    color: white;
+    cursor: pointer;
+    text-align: center;
+    border: 1px solid white;
+  
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+  
+  #pianoPlacement #pianoHelp {
+    left: 100px;
+    background-color: red;
+  }
+  
+  #pianoPlacement #pianoHelp:active {
+    background-color: black;
+  }
+  
+  #pianoPlacement #pianoHelpDialog {
+    left: 100px;
+    top: -160px;
+    width: 300px;
+    height: 100px;
+    padding: 10px;
+    display: none;
+    font-size: 14px;
+    text-align: left;
+    line-height: 170%;
+  }
+  
+  #pianoPlacement .pianoOctaveUp {
+    left: 50px;
+  }
+  
+  #pianoPlacement .pianoHideBtn:active,
+  #pianoPlacement .pianoOctaveDown:active,
+  #pianoPlacement .pianoOctaveUp:active {
+    background-color: red;
+  }
+  
+  /*Piano Quiz*/
+  .pianoQuiz {
+  
+  }
+  
+  .pianoQuizKeyboard {
+    width: 100%;
+    overflow-x: scroll;
+    padding: 10px;
+    position: relative;
+  }
+  
+  .pianoQuizKeyboard .pianoOctaveDown,
+  .pianoQuizKeyboard .pianoOctaveUp,
+  .pianoQuizKeyboard #pianoHelp,
+  .pianoQuizKeyboard #pianoHelpDialog {
+    display: inline-block;
+    width: 31px;
+    padding: 5px 0;
+    font-size: 18px;
+    background-color: black;
+    color: white;
+    cursor: pointer;
+    text-align: center;
+    border: 1px solid white;
+  
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+  
+  .pianoQuizKeyboard #pianoHelp {
+    left: 100px;
+    background-color: red;
+  }
+  
+  .pianoQuizKeyboard #pianoHelp:active {
+    background-color: black;
+  }
+  
+  .pianoQuizKeyboard #pianoHelpDialog {
+    left: 100px;
+    top: -160px;
+    width: 300px;
+    height: 100px;
+    padding: 10px;
+    display: none;
+    font-size: 14px;
+    text-align: left;
+    line-height: 170%;
+  }
+  
+  .pianoQuizKeyboard .pianoOctaveUp {
+    left: 50px;
+  }
+  
+  .pianoQuizKeyboard .pianoHideBtn:active,
+  .pianoQuizKeyboard .pianoOctaveDown:active,
+  .pianoQuizKeyboard .pianoOctaveUp:active {
+    background-color: red;
+  }
+  
+  .pianoQuizKeyboard .questionFeedbackRight,
+  .pianoQuizKeyboard .questionFeedbackWrong {
+    display: none;
+    position: absolute;
+    z-index: 1000;
+    left: calc(50% - 100px);
+    width: 100px;
+    text-align: center;
+    top: 50%;
+    font-weight: 700;
+    color: #FF0000;
+    -webkit-box-shadow: rgba(0,0,0,0.2) 0 2px 6px;
+    box-shadow: rgba(0,0,0,0.2) 0 2px 6px;
+    padding: 20px;
+    background-color: #fff;
+  
+    -webkit-transition: display .5s;
+    transition: display .5s;
+  }
+  
+  .pianoQuizKeyboard .questionFeedbackRight {
+    color: #30E06E;
+  }
+  
+  .pianoQuizKeyboard .questionFeedbackRight.active,
+  .pianoQuizKeyboard .questionFeedbackWrong.active {
+    display: block;
+  }
+  
+  .pianoQuizKeyboard .previewBtn,
+  .pianoQuizKeyboard .prevQuestion,
+  .pianoQuizKeyboard .nextQuestion,
+  .pianoQuizKeyboard .clearKeyboard,
+  .pianoQuizKeyboard .checkAnswer,
+  .pianoQuizKeyboard .showAnswer {
+    background-color: #fff;
+    color: #000;
+    border: 2px solid black;
+    padding: 10px;
+    cursor: pointer;
+    display: inline-block;
+    border-radius: 5px;
+    margin: 2px;
+    margin-bottom: 10px;
+  
+    -webkit-transition: background-color .25s, color .25s;
+    transition: background-color .25s, color .25s;
+  
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+  
+  .pianoQuizKeyboard .previewBtn:hover,
+  .pianoQuizKeyboard .prevQuestion:hover,
+  .pianoQuizKeyboard .nextQuestion:hover,
+  .pianoQuizKeyboard .clearKeyboard:hover,
+  .pianoQuizKeyboard .checkAnswer:hover,
+  .pianoQuizKeyboard .showAnswer:hover {
+    background-color: #3097E0;
+    color: #FFFFFF;
+  }
+  
+  div.inactive {
+    cursor: default;
+    display: none;
+    opacity: .5;
+  }
+  
+  div.inactive:hover {
+    background-color: inherit!important;
+    color: inherit!important;
+  }
+  
+  .pianoQuizKeyboard .questionContent {
+    text-align: center;
+  }
+  
+  .pianoQuizKeyboard .pianoOuterWrapper {
+    overflow-x: scroll;
+  
+  }
+  
+  .pianoQuizKeyboard .pianoOuterWrapper .pianoContainer {
+    padding: 10px 0;
+  }
+  
+  /*Piano Sample Click*/
+  [class^="piano-note-"] {
+    padding: 1px 3px 2px 1px;
+    color: var(--blue);
+    cursor: pointer;
+    border-radius: 0.25em;
+    background-color: var(--gray-xlight);
+  }
+  
+  [class^="piano-note-"]:hover {
+    filter: brightness(0.8);
+  }
+  
+  [class^="piano-note-"]:before {
+    content: "\f144";
+    font-family: "Font Awesome 5 Pro";
+    font-weight: 900;
+    font-size: 1em;
+    vertical-align: middle;
+    padding-left: 2px;
+    margin-right: 1px;
+  }
+
+  #pianoHelp {
+    left: 100px;
+    background-color: var(--red-orange);
+    display: none;
+  }
+  
+  #pianoHelp:active {
+    background-color: black;
+  }
+  
+  #pianoHelpDialog {
+    left: 100px;
+    top: -160px;
+    width: 300px;
+    height: 100px;
+    padding: 10px;
+    display: none;
+    font-size: 14px;
+    text-align: left;
+    line-height: 170%;
+  } 
+
+  .pianoOctaveDown, .pianoOctaveUp, #pianoHelp, #pianoHelpDialog {
+    position: fixed;
+    bottom: 180px;
+    left: 10px;
+    width: 31px;
+    padding: 5px 0;
+    font-size: 18px;
+    background-color: black;
+    color: white;
+    cursor: pointer;
+    text-align: center;
+    border: 1px solid white;
+  }
+  

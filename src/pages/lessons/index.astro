@@ -1,0 +1,24 @@
+---
+import { contentfulClient } from "../../lib/contentful";
+import type { Lesson } from "../../type/content-blocks";
+
+import MainLayout from "../../layouts/authenticated.astro";
+import LessonCard from "../../components/cards/lesson";
+
+const lessons = await contentfulClient.getEntries<Lesson>({
+  content_type: "lesson",
+});
+---
+
+<MainLayout title={`Berklee Open: Lessons`}>
+  <div class="flex gap-20">
+    <div class="w-full">
+      <h1 class="text-4xl font-bold mb-8">Lessons</h1>
+      <div class="grid grid-cols-3 gap-8">
+        {lessons.items.map((lesson, index) => (
+          <LessonCard key={index} lesson={lesson} index={index} />
+        ))}
+      </div>
+    </div>
+  </div>
+</MainLayout>
