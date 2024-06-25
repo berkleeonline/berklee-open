@@ -124,10 +124,20 @@ const simplifiedUnits = module_units.map(unit => ({
     unit_title: unit.fields?.unit_title,
     unit_description: unit.fields?.unit_description,
     unit_concept: unit.fields?.unit_concept,
-    unit_lessons: unit.fields?.unit_lessons,
+    unit_lessons: unit.fields?.unit_lessons?.map(lesson => ({
+      sys: lesson.sys,
+      fields: {
+        lesson_title: lesson.fields?.lesson_title,
+        lesson_short_description: lesson.fields?.lesson_short_description,
+        lesson_audience: lesson.fields?.lesson_audience,
+        lesson_duration: lesson.fields?.lesson_duration,
+        lesson_concepts: lesson.fields?.lesson_concepts,
+      }
+    }))
   }
 }));
 
+console.log('Simplified Units:', JSON.stringify(simplifiedUnits, null, 2));
 ---
 
 <MainLayout title={module_title} cssClass="via-white to-slate-white">
@@ -185,7 +195,7 @@ const simplifiedUnits = module_units.map(unit => ({
           creating with, producing with or performing a concept.
         </p>
         <div class="grid grid-cols-1 gap-6">
-          <SyllabusUnitWrapper module_units={simplifiedUnits} />
+          <SyllabusUnitWrapper module_units={simplifiedUnits} client:load />
         </div>
       </div>
 
