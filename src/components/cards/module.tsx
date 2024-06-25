@@ -21,12 +21,8 @@ type ModuleCardProps = {
   index: number;
 };
 
-//console.log(Astro.props.fields);
-
 const ModuleCard: React.FC<ModuleCardProps> = ({ module, index }) => {
   const { module_title, module_short_description, module_level, module_units } = module.fields;
-  
-  console.log(module.fields);
 	
   return (
     <a href={`/modules/${module.sys.id}`} className="no-underline h-full">

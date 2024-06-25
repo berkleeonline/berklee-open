@@ -9,7 +9,7 @@ import { AddToLibraryButton } from "../../elements/AddToLibraryButton";
 import { ShareButton } from "../../elements/ShareButton";
 import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import styles from './unit.module.scss';
+import styles from './_unit.module.scss';
 import {faScroll,
         faBookBlank,
         faPresentationScreen,
@@ -125,9 +125,11 @@ const id = Astro.props.sys.id;
       {unit_concept && unit_concept.length > 0 && (
         <div class="mb-16">
           <IconHeader headerId="conceptsCovered" icon={} label="Concepts Covered" />
-          {unit_concept.map((concept, index) => (
-            <Chip key={index} variant="flat" className="mb-3 mr-3">{concept.fields.concept_name}</Chip>
-          ))}
+          {unit_concept.map((concept, index) => {
+            if (concept.fields && concept.fields.concept_name) {
+              return (<Chip key={index} variant="flat" className="mb-3 mr-3">{concept.fields.concept_name}</Chip>);
+            }
+          })} 
         </div>
       )}
 

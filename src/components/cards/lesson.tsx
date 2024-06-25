@@ -23,8 +23,6 @@ type LessonCardProps = {
 
 const LessonCard: React.FC<LessonCardProps> = ({ lesson, index }) => {
   const { lesson_title, lesson_short_description, lesson_audience } = lesson.fields;
-  
-  console.log(lesson.fields);
 	
   return (
     <a href={`/lessons/${lesson.sys.id}`} className="no-underline flex flex-col">

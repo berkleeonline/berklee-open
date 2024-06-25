@@ -29,7 +29,6 @@ export default function SwiperCarousel() {
         thumbs={{ swiper: thumbsSwiper }}
         modules={[FreeMode, Navigation, Thumbs]}
         className="mySwiper2"
-        onInit={(swiper) => console.log('Swiper initialized', swiper)}
       >
         <SwiperSlide>
           <img className="rounded-lg" src="https://swiperjs.com/demos/images/nature-1.jpg" />

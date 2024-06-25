@@ -1,8 +1,10 @@
 ---
 import React, { useEffect, useState } from 'react';
 import { contentfulClient } from "../lib/contentful";
-import type { Unit } from "../type/content-blocks";
+import type { Lesson, Unit } from "../type/content-blocks";
 import { Button, Tooltip } from "@nextui-org/react";
+//import ModuleCard from "../components/cards/module";
+import HomeCollapsible from '../components/home/collapsible';
 import UnitCard from "../components/cards/unit";
 import LessonCard from "../components/cards/lesson";
 import MainLayout from '../layouts/main.astro';
@@ -49,12 +51,84 @@ const units = await contentfulClient.getEntries<Unit>({
       ))}
     </div>
 
-    <h3 class="mt-16 text-2xl font-bold mb-8">Units</h3>
-    <div class="grid grid-cols-4 gap-8 mb-64">
+    <h3 class="mt-16 text-2xl font-bold mb-4">Units</h3>
+    <div class="grid grid-cols-4 gap-8 mb-48">
       {units.items.map((unit, index) => (
         <UnitCard unit={unit} index={index} />
       ))}
     </div>
   </div>
 
+  <div class="mb-48 grid grid-cols-12 gap-16">
+    <div class="col-span-5">
+      <h2 class="text-4xl font-bold mb-8">Meet Berklee Open</h2>
+      <HomeCollapsible client:load />
+    </div>
+    <div class="col-span-7">
+      <img src="//assets.online.berklee.edu/berklee-open-placeholder/bo-home-presentation-placeholder.jpg" alt="Berklee Open Presentation Mode" />
+    </div>
+  </div>
+
+  <div class="mb-16">
+    <h2 class="text-5xl font-bold text-center">All Music Lessons Include</h2>
+  </div>
+
+  <div class="mb-4 grid grid-cols-12 gap-16 items-center">
+    <div class="col-span-4">
+      <img src="//assets.online.berklee.edu/berklee-open-placeholder/bo-home-market-placeholder-1-b.jpg" alt="Berklee Open Marketing Image" />
+    </div>
+    <div class="col-span-8">
+      <h3 class="text-3xl font-bold mb-4">Digital Resources</h3>
+      <p class="text-large">Organized, interactive multimedia slideshows make classroom prep easy and efficient.</p>
+    </div>
+  </div>
+
+  <div class="mb-4 grid grid-cols-12 gap-16 items-center">
+    <div class="col-span-8">
+      <h3 class="text-3xl font-bold mb-4">Standards Aligned</h3>
+      <p class="text-large">No internet? No projector? No problem. Download lesson PDFs and teach offline with clear instructions and student activities.</p>
+    </div>
+    <div class="col-span-4">
+      <img src="//assets.online.berklee.edu/berklee-open-placeholder/bo-home-market-placeholder-2-b.jpg" alt="Berklee Open Marketing Image" />
+    </div>
+  </div>
+
+  <div class="mb-16 grid grid-cols-12 gap-16 items-center">
+    <div class="col-span-4">
+      <img src="//assets.online.berklee.edu/berklee-open-placeholder/bo-home-market-placeholder-3-b.jpg" alt="Berklee Open Marketing Image" />
+    </div>
+    <div class="col-span-8">
+      <h3 class="text-3xl font-bold mb-4">Standards Aligned</h3>
+      <p class="text-large">Built by Berklee, in collaboration with Berklee educators, Berklee Open's Music Education resources are developed to support students learning through current best practices.</p>
+    </div>
+  </div>
+
+  <div class="mb-48 grid grid-cols-1 lg:grid-cols-2 gap-8 h-500">
+    <div class="flex flex-col justify-center">
+      <h1 class="text-5xl font-bold mb-16">Why We Are Here</h1>
+      <h2 class="text-3xl font-bold mb-4">3.6 million K-12 students with no access to music education</h2>
+      <p class="text-large mb-6">Berklee Open is dedicated to creating a new era of arts education. One that prioritizes accessibility, inclusivity, and belonging. At our core, we endeavor to make the world-renowned experience of Berklee accessible to all K-12 educators and students through relevant online resources that support inspiring, engaging classroom experiences and teaching methods, empowering personal growth through the transformative power of music and the arts.</p>
+    </div>
+    <div class="relative -mr-16" style="height:850px;">
+      <img src="//assets.online.berklee.edu/berklee-open-placeholder/bo-home-footer-hero-placeholder.jpg" alt="Berklee Open Home Page Hero" class="absolute inset-0 w-full h-full object-cover" />
+    </div>
+  </div>
+</div>
+
+<div class="bg-gradient-to-r from-purple-300 to-pink-500 grid grid-cols-1 h-400 items-center h-500 pt-24 pb-24 -mr-16 -ml-16">
+  <h1 class="text-5xl font-bold mb-16 text-center">Sign Up for Early Access</h1>
+  <p class="text-lg text-center max-w-3xl mx-auto mb-16">Berkele Open is currently in development and access is available via invite. We're
+    excited to share our free music education resources with you once ready. In the meantime, 
+    please sign up for Early Access and we will reach out with more information soon.
+  </p>
+  <div class="flex space-x-4 mx-auto">
+    <Button color="default" variant="solid" className="font-bold bg-black text-white" client:load>Sign Up for Early Access</Button>
+  </div>
+</div>
+
 </MainLayout>
+
+<script>
+
+
+</script>

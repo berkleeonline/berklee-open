@@ -65,13 +65,10 @@ export const Slide: React.FC<SlideProps> = ({ slide }) => {
     }
 
     if (slideType === 'slideVideo') {
-        console.log(slide);
         const title = slide.fields.title || '';
         const embed = slide?.fields.embed || '';
         slideContent = <SlideVideo title={title} embed={embed} />;
     }
-
-    console.log(slideType);
 
     return (
         <div className="flex flex-col">

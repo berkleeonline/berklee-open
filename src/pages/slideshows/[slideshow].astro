@@ -27,16 +27,22 @@ const {
 
 <div>
   {await Promise.all(lesson_sections.map(async (section) => {
-    const lessonEntry = await contentfulClient.getEntry(section.fields.interactiveContent.sys.id);
+    let lessonEntry = null;
     
-    for (const slide of lessonEntry.fields.slides) {
-      if (slide.fields.flashCards) {
-        const cards = await contentfulClient.getEntry(slide.fields.flashCards.sys.id);
-        slide.fields.flashCards = cards.fields.flashCards;
+    if (section?.fields?.interactiveContent) {
+      lessonEntry = await contentfulClient.getEntry(section?.fields?.interactiveContent?.sys?.id);
+    }
+    
+    if (lessonEntry?.fields?.slides) {
+      for (const slide of lessonEntry.fields.slides) {
+        if (slide?.fields?.flashCards) {
+        const cards = await contentfulClient.getEntry(slide?.fields?.flashCards?.sys?.id);
+          slide.fields.flashCards = cards.fields.flashCards;
+        }
       }
     }
 
-    if (lessonEntry.sys.contentType.sys.id === "slideshow") {
+    if (lessonEntry?.sys?.contentType?.sys?.id === "slideshow") {
       return <Slideshow content={lessonEntry} client:only />
     }
   }))}

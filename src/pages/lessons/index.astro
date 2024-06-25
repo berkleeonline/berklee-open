@@ -8,8 +8,6 @@ import LessonCard from "../../components/cards/lesson";
 const lessons = await contentfulClient.getEntries<Lesson>({
   content_type: "lesson",
 });
-
-console.log(lessons.items); // Log the fetched lessons to verify the structure
 ---
 
 <MainLayout title={`Berklee Open: Lessons`}>
