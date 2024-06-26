@@ -54,3 +54,7 @@
     opacity: 1;
   }
 }
+
+.swiper-backface-hidden .swiper-slide {
+  background: transparent;
+}
