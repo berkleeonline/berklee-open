@@ -26,7 +26,7 @@ const Header = (props: HeaderProps) => {
 
   return (
     <Navbar onMenuOpenChange={setIsMenuOpen} maxWidth={`2xl`}>
-      <NavbarContent justify="start" className="items-left">
+      <NavbarContent justify="start" className="justify-items-start">
         <NavbarMenuToggle
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
           className="sm:hidden"

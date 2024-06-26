@@ -13,11 +13,11 @@ import './styles.scss';
 // import required modules
 import { FreeMode, Navigation, Thumbs } from 'swiper/modules';
 
-export default function SwiperCarousel() {
+export default function SwiperCarousel({ lessonImages }) {
   const [thumbsSwiper, setThumbsSwiper] = useState<Swiper | null>(null);
 
   return (
-    <>
+    <div className="bo-swiper-wrapper">
       <Swiper
         style={{
           '--swiper-navigation-color': '#fff',
@@ -28,38 +28,13 @@ export default function SwiperCarousel() {
         navigation={true}
         thumbs={{ swiper: thumbsSwiper }}
         modules={[FreeMode, Navigation, Thumbs]}
-        className="mySwiper2"
+        className="mySwiper2 absolute top-0 right-0 zIndex-1"
       >
-        <SwiperSlide>
-          <img className="rounded-lg" src="https://swiperjs.com/demos/images/nature-1.jpg" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img className="rounded-lg" src="https://swiperjs.com/demos/images/nature-2.jpg" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img className="rounded-lg" src="https://swiperjs.com/demos/images/nature-3.jpg" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img className="rounded-lg" src="https://swiperjs.com/demos/images/nature-4.jpg" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img className="rounded-lg" src="https://swiperjs.com/demos/images/nature-5.jpg" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img className="rounded-lg" src="https://swiperjs.com/demos/images/nature-6.jpg" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img className="rounded-lg" src="https://swiperjs.com/demos/images/nature-7.jpg" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img className="rounded-lg" src="https://swiperjs.com/demos/images/nature-8.jpg" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img className="rounded-lg" src="https://swiperjs.com/demos/images/nature-9.jpg" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img className="rounded-lg" src="https://swiperjs.com/demos/images/nature-10.jpg" />
-        </SwiperSlide>
+        {lessonImages.map((image, index) => (
+          <SwiperSlide key={index}>
+            <img className="rounded-lg" src={image.fields.file.url} alt={image.fields.title} />
+          </SwiperSlide>
+        ))}
       </Swiper>
       <Swiper
         onSwiper={setThumbsSwiper}
@@ -71,37 +46,12 @@ export default function SwiperCarousel() {
         modules={[FreeMode, Navigation, Thumbs]}
         className="mySwiperThumbs"
       >
-        <SwiperSlide>
-          <img className="rounded-lg" src="https://swiperjs.com/demos/images/nature-1.jpg" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img className="rounded-lg" src="https://swiperjs.com/demos/images/nature-2.jpg" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img className="rounded-lg" src="https://swiperjs.com/demos/images/nature-3.jpg" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img className="rounded-lg" src="https://swiperjs.com/demos/images/nature-4.jpg" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img className="rounded-lg" src="https://swiperjs.com/demos/images/nature-5.jpg" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img className="rounded-lg" src="https://swiperjs.com/demos/images/nature-6.jpg" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img className="rounded-lg" src="https://swiperjs.com/demos/images/nature-7.jpg" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img className="rounded-lg" src="https://swiperjs.com/demos/images/nature-8.jpg" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img className="rounded-lg" src="https://swiperjs.com/demos/images/nature-9.jpg" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img className="rounded-lg" src="https://swiperjs.com/demos/images/nature-10.jpg" />
-        </SwiperSlide>
+        {lessonImages.map((image, index) => (
+          <SwiperSlide key={index}>
+            <img className="rounded-lg" src={image.fields.file.url} alt={image.fields.title} />
+          </SwiperSlide>
+        ))}
       </Swiper>
-    </>
+    </div>
   );
 }
