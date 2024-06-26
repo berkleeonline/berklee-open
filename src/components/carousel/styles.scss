@@ -1,11 +1,5 @@
 .bo-swiper-wrapper {
-  background: #FFF;
-  position: absolute;
-  z-index: 3;
-  top:0;
-  right:0;
-  width: 100%;
-  height: auto;
+
 }
 
 .swiper {
@@ -50,6 +44,7 @@
   padding: 10px 0;
 
   .swiper-slide {
+    background: transparent;
     width: 25%;
     height: 100%;
     opacity: 0.4;
