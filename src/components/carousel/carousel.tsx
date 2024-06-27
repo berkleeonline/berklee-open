@@ -16,6 +16,9 @@ import { FreeMode, Navigation, Thumbs } from 'swiper/modules';
 export default function SwiperCarousel({ lessonImages }) {
   const [thumbsSwiper, setThumbsSwiper] = useState<Swiper | null>(null);
 
+  // Check if lessonImages is defined and is an array
+  const validLessonImages = Array.isArray(lessonImages) ? lessonImages : [];
+
   return (
     <div className="bo-swiper-wrapper">
       <Swiper
@@ -30,7 +33,7 @@ export default function SwiperCarousel({ lessonImages }) {
         modules={[FreeMode, Navigation, Thumbs]}
         className="mySwiper2 absolute top-0 right-0 zIndex-1"
       >
-        {lessonImages.map((image, index) => (
+        {validLessonImages.map((image, index) => (
           <SwiperSlide key={index}>
             <img className="rounded-lg" src={image.fields.file.url} alt={image.fields.title} />
           </SwiperSlide>
@@ -46,7 +49,7 @@ export default function SwiperCarousel({ lessonImages }) {
         modules={[FreeMode, Navigation, Thumbs]}
         className="mySwiperThumbs"
       >
-        {lessonImages.map((image, index) => (
+        {validLessonImages.map((image, index) => (
           <SwiperSlide key={index}>
             <img className="rounded-lg" src={image.fields.file.url} alt={image.fields.title} />
           </SwiperSlide>

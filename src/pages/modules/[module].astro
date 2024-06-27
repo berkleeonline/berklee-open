@@ -58,16 +58,21 @@ if (module_units.length > 0) {
   await Promise.all(module_units.map(async (unit) => {
     if (unit.fields && unit.fields.unit_lessons && Array.isArray(unit.fields.unit_lessons)) {
       const unitLessons = await Promise.all(unit.fields.unit_lessons.map(async (lessonLink) => {
-        const lessonEntry = await contentfulClient.getEntry(lessonLink.sys.id);
-        lessons.push(lessonEntry);
-        return lessonEntry;
+        try {
+          const lessonEntry = await contentfulClient.getEntry(lessonLink.sys.id);
+          lessons.push(lessonEntry);
+          return lessonEntry;
+        } catch (error) {
+          console.error(`Error fetching lesson with ID ${lessonLink.sys.id}:`, error);
+          return null;
+        }
       }));
 
-      unit.fields.unit_lessons = unitLessons; // Replace links with full lesson data
+      unit.fields.unit_lessons = unitLessons.filter(Boolean); // Replace links with full lesson data and remove any null values
 
       // Collect additional data
       unitLessons.forEach((lessonEntry) => {
-        if (lessonEntry.fields.lesson_duration) {
+        if (lessonEntry && lessonEntry.fields.lesson_duration) {
           lessonTime.push(...lessonEntry.fields.lesson_duration);
         }
 
@@ -105,10 +110,15 @@ if (module_units.length > 0) {
 
     if (unit.fields && unit.fields.unit_concept && Array.isArray(unit.fields.unit_concept)) {
       const unitConcepts = await Promise.all(unit.fields.unit_concept.map(async (conceptLink) => {
-        const conceptEntry = await contentfulClient.getEntry(conceptLink.sys.id);
-        return conceptEntry;
+        try {
+          const conceptEntry = await contentfulClient.getEntry(conceptLink.sys.id);
+          return conceptEntry;
+        } catch (error) {
+          console.error(`Error fetching concept with ID ${conceptLink.sys.id}:`, error);
+          return null;
+        }
       }));
-      unit.fields.unit_concept = unitConcepts; // Replace links with full concept data
+      unit.fields.unit_concept = unitConcepts.filter(Boolean); // Replace links with full concept data and remove any null values
     }
   }));
 }
@@ -179,12 +189,11 @@ console.log('Simplified Units:', JSON.stringify(simplifiedUnits, null, 2));
           <IconHeader headerId="essentialQuestions" icon={faStar} label="Essential Questions" />
           <ul class="list-disc list-outside ml-10 pl-4">
             { Module_essential_questions.map((question, index) => (
-              <li class="mt-4" key={index}>{ question.fields.question }</li>
+              <li class="mt-4" key={index}>{ question.fields?.question || "No question available" }</li>
             ))}
           </ul>
         </div>
       )}
-
       
       <div class="mb-12">
         <IconHeader headerId="moduleSyllabus" label="Module Syllabus" />
