@@ -64,7 +64,7 @@ const Slideshow = ({ content }: SlideshowProps) => {
                 hasNotes={hasNotes}
                 openNotes={openNotes}
             />
-            <div className="flex flex-1 bg-[#DDEDFD]">
+            <div className="flex flex-1 bg-[#eeeff5]">
                 <Slide slide={slides[currentSlide]} />
             </div>
         </div>
