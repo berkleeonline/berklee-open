@@ -25,8 +25,8 @@ const ModuleCard: React.FC<ModuleCardProps> = ({ module, index }) => {
   const { module_title, module_short_description, module_level, module_units } = module.fields;
 	
   return (
-    <a href={`/modules/${module.sys.id}`} className="no-underline flex flex-col">
-      <Card shadow="0" key={index} isPressable>
+    <a href={`/modules/${module.sys.id}`} className="no-underline h-full">
+      <Card className="h-full w-full" shadow="0" key={index} isPressable>
         <CardBody className="overflow-visible p-0">
           <Image
             
@@ -34,10 +34,10 @@ const ModuleCard: React.FC<ModuleCardProps> = ({ module, index }) => {
             width="100%"
             alt={module_title}
             className="w-full object-cover h-[140px] opacity-100"
-            src="https://placehold.co/450x140"
+            src="https://placehold.co/290x150"
           />
         </CardBody>
-        <CardFooter className="text-small flex-col">
+        <CardFooter className="text-small flex-col h-full">
           <div className="flex w-full mb-2 justify-between">
             <h3 className="font-bold text-lg text-left">{module_title}</h3>
             <p className="text-default-500 w-4">

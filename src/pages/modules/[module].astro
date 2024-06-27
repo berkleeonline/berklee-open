@@ -2,16 +2,18 @@
 import { contentfulClient } from "../../lib/contentful";
 import { calculateLevel } from "../../lib/calculateLevel";
 import { calculateDuration } from "../../lib/calculateDuration";
-import { Button, Tooltip } from "@nextui-org/react";
+import { Button } from "@nextui-org/react";
 import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
 import type { Module } from "../../type/content-blocks";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IconChip } from "../../elements/IconChip";
 import { IconHeader } from "../../elements/IconHeader";
+import { AddToLibraryButton } from "../../elements/AddToLibraryButton";
+import { ShareButton } from "../../elements/ShareButton";
 import { faBooks, faPresentationScreen, faStar, faHeart, faClock, faSeedling, faShare, faSignal4 } from '@fortawesome/pro-light-svg-icons';
 import MainLayout from "../../layouts/authenticated.astro";
 import SyllabusUnitWrapper from '../../components/syllabus/syllabus-unit-wrapper';
-import styles from './module.module.scss';
+import styles from './_module.module.scss';
 
 export async function getStaticPaths() {
   const modules = await contentfulClient.getEntries<Module>({
@@ -37,6 +39,8 @@ const {
   module_level = [],
   Module_essential_questions = [],
 } = Astro.props.fields;
+
+const id = Astro.props.sys.id;
 
 let level = '';
 
@@ -120,10 +124,20 @@ const simplifiedUnits = module_units.map(unit => ({
     unit_title: unit.fields?.unit_title,
     unit_description: unit.fields?.unit_description,
     unit_concept: unit.fields?.unit_concept,
-    unit_lessons: unit.fields?.unit_lessons,
+    unit_lessons: unit.fields?.unit_lessons?.map(lesson => ({
+      sys: lesson.sys,
+      fields: {
+        lesson_title: lesson.fields?.lesson_title,
+        lesson_short_description: lesson.fields?.lesson_short_description,
+        lesson_audience: lesson.fields?.lesson_audience,
+        lesson_duration: lesson.fields?.lesson_duration,
+        lesson_concepts: lesson.fields?.lesson_concepts,
+      }
+    }))
   }
 }));
 
+console.log('Simplified Units:', JSON.stringify(simplifiedUnits, null, 2));
 ---
 
 <MainLayout title={module_title} cssClass="via-white to-slate-white">
@@ -144,16 +158,8 @@ const simplifiedUnits = module_units.map(unit => ({
           <FontAwesomeIcon icon={faPresentationScreen} class="text-sm" />
           Start Module
         </Button>
-        <Tooltip client:load placement="bottom" content="Save to Library" color="default">
-          <Button client:load isIconOnly className="p-2" radius="full" variant="bordered" color="default" aria-label="Save to Library">
-            <FontAwesomeIcon icon={faHeart} />
-          </Button>
-        </Tooltip>
-        <Tooltip client:load placement="bottom" content="Share Module" color="default">
-          <Button client:load isIconOnly className="p-2" radius="full" variant="bordered" color="default" aria-label="Share Module">
-            <FontAwesomeIcon icon={faShare} />
-          </Button>
-        </Tooltip>
+        <AddToLibraryButton type="module" href="" client:load />
+        <ShareButton type="module" href="" client:load />
       </div>
       
       {outcomes && outcomes.length > 0 && (

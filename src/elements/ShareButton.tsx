@@ -6,14 +6,14 @@ import { faShare } from '@fortawesome/pro-light-svg-icons';
 interface ShareButtonProps {
   headerId: string;
   type: string;
-  href: string;
+  hrefId: string;
   [key: string]: any; // To accept any additional props
 }
 
-export const ShareButton: FC<ShareButtonProps> = ({ headerId, type, href, ...props }) => {
+export const ShareButton: FC<ShareButtonProps> = ({ headerId, type, hrefId, ...props }) => {
   return (
     <>
-    <Tooltip client:load  placement="bottom" content="Share" color="default">
+    <Tooltip client:load  placement="bottom" content={`${type} ${hrefId}`} color="default">
       <Button client:load isIconOnly className="p-2" radius="full" variant="bordered" color="default" aria-label="Share">
         <FontAwesomeIcon icon={faShare} />
       </Button>

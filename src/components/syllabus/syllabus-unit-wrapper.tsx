@@ -19,8 +19,8 @@ const SyllabusUnitWrapper = ({ module_units }) => {
         ))}
       </ul>
       {!showAll && module_units.length > 5 && (
-        <div className="text-center mt-8 relative -mt-120">
-          <Button onClick={handleShowAll} variant="bordered" color="default" className="w-80 border-black font-bold">
+        <div className="bg-gradient-to-t from-white from-80% to-transparent text-center relative -mt-56 pt-16">
+          <Button onClick={handleShowAll} variant="bordered" color="default" className="w-80 border-black font-bold" client:load>
             View Full Syllabus
           </Button>
         </div>
