@@ -101,9 +101,7 @@ console.log(id);
           <IconHeader headerId="essentialQuestions" icon={faStar} label="Essential Questions" />
           <ol class="list-decimal list-outside ml-10 pl-4">
             {Unit_essential_questions.map((question, index) => (
-              <li class="pb-3" key={index}>
-                {question.fields.question}
-              </li>
+              <li class="pb-3" key={index}>{ question.fields?.question || "No question available" }</li>
             ))}
           </ol>
         </div>
