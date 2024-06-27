@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Tooltip } from "@nextui-org/react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHeart, faShare } from '@fortawesome/pro-light-svg-icons';
+import { faHeart } from '@fortawesome/pro-light-svg-icons';
 
 interface AddToLibraryButtonProps {
   headerId: string;

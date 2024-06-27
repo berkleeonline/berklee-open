@@ -3,7 +3,6 @@ import Time from "../../components/time"
 import {Card, CardBody, CardFooter, Image} from "@nextui-org/react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart } from '@fortawesome/pro-light-svg-icons';
-import { documentToHtmlString } from '@contentful/rich-text-html-renderer';
 
 
 type ModuleCardProps = {
