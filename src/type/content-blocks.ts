@@ -64,5 +64,6 @@ export interface Lesson {
     lesson_audience: EntryFieldTypes.Array,
     lesson_materials: EntryFieldTypes.Array,
     lesson_image: EntryFieldTypes.AssetLink
+    lesson_sections: EntryFieldTypes.Array,
   }
 }
