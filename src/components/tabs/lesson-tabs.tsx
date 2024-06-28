@@ -85,7 +85,7 @@ export const LessonTabs = ({
                 <ol className="list-decimal list-outside ml-10 pl-4">
                   {lesson_essential_questions?.map((question, index) => (
                     <li className="pb-3" key={index}>
-                      {question.fields.question}
+                      {question.fields?.question}
                     </li>
                   ))}
                 </ol>
@@ -153,12 +153,12 @@ export const LessonTabs = ({
         <Tab key="instructions" title="Instructions" className="text-medium tracking-wider font-bold">
           <div className="tracking-normal font-normal">
             {lesson_sections && lesson_sections.length > 0 && (
-              <div className="mb-16 pl-0">
+              <div className="mb-16 mt-10 pl-0">
                 {lesson_sections.map((section, index) => (
                   <div key={index} className="mb-6">
                     {/* <h3 className="font-bold text-lg mb-4">{section.fields.section_title}</h3> */}
                     <div className={`mb-7 mt-4 pl-0 ml-0 ${styles.richContentInnerStyles}`}>
-                      {section.fields.interactiveContent && Array.isArray(section.fields.interactiveContent) 
+                      {section.fields?.interactiveContent && Array.isArray(section.fields?.interactiveContent) 
                         ? section.fields.interactiveContent.map((slide, idx) => (
                             <div key={idx}>
                                 {slide.fields.title && <div className="mb-12 -ml-6"><h2 className="text-xl font-bold">{slide.fields.slide_instructor_notes_title}</h2></div>}

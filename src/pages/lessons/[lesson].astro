@@ -40,20 +40,25 @@ export async function getStaticPaths() {
 const fetchAndResolveSections = async (sections) => {
   const resolvedSections = await Promise.all(
     sections.map(async (section) => {
-      if (section.fields.interactiveContent) {
+      if (section.fields?.interactiveContent?.sys?.id) {
         const interactiveContent = await fetchEntryById(section.fields.interactiveContent.sys.id);
         return {
           ...section,
           fields: {
             ...section.fields,
-            interactiveContent: interactiveContent.fields.slides, // Assuming the content is in 'fields.content'
+            interactiveContent: interactiveContent.fields?.slides || [], // Default to an empty array if undefined
           },
         };
       }
-      return section;
+      return {
+        ...section,
+        fields: {
+          ...section.fields,
+          interactiveContent: [], // Ensure interactiveContent is at least an empty array
+        },
+      };
     })
   );
-
   return resolvedSections;
 };
 
@@ -79,9 +84,24 @@ const {
 
 const id = Astro.props.sys.id;
 
-const resolvedLessonSections = await fetchAndResolveSections(lesson_sections);
+const safeStringify = (obj) => {
+  const seen = new WeakSet();
+  return JSON.stringify(obj, (key, value) => {
+    if (typeof value === "object" && value !== null) {
+      if (seen.has(value)) {
+        return; // Skip cyclic references
+      }
+      seen.add(value);
+    }
+    return value;
+  });
+};
 
-console.log(resolvedLessonSections);
+const resolvedLessonSections = await fetchAndResolveSections(lesson_sections || []);
+
+console.log(safeStringify(resolvedLessonSections)); // Check for cyclic references
+
+
 ---
 <a id="overview"></a>
 <MainLayout title={lesson_title}>
@@ -152,8 +172,9 @@ console.log(resolvedLessonSections);
         lesson_evidence={lesson_evidence}
         lesson_prerequisites={lesson_prerequisites}
         lesson_sections={resolvedLessonSections}
-        client:load 
+        client:visible
       />
+      
 
     </div>
     <div class="col-end-12 col-span-5 relative">
