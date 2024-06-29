@@ -19,6 +19,7 @@ import {
   faChalkboard,
   faSquareCheck,
   faQuestionCircle,
+  faCircleDot,
 } from '@fortawesome/pro-light-svg-icons';
 import styles from '../../pages/lessons/_lesson.module.scss';
 
@@ -151,23 +152,30 @@ export const LessonTabs = ({
           </div>
         </Tab>
         <Tab key="instructions" title="Instructions" className="text-medium tracking-wider font-bold">
-          <div className="tracking-normal font-normal">
+          <div className="tracking-normal font-normal border-l-8 border-gray-100">
             {lesson_sections && lesson_sections.length > 0 && (
-              <div className="mb-16 mt-10 pl-0">
+              <div className="mb-12 pl-0">
                 {lesson_sections.map((section, index) => (
                   <div key={index} className="mb-6">
                     {/* <h3 className="font-bold text-lg mb-4">{section.fields.section_title}</h3> */}
-                    <div className={`mb-7 mt-4 pl-0 ml-0 ${styles.richContentInnerStyles}`}>
+                    <div className={`mb-7 ${styles.richContentInnerStyles}`}>
                       {section.fields?.interactiveContent && Array.isArray(section.fields?.interactiveContent) 
                         ? section.fields.interactiveContent.map((slide, idx) => (
                             <div key={idx}>
-                                {slide.fields.title && <div className="mb-12 -ml-6"><h2 className="text-xl font-bold">{slide.fields.slide_instructor_notes_title}</h2></div>}
-                                <div key={idx} className="mb-16 border border-black p-8 rounded-lg relative">
-                                    <div className="absolute -top-8 -left-6 p-3 rounded-lg border border-black bg-white font-bold">Slide {idx + 1}</div>
-                                {slide.fields.title && <h4>{slide.fields.title}</h4>}
-                                
-                                {slide.fields.slide_instructor_notes && (
-                                    <div dangerouslySetInnerHTML={{ __html: documentToHtmlString(slide.fields.slide_instructor_notes) }}></div>
+                                {slide.fields.slide_instructor_notes_title && slide.fields.slide_instructor_notes_title !== "undefined" && (
+                                  <div className="pt-10 pb-6 -ml-20 bg-white relative">
+                                    <IconHeader
+                                      headerId={`${slide.fields.slide_instructor_notes_title}`}
+                                      icon={faCircleDot}
+                                      label={`${slide.fields.slide_instructor_notes_title}`}
+                                    />
+                                  </div>
+                                )}
+                                <div key={idx} className="mt-8 border border-gray-300 p-8 rounded-lg relative">
+                                    <div className="absolute -top-8 -left-6 p-3 rounded-lg border border-gray-300 bg-white font-bold">Slide {idx + 1}</div>
+                                    {slide.fields.title && <h3 className="pb-4">{slide.fields.title}</h3>}
+                                    {slide.fields.slide_instructor_notes && (
+                                      <div dangerouslySetInnerHTML={{ __html: documentToHtmlString(slide.fields.slide_instructor_notes) }}></div>
                                 )}
                                 </div>
                             </div>

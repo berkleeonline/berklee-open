@@ -84,23 +84,31 @@ const {
 
 const id = Astro.props.sys.id;
 
-const safeStringify = (obj) => {
+const serializeForClient = (obj) => {
+  if (obj === undefined) return null; // Handle undefined at the top level
+
   const seen = new WeakSet();
-  return JSON.stringify(obj, (key, value) => {
+  const onlyData = (key, value) => {
+    if (value === undefined) return null; // Handle undefined values
     if (typeof value === "object" && value !== null) {
-      if (seen.has(value)) {
-        return; // Skip cyclic references
-      }
+      if (seen.has(value)) return null; // Avoid cyclic references
       seen.add(value);
+      if (value instanceof Date) return value.toISOString();
+      if (Array.isArray(value)) return value.map(item => onlyData('', item));
+      return Object.fromEntries(Object.entries(value).map(([k, v]) => [k, onlyData(k, v)]));
     }
+    if (typeof value === "function") return null; // Remove functions
     return value;
-  });
+  };
+  return JSON.parse(JSON.stringify(obj, onlyData));
 };
 
 const resolvedLessonSections = await fetchAndResolveSections(lesson_sections || []);
 
-console.log(safeStringify(resolvedLessonSections)); // Check for cyclic references
-
+// Debug log
+// console.log('Original lesson_sections:', JSON.stringify(lesson_sections, null, 2));
+// console.log('Resolved lesson_sections:', JSON.stringify(resolvedLessonSections, null, 2));
+// console.log('Serialized lesson_sections:', JSON.stringify(serializeForClient(resolvedLessonSections), null, 2));
 
 ---
 <a id="overview"></a>
@@ -162,16 +170,16 @@ console.log(safeStringify(resolvedLessonSections)); // Check for cyclic referenc
       </div>
 
       <LessonTabs 
-        lesson_outcome={lesson_outcome}
-        lesson_outline={lesson_outline}
-        lesson_essential_questions={lesson_essential_questions}
-        lesson_repertoire={lesson_repertoire}
-        lesson_prep={lesson_prep}
-        lesson_materials={lesson_materials}
-        lesson_sticking_points={lesson_sticking_points}
-        lesson_evidence={lesson_evidence}
-        lesson_prerequisites={lesson_prerequisites}
-        lesson_sections={resolvedLessonSections}
+        lesson_outcome={serializeForClient(lesson_outcome)}
+        lesson_outline={serializeForClient(lesson_outline)}
+        lesson_essential_questions={serializeForClient(lesson_essential_questions)}
+        lesson_repertoire={serializeForClient(lesson_repertoire)}
+        lesson_prep={serializeForClient(lesson_prep)}
+        lesson_materials={serializeForClient(lesson_materials)}
+        lesson_sticking_points={serializeForClient(lesson_sticking_points)}
+        lesson_evidence={serializeForClient(lesson_evidence)}
+        lesson_prerequisites={serializeForClient(lesson_prerequisites)}
+        lesson_sections={serializeForClient(resolvedLessonSections)} 
         client:visible
       />
       
