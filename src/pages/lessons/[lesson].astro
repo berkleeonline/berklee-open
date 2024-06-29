@@ -1,38 +1,23 @@
 ---
 import { contentfulClient } from "../../lib/contentful";
 import { documentToHtmlString } from '@contentful/rich-text-html-renderer';
-import { Button, Chip, Tabs, Tab, Card, CardBody, Tooltip, Link } from "@nextui-org/react";
+import { Button, Chip, Link } from "@nextui-org/react";
 import type { Lesson } from "../../type/content-blocks";
 import { IconChip } from "../../elements/IconChip";
 import { AddToLibraryButton } from "../../elements/AddToLibraryButton";
 import { ShareButton } from "../../elements/ShareButton";
 import MainLayout from "../../layouts/main.astro";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {faScroll, 
-        faPresentationScreen, 
-        faCompass, 
-        faStar, 
-        faTrafficCone, 
-        faMusicMagnifyingGlass, 
-        faMusic, 
-        faClock, 
-        faSeedling, 
-        faSignal4, 
-        faChalkboard, 
-        faChalkboardUser, 
-        faSquareCheck,
-        faFile,
-        faPianoKeyboard,
-        faPhotoFilmMusic,
-        faQuestionCircle,
-        faDrum, 
-        faFilePdf,
-        faTriangleInstrument} 
-        from '@fortawesome/pro-light-svg-icons';
+import {faScroll, faPresentationScreen, faClock, faSignal4, faChalkboardUser, faFilePdf} from '@fortawesome/pro-light-svg-icons';
 import SwiperCarousel from '../../components/carousel/carousel';
 import { LessonTabs } from '../../components/tabs/lesson-tabs';
 import styles from './_lesson.module.scss';
 
+// API function to fetch entry by ID
+const fetchEntryById = async (id) => {
+  const entry = await contentfulClient.getEntry(id);
+  return entry;
+};
 
 export async function getStaticPaths() {
   const lessons = await contentfulClient.getEntries({
@@ -51,6 +36,32 @@ export async function getStaticPaths() {
   return lessonsToPublish;
 }
 
+// Fetch and resolve lesson sections
+const fetchAndResolveSections = async (sections) => {
+  const resolvedSections = await Promise.all(
+    sections.map(async (section) => {
+      if (section.fields?.interactiveContent?.sys?.id) {
+        const interactiveContent = await fetchEntryById(section.fields.interactiveContent.sys.id);
+        return {
+          ...section,
+          fields: {
+            ...section.fields,
+            interactiveContent: interactiveContent.fields?.slides || [], // Default to an empty array if undefined
+          },
+        };
+      }
+      return {
+        ...section,
+        fields: {
+          ...section.fields,
+          interactiveContent: [], // Ensure interactiveContent is at least an empty array
+        },
+      };
+    })
+  );
+  return resolvedSections;
+};
+
 const {
   lesson_title,
   lesson_summary,
@@ -67,12 +78,37 @@ const {
   lesson_concepts,
   lesson_outcome,
   lesson_prerequisites,
+  lesson_sections,
   lesson_image_carousel
 } = Astro.props.fields;
 
 const id = Astro.props.sys.id;
 
-console.log(Astro.props.fields);
+const serializeForClient = (obj) => {
+  if (obj === undefined) return null; // Handle undefined at the top level
+
+  const seen = new WeakSet();
+  const onlyData = (key, value) => {
+    if (value === undefined) return null; // Handle undefined values
+    if (typeof value === "object" && value !== null) {
+      if (seen.has(value)) return null; // Avoid cyclic references
+      seen.add(value);
+      if (value instanceof Date) return value.toISOString();
+      if (Array.isArray(value)) return value.map(item => onlyData('', item));
+      return Object.fromEntries(Object.entries(value).map(([k, v]) => [k, onlyData(k, v)]));
+    }
+    if (typeof value === "function") return null; // Remove functions
+    return value;
+  };
+  return JSON.parse(JSON.stringify(obj, onlyData));
+};
+
+const resolvedLessonSections = await fetchAndResolveSections(lesson_sections || []);
+
+// Debug log
+// console.log('Original lesson_sections:', JSON.stringify(lesson_sections, null, 2));
+// console.log('Resolved lesson_sections:', JSON.stringify(resolvedLessonSections, null, 2));
+// console.log('Serialized lesson_sections:', JSON.stringify(serializeForClient(resolvedLessonSections), null, 2));
 
 ---
 <a id="overview"></a>
@@ -108,6 +144,7 @@ console.log(Astro.props.fields);
             </div>
           )}
         </div>
+
         <div class="mb-5" set:html={documentToHtmlString(lesson_summary)}></div>
 
         {lesson_concepts && lesson_concepts.length > 0 && (
@@ -132,16 +169,20 @@ console.log(Astro.props.fields);
         </div>
       </div>
 
-
       <LessonTabs 
-        lesson_outcome = {lesson_outcome}
-        lesson_outline = {lesson_outline}
-        lesson_essential_questions = {lesson_essential_questions}
-        lesson_repertoire = {lesson_repertoire}
-        lesson_prep = {lesson_prep}
-        lesson_materials = {lesson_materials}
-        lesson_prerequisites = {lesson_prerequisites}
-        client:load />
+        lesson_outcome={serializeForClient(lesson_outcome)}
+        lesson_outline={serializeForClient(lesson_outline)}
+        lesson_essential_questions={serializeForClient(lesson_essential_questions)}
+        lesson_repertoire={serializeForClient(lesson_repertoire)}
+        lesson_prep={serializeForClient(lesson_prep)}
+        lesson_materials={serializeForClient(lesson_materials)}
+        lesson_sticking_points={serializeForClient(lesson_sticking_points)}
+        lesson_evidence={serializeForClient(lesson_evidence)}
+        lesson_prerequisites={serializeForClient(lesson_prerequisites)}
+        lesson_sections={serializeForClient(resolvedLessonSections)} 
+        client:visible
+      />
+      
 
     </div>
     <div class="col-end-12 col-span-5 relative">
@@ -157,7 +198,8 @@ console.log(Astro.props.fields);
             <li><a class="p-2 px-4 block font-bold text-sm hover:underline" href="#lessonPreparation">Preparation</a></li>
             <li><a class="p-2 px-4 block font-bold text-sm hover:underline" href="#lessonStickingPoints">Sticking Points</a></li>
             <li><a class="p-2 px-4 block font-bold text-sm hover:underline" href="#lessonEvidence">Evidence of Learning</a></li>
-            <li><a class="p-2 px-4 block font-bold text-sm hover:underline" href="#lessonPrerequisites">Prerequisites</a></li>          </ul>
+            <li><a class="p-2 px-4 block font-bold text-sm hover:underline" href="#lessonPrerequisites">Prerequisites</a></li>
+          </ul>
         </div>
       </div>
     </div>

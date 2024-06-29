@@ -1,14 +1,33 @@
 
 .richContentInnerStyles {
-  margin-left: 2.4rem;
+  margin-left: 4.2rem;
 
-  p:not(li p) {
+  p:not(li p):not(blockquote p):not(:last-child) {
     margin: 0 0 1.5rem 0;
+  }
+
+  .instructorNotesTitle {
+    font-size: 1.7rem;
   }
   
   h3 {
     font-size: 1.1rem;
     font-weight: 700;
+  }
+
+  h4 {
+    font-size: 1rem;
+    font-weight: 700;
+  }
+
+  blockquote:not(:last-child) {
+    p:last-child {
+      margin-bottom: 0;
+    }
+    margin-bottom: 1.5rem;
+  }
+  blockquote:last-child {
+    margin-bottom: 0;
   }
 
   ul, ol {
