@@ -171,7 +171,7 @@ export const LessonTabs = ({
                                     />
                                   </div>
                                 )}
-                                <div key={idx} className="mt-8 border border-gray-300 p-8 rounded-lg relative">
+                                <div key={idx} className="mt-8 mb-16 border border-gray-300 p-8 rounded-lg relative">
                                     <div className="absolute -top-8 -left-6 p-3 rounded-lg border border-gray-300 bg-white font-bold">Slide {idx + 1}</div>
                                     {slide.fields.title && <h3 className="pb-4">{slide.fields.title}</h3>}
                                     {slide.fields.slide_instructor_notes && (
