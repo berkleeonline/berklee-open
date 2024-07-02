@@ -3,72 +3,76 @@ import { SlideshowHeader } from './SlideshowHeader';
 import { Slide } from './Slide';
 
 type SlideshowProps = {
-  content: object;
-}
+  content: any; // Use a more specific type if possible
+};
 
 const Slideshow = ({ content }: SlideshowProps) => {
-    const [currentSlide, setCurrentSlide] = useState(0);
-    const [hasNotes, setHasNotes] = useState(false);
-    const slides = content.fields.slides;
-    const totalSlides = slides.length;
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [hasNotes, setHasNotes] = useState(false);
+  const slides = content.fields.slides;
+  const slidesBgColor = content.fields.slideshow_background || '#eeeff5'; // Default background color
+  const totalSlides = slides.length;
 
-    const goToNextSlide = () => {
-        setCurrentSlide((prevSlide) => (prevSlide + 1) % totalSlides);
-    };
+  const goToNextSlide = () => {
+    setCurrentSlide((prevSlide) => (prevSlide + 1) % totalSlides);
+  };
 
-    const goToPreviousSlide = () => {
-        setCurrentSlide((prevSlide) => (prevSlide - 1 + totalSlides) % totalSlides);
-    };
+  const goToPreviousSlide = () => {
+    setCurrentSlide((prevSlide) => (prevSlide - 1 + totalSlides) % totalSlides);
+  };
 
-    const openNotes = () => {
-        const notes = slides[currentSlide].fields.slide_instructor_notes;
-        if (notes) {
-            const notesWindow = window.open("", "Instructor Notes", "width=300,height=400,location=no");
-            if (notesWindow) {
-                notesWindow.document.write(`
-                    <div>Instructor Notes</div>
-                    <h1>${slides[currentSlide].fields.title}</h1>
-                    <p>${slides[currentSlide].fields.slide_instructor_notes}</p>
-                `);
-            }
-        }
-    };
+  const openNotes = () => {
+    const notes = slides[currentSlide].fields.slide_instructor_notes;
+    if (notes) {
+      const notesWindow = window.open("", "Instructor Notes", "width=300,height=400,location=no");
+      if (notesWindow) {
+        notesWindow.document.write(`
+          <div>Instructor Notes</div>
+          <h1>${slides[currentSlide].fields.title}</h1>
+          <p>${notes}</p>
+        `);
+      }
+    }
+  };
 
-    useEffect(() => {
+  useEffect(() => {
     const notesExist: boolean = slides[currentSlide].fields.slide_instructor_notes ? true : false;
     setHasNotes(notesExist);
-    }, [currentSlide]);
+  }, [currentSlide]);
 
-    useEffect(() => {
+  useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-        if (event.key === 'ArrowRight') {
+      if (event.key === 'ArrowRight') {
         goToNextSlide();
-        } else if (event.key === 'ArrowLeft') {
+      } else if (event.key === 'ArrowLeft') {
         goToPreviousSlide();
-        }
+      }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => {
-        window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('keydown', handleKeyDown);
     };
-    }, [currentSlide]);
+  }, [currentSlide]);
 
-    return (
-        <div className={`h-screen w-screen bg-red-500 flex flex-col`}>
-            <SlideshowHeader
-                currentSlide={currentSlide}
-                totalSlides={totalSlides}
-                goToNextSlide={goToNextSlide}
-                goToPreviousSlide={goToPreviousSlide}
-                hasNotes={hasNotes}
-                openNotes={openNotes}
-            />
-            <div className="flex flex-1 bg-[#eeeff5]">
-                <Slide slide={slides[currentSlide]} />
-            </div>
-        </div>
-    );
+  console.log(slidesBgColor); // For debugging
+
+  return (
+    <div className="h-screen w-screen flex flex-col" style={{ backgroundColor: 'red' }}>
+      <SlideshowHeader
+        currentSlide={currentSlide}
+        totalSlides={totalSlides}
+        goToNextSlide={goToNextSlide}
+        goToPreviousSlide={goToPreviousSlide}
+        hasNotes={hasNotes}
+        openNotes={openNotes}
+      />
+      
+      <div className="flex flex-1" style={{ backgroundColor: slidesBgColor }}>
+        <Slide slide={slides[currentSlide]} />
+      </div>
+    </div>
+  );
 };
 
 export default Slideshow;
