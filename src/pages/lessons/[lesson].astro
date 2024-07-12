@@ -156,7 +156,7 @@ const resolvedLessonSections = await fetchAndResolveSections(lesson_sections || 
         )}
         
         <div class={`flex flex-row gap-4 items-center ${styles.lessonActions}`}>
-          <Button href={`/slideshows/${id}`} as={Link} color="primary" className="font-bold w-48" aria-label="Start Lesson">
+          <Button href={`/slideshows/${id}`} isExternal as={Link} color="primary" className="font-bold w-48" aria-label="Start Presentation">
             <FontAwesomeIcon icon={faPresentationScreen} class="text-sm" />
             Start Presentation
           </Button>
