@@ -5,6 +5,8 @@ import { SlideExitTicket } from './slide-types/SlideExitTicket';
 import { SlideImage } from './slide-types/SlideImage';
 import { SlideText } from './slide-types/SlideText';
 import { SlideVideo } from './slide-types/SlideVideo';
+import { SlideTwoCol } from './slide-types/SlideTwoCol';
+import './_slides.scss';
 
 type SlideProps = {
   slide: {
@@ -26,48 +28,95 @@ type SlideProps = {
         title?: string;
         description?: string;
         questions?: string[];
-        content?: {}
+        content?: string;
+        left_column?: string;
+        right_column?: string;
         embed?: string;
+        title_embed?: string;
+        flashCards?: { question: string, answer: string }[];
     }
   };
 }
 
 export const Slide: React.FC<SlideProps> = ({ slide }) => {
+    console.log('Slide component rendered'); // Ensure component is rendering
+    console.log('Slide data:', slide); // Log the slide data
+
     const slideType = slide.sys.contentType.sys.id;
     let slideContent;
 
-    if (slideType === 'slideTitle') {
-        const title = slide.fields.title || '';
-        const imageUrl = slide.fields.image ? slide.fields.image.fields.file.url : '';
-        slideContent = <SlideTitle title={title} image={imageUrl} />;
-    }
+    console.log('Slide type:', slideType); // Log the slide type
 
-    if (slideType === 'slideFlashCard') {
-        slideContent = <SlideFlashCard cards={slide.fields.flashCards} />;
-    }
+    switch (slideType) {
+        case 'slideTitle': {
+            const title = slide.fields.title || '';
+            const imageUrl = slide.fields.image ? slide.fields.image.fields.file.url : '';
+            const embed = slide?.fields.embed || '';
 
-    if (slideType === 'slideExitTicket') {
-        const title = slide.fields.title || '';
-        const questions = slide.fields.questions || [''];
-        slideContent = <SlideExitTicket title={title} questions={questions} />;
-    }
+            console.log('Embed content:', embed); // Debug the embed value
+            console.log('Title:', title); // Debug title
+            console.log('Image URL:', imageUrl); // Debug image URL
 
-    if (slideType === 'slideImage') {
-        const title = slide.fields.title || '';
-        const imageUrl = slide.fields.image ? slide.fields.image.fields.file.url : '';
-        slideContent = <SlideImage title={title} image={imageUrl} />;
-    }
+            slideContent = <SlideTitle title={title} image={imageUrl} embed={embed} />;
+            break;
+        }
+        case 'slideFlashCard': {
+            console.log('Flash cards:', slide.fields.flashCards); // Debug flash cards
 
-    if (slideType === 'slideText') {
-        const title = slide.fields.title || '';
-        const content = slide?.fields.content || '';
-        slideContent = <SlideText title={title} text={content} />;
-    }
+            slideContent = <SlideFlashCard cards={slide.fields.flashCards} />;
+            break;
+        }
+        case 'slideExitTicket': {
+            const title = slide.fields.title || '';
+            const questions = slide.fields.questions || [''];
 
-    if (slideType === 'slideVideo') {
-        const title = slide.fields.title || '';
-        const embed = slide?.fields.embed || '';
-        slideContent = <SlideVideo title={title} embed={embed} />;
+            console.log('Exit ticket questions:', questions); // Debug questions
+
+            slideContent = <SlideExitTicket title={title} questions={questions} />;
+            break;
+        }
+        case 'slideImage': {
+            const title = slide.fields.title || '';
+            const imageUrl = slide.fields.image ? slide.fields.image.fields.file.url : '';
+
+            console.log('Image URL:', imageUrl); // Debug image URL
+
+            slideContent = <SlideImage title={title} image={imageUrl} />;
+            break;
+        }
+        case 'slideText': {
+            const title = slide.fields.title || '';
+            const content = slide?.fields.content || '';
+
+            console.log('Text content:', content); // Debug text content
+
+            slideContent = <SlideText title={title} text={content} />;
+            break;
+        }
+        case 'slideVideo': {
+            const title = slide.fields.title || '';
+            const embed = slide?.fields.embed || '';
+
+            console.log('Video embed:', embed); // Debug video embed
+
+            slideContent = <SlideVideo title={title} embed={embed} />;
+            break;
+        }
+        case 'slide_two_column': {
+            const title = slide.fields.title || '';
+            const leftColumn = slide?.fields.left_column || '';
+            const rightColumn = slide?.fields.right_column || '';
+
+            console.log('Two col content:', leftColumn, rightColumn); // Debug text content
+
+            slideContent = <SlideTwoCol title={title} leftColumn={leftColumn} rightColumn={rightColumn} />;
+            break;
+        }
+        default: {
+            console.error('Unknown slide type:', slideType);
+            slideContent = <div>Unknown slide type: {slideType}</div>;
+            break;
+        }
     }
 
     return (

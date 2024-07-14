@@ -1,0 +1,64 @@
+.slide-body {
+  h2 {
+    font-size: 2.75vw;
+    font-weight: bold;
+    margin-bottom: 3rem;
+  }
+
+  h3 {
+    font-size: 2.25vw;
+    font-weight: bold;
+    margin-bottom: 2.5rem;
+  }
+  
+  ol, ul {
+    font-size: 2.25vw;
+    font-weight: bold;
+    list-style-type: decimal;  
+    margin-left: 2.5rem;
+
+    ol {
+      margin-top: 1rem;
+      margin-bottom: 3rem;
+      list-style-type: upper-alpha;
+    }
+    li {
+      line-height: 1.35;
+      margin-bottom: 1rem;
+      &:last-child {
+        margin-bottom: 0;
+      } 
+      p {
+        font-weight: 400;
+        padding-left: 1rem;
+      }
+    }
+  }
+
+  iframe {
+    margin: 0 auto;
+
+    &.second-iframe {
+      margin-top: -10rem;
+      opacity: 0.5;
+    }
+    
+  }
+}
+
+.loading-spinner {
+  border: 16px solid #f3f3f3;
+  border-top: 16px solid #FFF;
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  animation: spin 2s linear infinite;
+  margin: 20px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+

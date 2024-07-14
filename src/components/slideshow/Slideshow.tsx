@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { SlideshowHeader } from './SlideshowHeader';
 import { Slide } from './Slide';
 
@@ -55,7 +55,10 @@ const Slideshow = ({ content }: SlideshowProps) => {
     };
   }, [currentSlide]);
 
-  console.log(slidesBgColor); // For debugging
+  useEffect(() => {
+    console.log('Current slide index:', currentSlide);
+    console.log('Current slide data:', slides[currentSlide]);
+  }, [currentSlide]);
 
   return (
     <div className="h-screen w-screen flex flex-col" style={{ backgroundColor: 'red' }}>
@@ -66,9 +69,10 @@ const Slideshow = ({ content }: SlideshowProps) => {
         goToPreviousSlide={goToPreviousSlide}
         hasNotes={hasNotes}
         openNotes={openNotes}
+        className="slide-header"
       />
       
-      <div className="flex flex-1" style={{ backgroundColor: slidesBgColor }}>
+      <div className="flex flex-1 slide-body" style={{ backgroundColor: slidesBgColor }}>
         <Slide slide={slides[currentSlide]} />
       </div>
     </div>
