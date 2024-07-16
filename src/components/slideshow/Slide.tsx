@@ -5,6 +5,7 @@ import { SlideExitTicket } from './slide-types/SlideExitTicket';
 import { SlideImage } from './slide-types/SlideImage';
 import { SlideText } from './slide-types/SlideText';
 import { SlideVideo } from './slide-types/SlideVideo';
+import { SlideAudio } from './slide-types/SlideAudio';
 import { SlideTwoCol } from './slide-types/SlideTwoCol';
 import './_slides.scss';
 
@@ -100,6 +101,15 @@ export const Slide: React.FC<SlideProps> = ({ slide }) => {
             console.log('Video embed:', embed); // Debug video embed
 
             slideContent = <SlideVideo title={title} embed={embed} />;
+            break;
+        }
+        case 'slideAudio': {
+            const title = slide.fields.title || '';
+            const embed = slide?.fields.embed || '';
+
+            console.log('Audio embed:', embed); // Debug audio embed
+
+            slideContent = <SlideAudio title={title} embed={embed} />;
             break;
         }
         case 'slide_two_column': {
