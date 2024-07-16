@@ -14,17 +14,36 @@ interface SyllabusLessonProps {
       lesson_audience: string;
       lesson_duration: string;
       lesson_concepts: Array<{ fields: { concept_name: string } }>;
+      lesson_image?: any; // Ensure lesson_image is included in the fields
     };
   };
   index: number;
 }
 
 const SyllabusLesson: React.FC<SyllabusLessonProps> = ({ lesson, index }) => {
+
+  console.log('SyllabusLesson component is rendering');
+
+  const getImageUrl = (image: any): string => {
+    if (!image || !image.fields || !image.fields.file || !image.fields.file.url) {
+      console.log('No valid image URL found. Using placeholder.');
+      return 'https://placehold.co/135x75';
+    }
+    const url = image.fields.file.url;
+    const fullUrl = url.startsWith('//') ? `https:${url}` : url;
+    console.log('Image URL:', fullUrl);
+    return fullUrl;
+  };
+
   if (!lesson || !lesson.fields) {
     console.error("Lesson or lesson fields are undefined:", lesson);
     return <p>Lesson information is unavailable</p>;
   }
 
+  console.log('Lesson Data:', lesson);
+  const lessonImageUrl = lesson.fields.lesson_image ? getImageUrl(lesson.fields.lesson_image) : 'https://placehold.co/135x75';
+  console.log('Final Image URL:', lessonImageUrl);
+  
   const { lesson_title, lesson_short_description, lesson_audience, lesson_duration, lesson_concepts } = lesson.fields;
 
   return (
@@ -33,7 +52,17 @@ const SyllabusLesson: React.FC<SyllabusLessonProps> = ({ lesson, index }) => {
         <div className="flex flex-row gap-2">
           <div>
             <a href={`/lessons/${lesson.sys.id}`} className="no-underline hover:text-blue-800">
-              <img src="https://dummyimage.com/135x75/eeeeef/aaaaaa.jpg&text=135x75" className="rounded-lg mr-4" />
+              <img 
+                src={lessonImageUrl} 
+                alt={lesson_title} 
+                className="rounded-lg mr-4 w-[135px] h-[75px] object-cover" 
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  target.onerror = null;
+                  target.src = 'https://placehold.co/135x75';
+                  console.log('Error loading image, using fallback');
+                }}
+              />
             </a>
           </div>
           <div className="flex flex-col gap-1">

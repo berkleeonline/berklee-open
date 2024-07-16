@@ -15,6 +15,7 @@ interface SyllabusUnitProps {
       unit_description: any;
       unit_concept: Array<{ fields: { concept_name: string } }>;
       unit_lessons: Array<any>; // full lesson data passed from parent
+      unit_image?: any; // unit image
     };
   };
   index: number;
@@ -32,9 +33,20 @@ const SyllabusUnit: React.FC<SyllabusUnitProps> = ({ unit, index }) => {
     return <p>Unit data is unavailable</p>;
   }
 
-  const { unit_title, unit_concept, unit_lessons } = unit.fields;
+  const { unit_title, unit_concept, unit_lessons, unit_image } = unit.fields;
 
   const hasLessons = unit_lessons && unit_lessons.length > 0;
+
+  // Helper function to get image URL
+  const getImageUrl = (image: any): string => {
+    if (!image || !image.fields || !image.fields.file || !image.fields.file.url) {
+      return 'https://placehold.co/135x75';
+    }
+    const url = image.fields.file.url;
+    return url.startsWith('//') ? `https:${url}` : url;
+  };
+
+  const unitImageUrl = getImageUrl(unit_image);
 
   return (
     <li className="pb-16 relative">
@@ -45,7 +57,7 @@ const SyllabusUnit: React.FC<SyllabusUnitProps> = ({ unit, index }) => {
       <div className="flex md:flex-row gap-3">
         <div className="min-w-[160px] flex-shrink-0" style={{ flexBasis: '160px' }}>
           <a href={`/units/${unit.sys.id}`} className="no-underline hover:text-blue-800">
-            <img src="https://dummyimage.com/135x75/eeeeef/aaaaaa.jpg&text=135x75" className="rounded-lg mr-4" style={{ width: 135, height: 75 }} />
+            <img src={unitImageUrl} alt={unit_title} className="rounded-lg mr-4" style={{ width: 135, height: 75, objectFit: 'cover' }} />
           </a>
         </div>
         <div className="flex flex-col gap-1 size-full">
@@ -71,7 +83,12 @@ const SyllabusUnit: React.FC<SyllabusUnitProps> = ({ unit, index }) => {
             <div className="mt-12">
               <ul>
                 {unit_lessons.map((lesson, lessonIndex) => (
-                  <SyllabusLesson key={lessonIndex} lesson={lesson} index={lessonIndex} />
+                  <SyllabusLesson 
+                    key={lessonIndex} 
+                    lesson={lesson} 
+                    index={lessonIndex}
+                    imageUrl={getImageUrl(lesson.fields.lesson_image)}
+                  />
                 ))}
               </ul>
             </div>

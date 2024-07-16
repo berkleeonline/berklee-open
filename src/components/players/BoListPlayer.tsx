@@ -16,14 +16,14 @@ const testTracks: track[] = [
     title: [
         {
             type: 'text',
-            content: 'Smoke',
+            content: 'Berklee HAPPY test',
             className: 'title'
         }
     ],
     artist: [
         {
             type: 'text',
-            content: 'Oleg Fedak',
+            content: 'Berklee HAPPY test',
             className: 'artist',
             link: 'https://music.youtube.com/channel/UCmGqnW6VmhOV4KW67vhzPCA'
         }
@@ -302,7 +302,7 @@ export default function BoListPlayer() {
   const [playerMode, setPlayerMode] = useState("large");
 
   const audioRef = useRef<HTMLAudioElement>(null);
-  const audioSrcs = ["/free-audio/tokyo cafe.mp3", "/free-audio/my universe.mp3", "/free-audio/smoke.mp3", "/free-audio/good night.mp3", "/free-audio/hear me.mp3", "/free-audio/baby mandala.mp3", "/free-audio/midnight forest.mp3", "/free-audio/separation.mp3", "/free-audio/drive breakbeat.mp3", "/free-audio/glossy.mp3"];
+  const audioSrcs = ["https://assets.online.berklee.edu/berklee-open-placeholder/Lesson_1_Happy_BPM+125.mp3", "/free-audio/my universe.mp3", "/free-audio/smoke.mp3", "/free-audio/good night.mp3", "/free-audio/hear me.mp3", "/free-audio/baby mandala.mp3", "/free-audio/midnight forest.mp3", "/free-audio/separation.mp3", "/free-audio/drive breakbeat.mp3", "/free-audio/glossy.mp3"];
 
   const handleOnPlay = (index:number, resume:boolean) => {
     if(index === selectedTrack && !resume) {
