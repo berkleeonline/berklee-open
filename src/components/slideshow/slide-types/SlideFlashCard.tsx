@@ -38,7 +38,7 @@ export const SlideFlashCard: React.FC<SlideFlashCardProps> = ({ cards }) => {
                     <FontAwesomeIcon icon={faArrowLeft} />
                 </button>
                 <div className="flex-1">
-                    <p>{currentCardIndex + 1} / {totalCards}</p>
+                    <p className="flash-card-control-number">{currentCardIndex + 1} / {totalCards}</p>
                 </div>
                 <button onClick={goToPreviousCard} disabled={currentCardIndex === totalCards - 1} className="rounded-full p-0 h-10 w-10 border border-white border-2 disabled:opacity-50">
                     <FontAwesomeIcon icon={faArrowRight} />
