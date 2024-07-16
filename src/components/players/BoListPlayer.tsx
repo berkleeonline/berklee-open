@@ -16,16 +16,16 @@ const testTracks: track[] = [
     title: [
         {
             type: 'text',
-            content: 'Berklee Track Tester HAPPY',
+            content: 'Smoke',
             className: 'title'
         }
     ],
     artist: [
         {
             type: 'text',
-            content: 'Berklee Musak',
+            content: 'Oleg Fedak',
             className: 'artist',
-            link: 'https://assets.online.berklee.edu/berklee-open-placeholder/Lesson_1_Happy_BPM+125.mp3'
+            link: 'https://music.youtube.com/channel/UCmGqnW6VmhOV4KW67vhzPCA'
         }
     ],
     album: [
