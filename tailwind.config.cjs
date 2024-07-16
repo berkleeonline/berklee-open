@@ -5,7 +5,8 @@ const defaultTheme = require('tailwindcss/defaultTheme');
 module.exports = {
   content: [
     './src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}',
-    "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}"
+    "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}",
+    "./node_modules/react-list-player/**/*.{js,ts,jsx,tsx}"
   ],
   theme: {
     extend: {

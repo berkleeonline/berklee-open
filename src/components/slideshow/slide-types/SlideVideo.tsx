@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import LoadingIndicator from '../LoadingIndicator'; // Make sure to import the LoadingIndicator component
+import LoadingIndicator from '../LoadingIndicator';
+import BoListPlayer from '../../players/BoListPlayer';
+
 
 interface SlideVideoProps {
     title: string;
@@ -29,6 +31,7 @@ export const SlideVideo: React.FC<SlideVideoProps> = ({ title, embed }) => {
             {loading && <LoadingIndicator />} {/* Loading indicator */}
             
             <div id="video-embed-container" style={{ display: loading ? 'none' : 'block' }} dangerouslySetInnerHTML={{ __html: embed }} />
+            {/* <BoListPlayer /> */}
         </div>
     );
 };

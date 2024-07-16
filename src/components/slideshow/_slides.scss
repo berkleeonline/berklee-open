@@ -36,7 +36,7 @@
     }
   }
 
-  p {
+  p:not(.flash-card-control-number) {
     font-size: 2.25vw;
     line-height: 1.35;
     margin-bottom: 3rem;

@@ -1,6 +1,6 @@
 
 .richContentInnerStyles {
-  margin-left: 4.2rem;
+  margin-left: 2.5rem;
 
   p:not(li p):not(blockquote p):not(:last-child) {
     margin: 0 0 1.5rem 0;
@@ -33,7 +33,7 @@
   ul, ol {
     margin: .75rem 0 .75rem 1.25rem;
     li {
-      padding: .5rem;
+      padding: .25rem;
     }
   }
   ul {
