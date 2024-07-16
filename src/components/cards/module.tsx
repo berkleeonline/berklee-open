@@ -32,7 +32,7 @@ const ModuleCard: React.FC<ModuleCardProps> = ({ module, index }) => {
             radius="lg"
             width="100%"
             alt={module_title}
-            className="w-full object-cover h-[140px] opacity-100"
+            className="w-full object-cover h-[265px] opacity-100"
             src="https://placehold.co/290x150"
           />
         </CardBody>

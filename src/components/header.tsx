@@ -63,6 +63,11 @@ const Header = (props: HeaderProps) => {
           </Link>
         </NavbarItem>
         <NavbarItem>
+          <Link color="foreground" href="/lessons" className="font-bold">
+            Lessons
+          </Link>
+        </NavbarItem>
+        <NavbarItem>
           <Link color="foreground" href="/search" className="font-bold">
             Search
           </Link>
