@@ -7,6 +7,7 @@ import { SlideText } from './slide-types/SlideText';
 import { SlideVideo } from './slide-types/SlideVideo';
 import { SlideTwoCol } from './slide-types/SlideTwoCol';
 import { SlideTwoColEmbed } from './slide-types/SlideTwoColEmbed';
+import { SlideEmbedAudio } from './slide-types/SlideEmbedAudio';
 import './_slides.scss';
 
 type SlideProps = {
@@ -33,6 +34,7 @@ type SlideProps = {
         left_column?: string;
         right_column?: string;
         embed?: string;
+        audio?: string;
         title_embed?: string;
         flashCards?: { question: string, answer: string }[];
     }
@@ -113,6 +115,19 @@ export const Slide: React.FC<SlideProps> = ({ slide }) => {
             slideContent = <SlideTwoCol title={title} leftColumn={leftColumn} rightColumn={rightColumn} />;
             break;
         }
+
+        case 'slide_embed_audio': {
+            const title = slide.fields.title || '';
+            const embed = slide?.fields.embed || '';
+            const audio = slide?.fields.audio || '';
+
+            console.log('Audio embed:', audio);
+
+            slideContent = <SlideEmbedAudio title={title} embed={embed} audio={audio} />;
+            break;
+        }
+
+
         case 'slide_two_column_embed': {
             const title = slide.fields.title || '';
             const leftColumn = slide?.fields.left_column || '';

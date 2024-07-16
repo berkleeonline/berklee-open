@@ -16,16 +16,16 @@ const testTracks: track[] = [
     title: [
         {
             type: 'text',
-            content: 'Smoke',
+            content: 'Berklee Track Tester HAPPY',
             className: 'title'
         }
     ],
     artist: [
         {
             type: 'text',
-            content: 'Oleg Fedak',
+            content: 'Berklee Musak',
             className: 'artist',
-            link: 'https://music.youtube.com/channel/UCmGqnW6VmhOV4KW67vhzPCA'
+            link: 'https://assets.online.berklee.edu/berklee-open-placeholder/Lesson_1_Happy_BPM+125.mp3'
         }
     ],
     album: [
@@ -319,7 +319,7 @@ export default function BoListPlayer() {
 
   return (
     <ListPlayerContext.Provider value={{selectedTrack, setSelectedTrack, isPlaying, setIsPlaying, isMuted, setIsMuted}}>
-      <div className='container-for-sizing-player flex justify-center w-[75%] mx-auto'>
+      <div className='container-for-sizing-player flex justify-center w-[75%] mx-auto -mt-40'>
         <ListPlayer 
           tracks={testTracks} 
           listInfo={testListInfo} 
