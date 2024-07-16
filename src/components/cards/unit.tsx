@@ -31,7 +31,7 @@ const UnitCard: React.FC<UnitCardProps> = ({
             width="100%"
             alt={title}
             className="w-full object-cover h-[265px] opacity-100"
-            src="https://placehold.co/290x150"
+            src="https://placehold.co/425x265"
           />
         </CardBody>
         <CardFooter className="h-full text-small flex-col">
