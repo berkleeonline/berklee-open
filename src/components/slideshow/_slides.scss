@@ -24,22 +24,16 @@
     }
     li {
       line-height: 1.35;
-      margin-bottom: 1rem;
+      margin-bottom: .75rem;
       &:last-child {
         margin-bottom: 0;
       } 
-      p {
+      p:not(.flash-card-control-number) {
         font-weight: 400;
         padding-left: 1rem;
-        margin-bottom: 0;
+        margin-bottom: 1rem;
       }
     }
-  }
-
-  p:not(.flash-card-control-number) {
-    font-size: 2.25vw;
-    line-height: 1.35;
-    margin-bottom: 3rem;
   }
 
   iframe {
