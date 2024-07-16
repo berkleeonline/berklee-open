@@ -8,6 +8,14 @@ import LessonCard from "../../components/cards/lesson";
 const lessons = await contentfulClient.getEntries<Lesson>({
   content_type: "lesson",
 });
+
+function getImageUrl(image) {
+  if (!image || !image.fields || !image.fields.file || !image.fields.file.url) {
+    return 'https://placehold.co/425x265';
+  }
+  const url = image.fields.file.url;
+  return url.startsWith('//') ? `https:${url}` : url;
+}
 ---
 
 <MainLayout title={`Berklee Open: Lessons`}>
@@ -16,7 +24,16 @@ const lessons = await contentfulClient.getEntries<Lesson>({
       <h1 class="text-4xl font-bold mb-8">Lessons</h1>
       <div class="grid grid-cols-3 gap-8">
         {lessons.items.map((lesson, index) => (
-          <LessonCard key={index} lesson={lesson} index={index} />
+          <LessonCard 
+            key={lesson.sys.id}
+            id={lesson.sys.id}
+            title={lesson.fields.lesson_title}
+            shortDescription={lesson.fields.lesson_short_description}
+            audience={lesson.fields.lesson_audience}
+            imageUrl={getImageUrl(lesson.fields.lesson_image)}
+            index={index}
+            client:load
+          />
         ))}
       </div>
     </div>

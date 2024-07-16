@@ -151,14 +151,14 @@ export const LessonTabs = ({
             
           </div>
         </Tab>
-        <Tab key="instructions" title="Instructions" className="text-medium tracking-wider font-bold">
+        <Tab key="instructions" title="Instructions" className="tab-panel-instructions text-medium tracking-wider font-bold">
           <div className="tracking-normal font-normal border-l-8 border-gray-100">
             {lesson_sections && lesson_sections.length > 0 && (
               <div className="mb-12 pl-0">
                 {lesson_sections.map((section, index) => (
                   <div key={index} className="mb-6">
                     {/* <h3 className="font-bold text-lg mb-4">{section.fields.section_title}</h3> */}
-                    <div className={`mb-7 ${styles.richContentInnerStyles}`}>
+                    <div className={`mb-7 ${styles.instructionInnerStyles}`}>
                       {section.fields?.interactiveContent && Array.isArray(section.fields?.interactiveContent) 
                         ? section.fields.interactiveContent.map((slide, idx) => (
                             <div key={idx}>
