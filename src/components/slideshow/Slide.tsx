@@ -6,6 +6,7 @@ import { SlideImage } from './slide-types/SlideImage';
 import { SlideText } from './slide-types/SlideText';
 import { SlideVideo } from './slide-types/SlideVideo';
 import { SlideTwoCol } from './slide-types/SlideTwoCol';
+import { SlideTwoColEmbed } from './slide-types/SlideTwoColEmbed';
 import './_slides.scss';
 
 type SlideProps = {
@@ -70,7 +71,7 @@ export const Slide: React.FC<SlideProps> = ({ slide }) => {
             const title = slide.fields.title || '';
             const questions = slide.fields.questions || [''];
 
-            console.log('Exit ticket questions:', questions); // Debug questions
+            console.log('Exit ticket questions:', questions);
 
             slideContent = <SlideExitTicket title={title} questions={questions} />;
             break;
@@ -79,7 +80,7 @@ export const Slide: React.FC<SlideProps> = ({ slide }) => {
             const title = slide.fields.title || '';
             const imageUrl = slide.fields.image ? slide.fields.image.fields.file.url : '';
 
-            console.log('Image URL:', imageUrl); // Debug image URL
+            console.log('Image URL:', imageUrl); 
 
             slideContent = <SlideImage title={title} image={imageUrl} />;
             break;
@@ -88,7 +89,7 @@ export const Slide: React.FC<SlideProps> = ({ slide }) => {
             const title = slide.fields.title || '';
             const content = slide?.fields.content || '';
 
-            console.log('Text content:', content); // Debug text content
+            console.log('Text content:', content); 
 
             slideContent = <SlideText title={title} text={content} />;
             break;
@@ -97,7 +98,7 @@ export const Slide: React.FC<SlideProps> = ({ slide }) => {
             const title = slide.fields.title || '';
             const embed = slide?.fields.embed || '';
 
-            console.log('Video embed:', embed); // Debug video embed
+            console.log('Video embed:', embed);
 
             slideContent = <SlideVideo title={title} embed={embed} />;
             break;
@@ -107,9 +108,19 @@ export const Slide: React.FC<SlideProps> = ({ slide }) => {
             const leftColumn = slide?.fields.left_column || '';
             const rightColumn = slide?.fields.right_column || '';
 
-            console.log('Two col content:', leftColumn, rightColumn); // Debug text content
+            console.log('Two col content:', leftColumn, rightColumn);
 
             slideContent = <SlideTwoCol title={title} leftColumn={leftColumn} rightColumn={rightColumn} />;
+            break;
+        }
+        case 'slide_two_column_embed': {
+            const title = slide.fields.title || '';
+            const leftColumn = slide?.fields.left_column || '';
+            const rightColumn = slide?.fields.right_column || '';
+
+            console.log('Two col embed:', leftColumn, rightColumn); 
+
+            slideContent = <SlideTwoColEmbed title={title} leftColumn={leftColumn} rightColumn={rightColumn} />;
             break;
         }
         default: {
