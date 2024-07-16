@@ -8,14 +8,6 @@ import LessonCard from "../../components/cards/lesson";
 const lessons = await contentfulClient.getEntries<Lesson>({
   content_type: "lesson",
 });
-
-function getImageUrl(image) {
-  if (!image || !image.fields || !image.fields.file || !image.fields.file.url) {
-    return 'https://placehold.co/425x265';
-  }
-  const url = image.fields.file.url;
-  return url.startsWith('//') ? `https:${url}` : url;
-}
 ---
 
 <MainLayout title={`Berklee Open: Lessons`}>
@@ -30,7 +22,9 @@ function getImageUrl(image) {
             title={lesson.fields.lesson_title}
             shortDescription={lesson.fields.lesson_short_description}
             audience={lesson.fields.lesson_audience}
-            imageUrl={getImageUrl(lesson.fields.lesson_image)}
+            imageUrl={lesson.fields.lesson_image?.fields?.file?.url?.startsWith('//') 
+              ? `https:${lesson.fields.lesson_image.fields.file.url}` 
+              : lesson.fields.lesson_image?.fields?.file?.url ?? 'https://placehold.co/425x265'}
             index={index}
             client:load
           />

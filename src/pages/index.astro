@@ -45,16 +45,35 @@ const units = await contentfulClient.getEntries<Unit>({
   <div>
     <h2 class="text-4xl font-bold mb-8">Resources</h2>
     <h3 class="text-2xl font-bold mb-8">Lessons</h3>
-    <div class="grid grid-cols-4 gap-8">
+    <div class="grid grid-cols-3 gap-8">
       {lessons.items.map((lesson, index) => (
-        <LessonCard key={index} lesson={lesson} />
+        <LessonCard 
+          key={lesson.sys.id}
+          id={lesson.sys.id}
+          title={lesson.fields.lesson_title}
+          shortDescription={lesson.fields.lesson_short_description}
+          audience={lesson.fields.lesson_audience}
+          imageUrl={lesson.fields.lesson_image?.fields?.file?.url?.startsWith('//') 
+            ? `https:${lesson.fields.lesson_image.fields.file.url}` 
+            : lesson.fields.lesson_image?.fields?.file?.url ?? 'https://placehold.co/425x265'}
+          index={index}
+          client:load
+        />
       ))}
     </div>
 
     <h3 class="mt-16 text-2xl font-bold mb-4">Units</h3>
-    <div class="grid grid-cols-4 gap-8 mb-48">
-      {units.items.map((unit, index) => (
-        <UnitCard unit={unit} index={index} />
+    <div class="grid grid-cols-3 gap-8 mb-48">
+      {units.items.map((unit) => (
+        <UnitCard 
+            key={unit.sys.id}
+            id={unit.sys.id}
+            title={unit.fields.unit_title}
+            shortDescription={unit.fields.unit_short_description}
+            level={unit.fields.unit_level || []}
+            lessonsCount={unit.fields.unit_lessons?.length || 0}
+            client:load
+          />
       ))}
     </div>
   </div>
