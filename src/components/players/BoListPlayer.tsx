@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
 import { ListPlayer, ListPlayerContext } from 'react-list-player';
 
-// This is just a sample listInfo object, you can use your own
+// This is just a sample listInfo object
 const testListInfo: listInfo = {
   type: 'playlist',
   name: 'Royalty Free Playlist',
@@ -10,7 +10,7 @@ const testListInfo: listInfo = {
   duration: "24 min"
 }
 
-// This is just a sample track array, you can use your own
+// This is just a sample track array
 const testTracks: track[] = [
   {
     title: [
@@ -319,7 +319,7 @@ export default function BoListPlayer() {
 
   return (
     <ListPlayerContext.Provider value={{selectedTrack, setSelectedTrack, isPlaying, setIsPlaying, isMuted, setIsMuted}}>
-      <div className='container-for-sizing-player w-full'>
+      <div className='container-for-sizing-player flex justify-center w-[75%] mx-auto'>
         <ListPlayer 
           tracks={testTracks} 
           listInfo={testListInfo} 

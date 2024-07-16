@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import LoadingIndicator from '../LoadingIndicator';
-import BoListPlayer from '../../players/BoListPlayer'; // Make sure to import the BoListPlayer component
 
 interface SlideTitleProps {
     title: string;
@@ -29,7 +28,6 @@ export const SlideTitle: React.FC<SlideTitleProps> = ({ title, image, embed, htm
         <div className="flex flex-1 flex-col items-center w-screen py-10">
             <h1 className="font-sans text-[5vw] font-bold">{title}</h1>
             {/* {image && <img src={image} alt={title} className="slide-title-image" width="55%" />} */}
-            <BoListPlayer client:load  />
             
             {loading && <LoadingIndicator />} {/* Loading indicator */}
             

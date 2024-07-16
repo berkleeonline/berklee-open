@@ -13,7 +13,7 @@ interface ShareButtonProps {
 export const ShareButton: FC<ShareButtonProps> = ({ headerId, type, hrefId, ...props }) => {
   return (
     <>
-    <Tooltip client:load  placement="bottom" content={`${type} ${hrefId}`} color="default">
+    <Tooltip client:load  placement="bottom" content={`Share ${type}`} color="default">
       <Button client:load isIconOnly className="p-2" radius="full" variant="bordered" color="default" aria-label="Share">
         <FontAwesomeIcon icon={faShare} />
       </Button>
