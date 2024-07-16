@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { ListPlayer, ListPlayerContext } from 'react-list-player';
 
 // This is just a sample listInfo object, you can use your own
@@ -299,15 +299,42 @@ export default function BoListPlayer() {
   const [selectedTrack, setSelectedTrack] = useState(-1);   // -1 means no track is selected
   const [isPlaying, setIsPlaying] = useState(false);        // play/pause
   const [isMuted, setIsMuted] = useState(false);            // mute/unmute
+  const [playerMode, setPlayerMode] = useState("large");
+
+  const audioRef = useRef<HTMLAudioElement>(null);
+  const audioSrcs = ["/free-audio/tokyo cafe.mp3", "/free-audio/my universe.mp3", "/free-audio/smoke.mp3", "/free-audio/good night.mp3", "/free-audio/hear me.mp3", "/free-audio/baby mandala.mp3", "/free-audio/midnight forest.mp3", "/free-audio/separation.mp3", "/free-audio/drive breakbeat.mp3", "/free-audio/glossy.mp3"];
+
+  const handleOnPlay = (index:number, resume:boolean) => {
+    if(index === selectedTrack && !resume) {
+      audioRef.current?.load();
+      audioRef.current?.play();
+    } else {
+      audioRef.current?.play();
+    }
+  }
+
+  const handleOnPause = () => {
+    audioRef.current?.pause();
+  }
 
   return (
     <ListPlayerContext.Provider value={{selectedTrack, setSelectedTrack, isPlaying, setIsPlaying, isMuted, setIsMuted}}>
       <div className='container-for-sizing-player w-full'>
         <ListPlayer 
           tracks={testTracks} 
-          listInfo={testListInfo}
+          listInfo={testListInfo} 
+          playerMode={playerMode}
+          playCallback={handleOnPlay} 
+          pauseCallback={handleOnPause}
+          loop
+          kbdShortcuts
         />
       </div>
+      <audio ref={audioRef} 
+        src={selectedTrack < audioSrcs.length ? audioSrcs[selectedTrack%audioSrcs.length] : undefined}
+        muted={isMuted} 
+        onEnded={() => {setSelectedTrack(selectedTrack + 1)}}
+      />
     </ListPlayerContext.Provider>
   )
 }
