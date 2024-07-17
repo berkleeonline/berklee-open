@@ -36,6 +36,11 @@
     }
   }
 
+  p:not(.flash-card-control-number) {
+    font-size: 2.25vw;
+    margin-bottom: 3rem;
+  }
+
   iframe {
     margin: 0 auto;
 

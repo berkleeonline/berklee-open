@@ -1,4 +1,5 @@
 import React from 'react';
+import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
 
 interface SlideExitTicketProps {
     title: string;
@@ -15,16 +16,7 @@ export const SlideExitTicket: React.FC<SlideExitTicketProps> = ({ title, questio
 
             <div className="flex flex-col mt-10 w-[50%] mx-auto">
                 <h3 className="font-sans font-bold mb-4">Questions</h3>
-                {questions.map((question, index) => (
-                    <div key={index} className="text-[2vw] mb-4 flex gap-4">
-                        <div className="w-[30px] font-bold">
-                            {index + 1}.
-                        </div>
-                        <div className="flex-1">
-                            {question}
-                        </div>
-                    </div>
-                ))}
+                <div className="text-lg font-sans text-[2.5vw] mb-24" dangerouslySetInnerHTML={{ __html: documentToHtmlString(questions)}}></div>
             </div>
         </div>
     );

@@ -72,7 +72,7 @@ const Slideshow = ({ content }: SlideshowProps) => {
         className="slide-header"
       />
       
-      <div className="flex flex-1 slide-body" style={{ backgroundColor: slidesBgColor }}>
+      <div className="flex flex-1 w-full mx-auto slide-body" style={{ backgroundColor: slidesBgColor }}>
         <Slide slide={slides[currentSlide]} />
       </div>
     </div>

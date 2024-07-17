@@ -146,7 +146,7 @@ export const Slide: React.FC<SlideProps> = ({ slide }) => {
     }
 
     return (
-        <div className="flex flex-col">
+        <div className="flex flex-col w-full mx-auto">
             {slideContent}
         </div>
     );
