@@ -2,7 +2,7 @@ import React from 'react';
 import { Card, CardBody, CardFooter, Image } from "@nextui-org/react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IconChip } from "../../elements/IconChip";
-import { faHeart, faBookBlank } from '@fortawesome/pro-light-svg-icons';
+import { faHeart, faBookBlank, faScroll } from '@fortawesome/pro-light-svg-icons';
 
 type UnitCardProps = {
   id: string;
@@ -45,9 +45,10 @@ const UnitCard: React.FC<UnitCardProps> = ({
           </div>
           <div className="description mb-4 text-left">{shortDescription}</div>
           <div className="flex w-full justify-start items-center absolute bottom-2 left-[12px] h-[40px]">
-            <p className="text-sm gap-1">
+            <div className="text-baseline flex flex-row items-center font-bold">
+              <FontAwesomeIcon icon={faScroll} className="w-4 mr-2" />
               {lessonsCount} {lessonsCount === 1 ? 'Lesson' : 'Lessons'}
-            </p>
+            </div>
           </div>
         </CardFooter>
       </Card>

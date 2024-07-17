@@ -43,6 +43,7 @@ const {
   unit_title,
   unit_learning_outcomes,
   unit_concept,
+  unit_image,
   Unit_essential_questions,
   unit_prerequisite,
   unit_lessons,
@@ -53,11 +54,23 @@ console.log(id);
 // Get the first lesson's ID if available
 const firstLessonId = unit_lessons && unit_lessons.length > 0 ? unit_lessons[0].sys.id : null;
 
+// Helper function to get the URL - need to globalize
+const getImageUrl = (image) => {
+  if (image && image.fields && image.fields.file && image.fields.file.url) {
+    const url = image.fields.file.url;
+    return url.startsWith('//') ? `https:${url}` : url;
+  }
+  return 'https://placehold.co/425x265';
+};
+
+// Get the URL
+const unitImageUrl = getImageUrl(unit_image);
+
 ---
 
 <MainLayout title={unit_title}>
-  <div class="flex gap-20">
-    <div class="w-2/3 pb-32">
+  <div class="grid grid-cols-12 gap-20">
+    <div class="col-span-7 pb-32">
       <div class="mb-4">
         <IconChip icon={faBookBlank} label="Unit" contentType="unit" href="/units" />
       </div>
@@ -162,9 +175,10 @@ const firstLessonId = unit_lessons && unit_lessons.length > 0 ? unit_lessons[0].
         </ul>
       )}
     </div>
-    <div class="w-1/3">
-      <div class="self-start sticky top-24 col-span-4">
+    <div class="col-span-5">
+      <div class="self-start sticky top-24">
         <div class="border rounded-lg bg-white">
+          <img src={unitImageUrl} alt="" class="rounded-t-lg">
           <ul class="flex flex-col sticky top-20">
             <li><a class="p-2 px-4 block font-bold text-sm hover:underline" href="#overview">Overview</a></li>
             <li><a class="p-2 px-4 block font-bold text-sm hover:underline" href="#learningOutcomes">Learning Outcomes</a></li>

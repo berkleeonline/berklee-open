@@ -80,24 +80,21 @@ const {
   lesson_prerequisites,
   lesson_sections,
   lesson_image_carousel,
-  lesson_post_materials
+  lesson_post_materials,
+  lesson_pdf,
 } = Astro.props.fields;
 
 // get the PDF URL from the lesson post materials
-const getPdfUrl = (materials) => {
-    if (materials && materials.content) {
-      for (const item of materials.content) {
-        if (item.nodeType === 'embedded-asset-block' && item.data.target && item.data.target.fields) {
-          const url = item.data.target.fields.file.url;
-          return url.startsWith('//') ? `https:${url}` : url;
-        }
-      }
-    }
-    return null;
-  };
+const getPdfUrl = (lessonPdf) => {
+  if (lessonPdf && lessonPdf.fields && lessonPdf.fields.file && lessonPdf.fields.file.url) {
+    const url = lessonPdf.fields.file.url;
+    return url.startsWith('//') ? `https:${url}` : url;
+  }
+  return null;
+};
 
-const pdfUrl = getPdfUrl(lesson_post_materials);
-console.log('PDF URL:', pdfUrl);
+
+const pdfUrl = getPdfUrl(lesson_pdf);
 
 const id = Astro.props.sys.id;
 

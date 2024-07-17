@@ -1,12 +1,15 @@
 import React from 'react';
 import { Card, CardBody, CardFooter, Image } from "@nextui-org/react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHeart, faScroll, faClock, faSignal4 } from '@fortawesome/pro-light-svg-icons';
 import { IconChip } from "../../elements/IconChip";
-import { faHeart, faScroll } from '@fortawesome/pro-light-svg-icons';
+import { calculateDuration } from "../../lib/calculateDuration";
 
 type LessonCardProps = {
   id: string;
   title: string;
+  level: string[];
+  duration: number;
   shortDescription: string;
   audience: string[];
   imageUrl: string;
@@ -16,8 +19,9 @@ type LessonCardProps = {
 const LessonCard: React.FC<LessonCardProps> = ({ 
   id, 
   title, 
+  duration,
   shortDescription, 
-  audience, 
+  audience,
   imageUrl, 
   index 
 }) => {
@@ -45,13 +49,15 @@ const LessonCard: React.FC<LessonCardProps> = ({
           </div>
           <div className="description w-full mb-4 text-left">{shortDescription}</div>
           <div className="flex w-full justify-start items-center absolute bottom-2 left-[12px] h-[40px]">
-            <p className="text-baseline gap-1 pr-2">
+            <div className="text-baseline gap-1 pr-2 items-center flex flex-row font-bold">
+              <FontAwesomeIcon icon={faSignal4} className="w-4" />
               {audience?.map(level => level.charAt(0).toUpperCase() + level.slice(1)).join(', ')}
-            </p>
-            •
-            <p className="text-baseline gap-1 pr-2 pl-2">
-              [2h, 30m]
-            </p>
+            </div>
+
+            <div className="text-baseline gap-1 pr-2 pl-2 items-center flex flex-row font-bold">
+              <FontAwesomeIcon icon={faClock} className="w-4" />
+             {duration && calculateDuration(duration) ? calculateDuration(duration) : 'Not yet entered.'}
+            </div>
           </div>
         </CardFooter>
       </Card>

@@ -1,7 +1,8 @@
 import React from 'react';
 import { Card, CardBody, CardFooter, Image } from "@nextui-org/react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHeart } from '@fortawesome/pro-light-svg-icons';
+import { faHeart, faBook, faSignal4 } from '@fortawesome/pro-light-svg-icons';
+import { calculateLevel } from "../../lib/calculateLevel";
 
 type ModuleCardProps = {
   id: string;
@@ -23,6 +24,9 @@ const ModuleCard: React.FC<ModuleCardProps> = ({
   index 
 }) => {
   console.log('ModuleCard props:', { id, title, image, shortDescription, level, unitsCount, index });
+  if (level.length > 0) {
+    level = calculateLevel(level);
+  }
 
   return (
     <a href={`/modules/${id}`} className="no-underline h-full">
@@ -44,14 +48,16 @@ const ModuleCard: React.FC<ModuleCardProps> = ({
             </div>
           </div>
           <div className="description w-full mb-4 text-left">{shortDescription}</div>
-          <div className="flex w-full justify-start items-center absolute bottom-2 left-[12px] h-[40px]">
-            <p className="text-baseline gap-1 pr-2">
-              {level?.map(l => l.charAt(0).toUpperCase() + l.slice(1)).join(', ')}
-            </p>
-            {unitsCount ? '•' : ''}
-            <p className="text-xs gap-1 pl-2">
+          <div className="flex w-full justify-start items-center absolute bottom-2 left-[12px] h-[40px] flex-row">
+            <div className="text-baseline gap-1 pr-2 font-bold flex flex-row items-center">
+              <FontAwesomeIcon icon={faSignal4} className="w-4" />
+              {level}
+            </div>
+
+            <div className="text-baseline gap-1 pl-2 flex flex-row items-center font-bold">
+              <FontAwesomeIcon icon={faBook} className="w-3 mr-1" />
               {unitsCount} {unitsCount === 1 ? 'Unit' : 'Units'}
-            </p>
+            </div>
           </div>
         </CardFooter>
       </Card>

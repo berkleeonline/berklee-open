@@ -20,6 +20,7 @@ const lessons = await contentfulClient.getEntries<Lesson>({
             key={lesson.sys.id}
             id={lesson.sys.id}
             title={lesson.fields.lesson_title}
+            duration={lesson.fields.lesson_duration}
             shortDescription={lesson.fields.lesson_short_description}
             audience={lesson.fields.lesson_audience}
             imageUrl={lesson.fields.lesson_image?.fields?.file?.url?.startsWith('//') 

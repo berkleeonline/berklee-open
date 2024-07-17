@@ -1,5 +1,5 @@
 export const calculateLevel = (levels) => {
-  if (levels.includes('beginner')) {
+  if (levels.includes('Beginner')) {
     return 'Beginner';
   }
   

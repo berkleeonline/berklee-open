@@ -38,9 +38,22 @@ const {
   module_units = [],
   module_level = [],
   Module_essential_questions = [],
+  module_image,
 } = Astro.props.fields;
 
 const id = Astro.props.sys.id;
+
+// Helper function to get the URL - need to globalize
+const getImageUrl = (image) => {
+  if (image && image.fields && image.fields.file && image.fields.file.url) {
+    const url = image.fields.file.url;
+    return url.startsWith('//') ? `https:${url}` : url;
+  }
+  return 'https://placehold.co/425x265';
+};
+
+// Get the URL
+const moduleImageUrl = getImageUrl(module_image);
 
 let level = '';
 
@@ -161,8 +174,8 @@ const simplifiedUnits = module_units.map(unit => ({
       <h1 class="text-4xl font-bold mb-6">{module_title}</h1>
       <div class="mb-5" set:html={documentToHtmlString(module_description)}></div>
       <div class="flex gap-4 mb-6">
-        <div class="flex flex-row content-center font-bold"><FontAwesomeIcon className="w-5 mr-1" icon={faSignal4} />{ level }</div>
-        <div class="flex flex-row content-center font-bold"><FontAwesomeIcon className="w-5 mr-2" icon={faClock} /> { lessonTime }</div>
+        <div class="flex flex-row items-center font-bold"><FontAwesomeIcon className="w-5 mr-1" icon={faSignal4} />{ level }</div>
+        <div class="flex flex-row items-center font-bold"><FontAwesomeIcon className="w-5 mr-2" icon={faClock} /> { lessonTime }</div>
       </div>
 
       <div class={`flex flex-row gap-4 mb-16 items-center ${styles.moduleActions}`}>
@@ -214,6 +227,7 @@ const simplifiedUnits = module_units.map(unit => ({
     <div class="col-span-5">
       <div class="self-start sticky top-24 col-span-4">
         <div class="border rounded-lg bg-white">
+          <img src={moduleImageUrl} alt="" class="rounded-t-lg">
           <ul class="flex flex-col sticky top-40">
             <li><a class="p-2 px-4 block font-bold text-sm hover:underline" href="#overview">Overview</a></li>
             <li><a class="p-2 px-4 block font-bold text-sm hover:underline" href="#learningOutcomes">Learning Outcomes</a></li>

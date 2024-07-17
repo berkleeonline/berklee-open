@@ -61,6 +61,7 @@ export interface Lesson {
   fields: {
     lesson_title: EntryFieldTypes.Text
     lesson_short_description: EntryFieldTypes.RichText,
+    lesson_duration: EntryFieldTypes.Text,
     lesson_grade: EntryFieldTypes.Text,
     lesson_summary: EntryFieldTypes.Array,
     lesson_audience: EntryFieldTypes.Array,
