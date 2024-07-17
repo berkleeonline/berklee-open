@@ -12,6 +12,7 @@ interface SyllabusUnitProps {
     };
     fields: {
       unit_title: string;
+      unit_short_description: string;
       unit_description: any;
       unit_concept: Array<{ fields: { concept_name: string } }>;
       unit_lessons: Array<any>; // full lesson data passed from parent
@@ -33,14 +34,14 @@ const SyllabusUnit: React.FC<SyllabusUnitProps> = ({ unit, index }) => {
     return <p>Unit data is unavailable</p>;
   }
 
-  const { unit_title, unit_concept, unit_lessons, unit_image } = unit.fields;
+  const { unit_title, unit_short_description, unit_concept, unit_lessons, unit_image } = unit.fields;
 
   const hasLessons = unit_lessons && unit_lessons.length > 0;
 
   // Helper function to get image URL
   const getImageUrl = (image: any): string => {
     if (!image || !image.fields || !image.fields.file || !image.fields.file.url) {
-      return 'https://placehold.co/135x75';
+      return 'https://placehold.co/175x90';
     }
     const url = image.fields.file.url;
     return url.startsWith('//') ? `https:${url}` : url;
@@ -49,15 +50,15 @@ const SyllabusUnit: React.FC<SyllabusUnitProps> = ({ unit, index }) => {
   const unitImageUrl = getImageUrl(unit_image);
 
   return (
-    <li className="pb-16 relative">
-      <div className="absolute top-[-15px] left-16">
+    <li className="pb-20 relative">
+      <div className="absolute top-[-15px] left-24">
         <IconChip icon={faBookBlank} label="Unit" contentType="unit" href="/units" />
       </div>
       
       <div className="flex md:flex-row gap-3">
-        <div className="min-w-[160px] flex-shrink-0" style={{ flexBasis: '160px' }}>
+        <div className="min-w-[160px] flex-shrink-0 mr-4" style={{ flexBasis: '160px' }}>
           <a href={`/units/${unit.sys.id}`} className="no-underline hover:text-blue-800">
-            <img src={unitImageUrl} alt={unit_title} className="rounded-lg mr-4" style={{ width: 135, height: 75, objectFit: 'cover' }} />
+            <img src={unitImageUrl} alt={unit_title} className="rounded-lg mr-8 object-cover" style={{ width: 175, objectFit: 'cover' }} />
           </a>
         </div>
         <div className="flex flex-col gap-1 size-full">

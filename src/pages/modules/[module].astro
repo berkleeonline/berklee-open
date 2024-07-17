@@ -132,12 +132,15 @@ const simplifiedUnits = module_units.map(unit => ({
   sys: unit.sys,
   fields: {
     unit_title: unit.fields?.unit_title,
+    unit_short_description: unit.fields?.unit_short_description,
+    unit_image: unit.fields?.unit_image,
     unit_description: unit.fields?.unit_description,
     unit_concept: unit.fields?.unit_concept,
     unit_lessons: unit.fields?.unit_lessons?.map(lesson => ({
       sys: lesson.sys,
       fields: {
         lesson_title: lesson.fields?.lesson_title,
+        lesson_image: lesson.fields?.lesson_image,
         lesson_short_description: lesson.fields?.lesson_short_description,
         lesson_audience: lesson.fields?.lesson_audience,
         lesson_duration: lesson.fields?.lesson_duration,
