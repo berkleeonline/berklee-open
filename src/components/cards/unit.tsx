@@ -7,6 +7,7 @@ import { faHeart, faBookBlank } from '@fortawesome/pro-light-svg-icons';
 type UnitCardProps = {
   id: string;
   title: string;
+  image: string;
   shortDescription: string;
   level: string[];
   lessonsCount: number;
@@ -14,14 +15,15 @@ type UnitCardProps = {
 
 const UnitCard: React.FC<UnitCardProps> = ({ 
   id, 
-  title, 
-  shortDescription, 
-  level, 
-  lessonsCount 
+  title,
+  image,
+  shortDescription,
+  lessonsCount
 }) => {
+  // console.log('UnitCard props:', { id, title, image, shortDescription, level, lessonsCount });
   return (
     <a href={`/units/${id}`} className="no-underline flex flex-col">
-      <Card className="h-full w-full" shadow="0" isPressable>
+      <Card className=" w-full h-[480px]" shadow="0" isPressable>
         <CardBody className="overflow-visible p-0 relative">
           <div className="absolute bottom-[-15px] left-0 z-20">
             <IconChip icon={faBookBlank} label="Unit" contentType="unit" href="" />
@@ -31,7 +33,7 @@ const UnitCard: React.FC<UnitCardProps> = ({
             width="100%"
             alt={title}
             className="w-full object-cover h-[265px] opacity-100"
-            src="https://placehold.co/425x265"
+            src={image}
           />
         </CardBody>
         <CardFooter className="h-full text-small flex-col">
@@ -43,15 +45,7 @@ const UnitCard: React.FC<UnitCardProps> = ({
           </div>
           <div className="description mb-4 text-left">{shortDescription}</div>
           <div className="flex w-full justify-start items-center">
-            <p className="text-xs gap-1 pr-2">
-              {level.map(l => l.charAt(0).toUpperCase() + l.slice(1)).join(', ')}
-            </p>
-            •
-            <p className="text-xs gap-1 pr-2 pl-2">
-              [2h, 30m]
-            </p>
-            •
-            <p className="text-xs gap-1 pl-2">
+            <p className="text-sm gap-1">
               {lessonsCount} {lessonsCount === 1 ? 'Lesson' : 'Lessons'}
             </p>
           </div>

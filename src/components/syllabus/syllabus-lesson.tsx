@@ -44,7 +44,7 @@ const SyllabusLesson: React.FC<SyllabusLessonProps> = ({ lesson, index }) => {
   const lessonImageUrl = lesson.fields.lesson_image ? getImageUrl(lesson.fields.lesson_image) : 'https://placehold.co/135x75';
   console.log('Final Image URL:', lessonImageUrl);
   
-  const { lesson_title, lesson_short_description, lesson_audience, lesson_duration, lesson_concepts } = lesson.fields;
+  const { lesson_title, lesson_image, lesson_short_description, lesson_audience, lesson_duration, lesson_concepts } = lesson.fields;
 
   return (
     <li className="pb-12 last:pb-0 relative" key={index}>
@@ -53,7 +53,7 @@ const SyllabusLesson: React.FC<SyllabusLessonProps> = ({ lesson, index }) => {
           <div>
             <a href={`/lessons/${lesson.sys.id}`} className="no-underline hover:text-blue-800">
               <img 
-                src={lessonImageUrl} 
+                src={lesson.fields.lesson_image ? (lesson.fields.lesson_image.fields.file.url.startsWith('//') ? `https:${lesson.fields.lesson_image.fields.file.url}` : lesson.fields.lesson_image.fields.file.url) : 'https://placehold.co/135x75'} 
                 alt={lesson_title} 
                 className="rounded-lg mr-4 w-[135px] h-[75px] object-cover" 
                 onError={(e) => {

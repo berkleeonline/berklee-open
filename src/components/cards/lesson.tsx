@@ -23,7 +23,7 @@ const LessonCard: React.FC<LessonCardProps> = ({
 }) => {
   return (
     <a href={`/lessons/${id}`} className="no-underline flex flex-col">
-      <Card className="h-full w-full" shadow="0" key={index} isPressable>
+      <Card className="h-full h-[450px] w-full" shadow="0" key={index} isPressable>
         <CardBody className="overflow-visible p-0 relative">
           <div className="absolute bottom-[-15px] left-0 z-20">
             <IconChip icon={faScroll} label="Lesson" contentType="lesson" href="" />

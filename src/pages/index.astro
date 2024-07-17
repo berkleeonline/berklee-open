@@ -2,23 +2,25 @@
 import React, { useEffect, useState } from 'react';
 import { contentfulClient } from "../lib/contentful";
 import type { Lesson, Unit } from "../type/content-blocks";
-import { Button } from "@nextui-org/react";
-//import ModuleCard from "../components/cards/module";
+import { Button, Link } from "@nextui-org/react";
 import HomeCollapsible from '../components/home/collapsible';
 import UnitCard from "../components/cards/unit";
 import LessonCard from "../components/cards/lesson";
 import MainLayout from '../layouts/main.astro';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronLeft, faChevronRight } from '@fortawesome/pro-light-svg-icons';
+
 
 
 const lessons = await contentfulClient.getEntries<Lesson>({
   content_type: "lesson",
-  limit: 3,
+  limit: 4,
 
 });
 
 const units = await contentfulClient.getEntries<Unit>({
   content_type: "unit",
-  limit: 3,
+  limit: 6,
 });
 
 ---
@@ -37,48 +39,118 @@ const units = await contentfulClient.getEntries<Unit>({
       </div>
       <!-- Right side -->
       <div class="relative -mr-16" style="height:850px;">
-        <img src="//assets.online.berklee.edu/berklee-open-placeholder/bo-home-hero-placeholder.jpg" alt="Berklee Open Home Page Hero" class="absolute inset-0 w-full h-full object-cover" />
+        <img src="//assets.online.berklee.edu/berklee-open-placeholder/collage-top-hero.jpg" alt="Berklee Open Home Page Hero" class="absolute inset-0 w-full h-full object-cover" />
       </div>
     </div>
   </div>
 
   <div>
     <h2 class="text-4xl font-bold mb-8">Resources</h2>
-    <h3 class="text-2xl font-bold mb-8">Latest Lessons</h3>
-    <div class="grid grid-cols-3 gap-8">
-      {lessons.items.map((lesson, index) => (
-        <LessonCard 
-          key={lesson.sys.id}
-          id={lesson.sys.id}
-          title={lesson.fields.lesson_title}
-          shortDescription={lesson.fields.lesson_short_description}
-          audience={lesson.fields.lesson_audience}
-          imageUrl={lesson.fields.lesson_image?.fields?.file?.url?.startsWith('//') 
-            ? `https:${lesson.fields.lesson_image.fields.file.url}` 
-            : lesson.fields.lesson_image?.fields?.file?.url ?? 'https://placehold.co/425x265'}
-          index={index}
-          client:load
-        />
-      ))}
+    <div class="grid grid-cols-2 justify-between">
+      <h3 class="text-2xl font-bold mb-8">Latest Lessons</h3>
+      <div class="flex justify-end">
+        <Button
+          href="/lessons"
+          as={Link}
+          color="primary"
+          variant="bordered"
+          variant="solid"
+          className="font-bold w-36 text-black border-black bg-transparent border hover:bg-black hover:text-white"
+        >
+          All Lessons
+        </Button>
+      </div>
+    </div>
+    <div class="relative"> <!-- Adjust 600px as needed -->
+      <button 
+        id="lessonsLeftArrow"
+        class="absolute -left-8 top-1/2 transform -translate-y-1/2 bg-white hover:bg-slate-200 bg-opacity-95 p-2 rounded-full w-[60px] h-[60px] border border-slate-300 shadow-lg z-50 hidden"
+        aria-label="Scroll Left"
+      >
+      <FontAwesomeIcon icon={faChevronLeft} />
+      </button>
+      <div id="lessonsCarousel"
+        class="flex space-x-8 overflow-x-auto mb-48 pb-4 scrollbar-hide h-full"
+        style="scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;">
+        {lessons.items.map((lesson, index) => (
+          <div class="flex-none w-[400px] h-full scroll-snap-align: start; grow">
+            <LessonCard 
+              key={lesson.sys.id}
+              id={lesson.sys.id}
+              title={lesson.fields.lesson_title}
+              shortDescription={lesson.fields.lesson_short_description}
+              audience={lesson.fields.lesson_audience}
+              imageUrl={lesson.fields.lesson_image?.fields?.file?.url?.startsWith('//') 
+                ? `https:${lesson.fields.lesson_image.fields.file.url}` 
+                : lesson.fields.lesson_image?.fields?.file?.url ?? 'https://placehold.co/425x265'}
+              index={index}
+              client:load
+            />
+          </div>
+        ))}
+      </div>
+      <button 
+        id="lessonsRightArrow"
+        class="absolute -right-8 top-1/2 transform -translate-y-1/2 bg-white hover:bg-slate-200 bg-opacity-95 p-2 rounded-full w-[60px] h-[60px] border border-slate-300 shadow-lg z-50 hidden"
+        aria-label="Scroll right"
+      >
+        <FontAwesomeIcon icon={faChevronRight} />
+      </button>
     </div>
 
-    <h3 class="mt-16 text-2xl font-bold mb-4">Latest Units</h3>
-    <div class="grid grid-cols-3 gap-8 mb-48">
-      {units.items.map((unit) => (
-        <UnitCard 
-            key={unit.sys.id}
-            id={unit.sys.id}
-            title={unit.fields.unit_title}
-            shortDescription={unit.fields.unit_short_description}
-            level={unit.fields.unit_level || []}
-            lessonsCount={unit.fields.unit_lessons?.length || 0}
-            client:load
-          />
-      ))}
+    <div class="grid grid-cols-2 justify-between">
+      <h3 class="text-2xl font-bold mb-8">Latest Units</h3>
+      <div class="flex justify-end">
+        <Button
+          href="/units"
+          as={Link}
+          color="primary"
+          variant="bordered"
+          variant="solid"
+          className="font-bold w-36 text-black border-black bg-transparent border hover:bg-black hover:text-white"
+        >
+          All Units
+        </Button>
+      </div>
+    </div>
+    <div class="relative">
+      <button 
+        id="unitsLeftArrow"
+        class="absolute -left-8 top-1/2 transform -translate-y-1/2 bg-white hover:bg-slate-200 bg-opacity-90 p-2 w-[60px] h-[60px] border border-slate-300  z-50 rounded-full shadow-lg hidden"
+        aria-label="Scroll left"
+      >
+        <FontAwesomeIcon icon={faChevronLeft} />
+      </button>
+      <div id="unitsCarousel"
+        class="flex space-x-8 overflow-x-auto mb-48 pb-4 scrollbar-hide"
+        style="scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;">
+        {units.items.map((unit, index) => (
+          <div class="flex-none w-[400px] h-full scroll-snap-align: start;">
+            <UnitCard 
+              id={unit.sys.id}
+              title={unit.fields.unit_title}
+              image={unit.fields.unit_image?.fields?.file?.url?.startsWith('//') 
+                ? `https:${unit.fields.unit_image.fields.file.url}` 
+                : unit.fields.unit_image?.fields?.file?.url ?? 'https://placehold.co/425x265'}
+              shortDescription={unit.fields.unit_short_description}
+              level={unit.fields.unit_level || []}
+              lessonsCount={unit.fields.unit_lessons?.length || 0}
+              client:load
+            />
+          </div>
+        ))}
+      </div>
+      <button 
+        id="unitsRightArrow"
+        class="absolute -right-8 top-1/2 transform -translate-y-1/2 bg-white hover:bg-slate-200 w-[60px] h-[60px] border border-slate-300 bg-opacity-50 p-2 z-50 rounded-full shadow-lg hidden"
+        aria-label="Scroll right"
+      >
+        <FontAwesomeIcon icon={faChevronRight} />
+      </button>
     </div>
   </div>
 
-  <div class="mb-48 grid grid-cols-12 gap-16">
+  <div class="mb-36 grid grid-cols-12 gap-16">
     <div class="col-span-5">
       <h2 class="text-4xl font-bold mb-8">Meet Berklee Open</h2>
       <HomeCollapsible client:load />
@@ -129,12 +201,12 @@ const units = await contentfulClient.getEntries<Unit>({
       <p class="text-large mb-6">Berklee Open is dedicated to creating a new era of arts education. One that prioritizes accessibility, inclusivity, and belonging. At our core, we endeavor to make the world-renowned experience of Berklee accessible to all K-12 educators and students through relevant online resources that support inspiring, engaging classroom experiences and teaching methods, empowering personal growth through the transformative power of music and the arts.</p>
     </div>
     <div class="relative -mr-16" style="height:850px;">
-      <img src="//assets.online.berklee.edu/berklee-open-placeholder/bo-home-footer-hero-placeholder.jpg" alt="Berklee Open Home Page Hero" class="absolute inset-0 w-full h-full object-cover" />
+      <img src="//assets.online.berklee.edu/berklee-open-placeholder/collage-bottom-hero.jpg" alt="Berklee Open Home Page Hero" class="absolute inset-0 w-full h-full object-cover" />
     </div>
   </div>
 </div>
 
-<div class="bg-gradient-to-r from-purple-300 to-pink-500 grid grid-cols-1 h-400 items-center h-500 pt-24 pb-24 -mr-16 -ml-16">
+<div style="width: 100vw; margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw);" class="bg-gradient-to-r from-purple-300 to-pink-500 grid grid-cols-1 h-400 items-center h-500 pt-24 pb-24 -mr-16 -ml-16">
   <h1 class="text-5xl font-bold mb-16 text-center">Sign Up for Early Access</h1>
   <p class="text-lg text-center max-w-3xl mx-auto mb-16">Berkele Open is currently in development and access is available via invite. We're
     excited to share our free music education resources with you once ready. In the meantime, 
@@ -148,6 +220,54 @@ const units = await contentfulClient.getEntries<Unit>({
 </MainLayout>
 
 <script>
+  function setupCarousel(carouselId, leftArrowId, rightArrowId) {
+    const carousel = document.getElementById(carouselId);
+    const leftArrow = document.getElementById(leftArrowId);
+    const rightArrow = document.getElementById(rightArrowId);
 
+    function checkArrows() {
+      if (carousel) {
+        if (leftArrow) {
+          leftArrow.classList.toggle('hidden', carousel.scrollLeft <= 0);
+        }
+        if (rightArrow) {
+          rightArrow.classList.toggle('hidden', 
+            carousel.scrollLeft >= carousel.scrollWidth - carousel.clientWidth
+          );
+        }
+      }
+    }
 
+    function scroll(direction) {
+      if (carousel) {
+        const scrollAmount = carousel.clientWidth;
+        carousel.scrollBy({
+          left: direction === 'left' ? -scrollAmount : scrollAmount,
+          behavior: 'smooth'
+        });
+      }
+    }
+
+    if (carousel) {
+      carousel.addEventListener('scroll', checkArrows);
+      window.addEventListener('resize', checkArrows);
+    }
+
+    if (leftArrow) {
+      leftArrow.addEventListener('click', () => scroll('left'));
+    }
+
+    if (rightArrow) {
+      rightArrow.addEventListener('click', () => scroll('right'));
+    }
+
+    // Initial check
+    checkArrows();
+  }
+
+  // Setup lessons carousel
+  setupCarousel('lessonsCarousel', 'lessonsLeftArrow', 'lessonsRightArrow');
+
+  // Setup units carousel
+  setupCarousel('unitsCarousel', 'unitsLeftArrow', 'unitsRightArrow');
 </script>

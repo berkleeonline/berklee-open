@@ -10,7 +10,7 @@
 	});
 ---
 
-<MainLayout title={`Berklee Open: Units`}>
+<MainLayout title={`Berklee Open: Modules`}>
   <div class="flex gap-20">
     <div class="w-full">
       <h1 class="text-4xl font-bold mb-8">Modules</h1>
@@ -20,6 +20,9 @@
             key={module.sys.id}
             id={module.sys.id}
             title={module.fields.module_title}
+            image={module.fields.module_image?.fields?.file?.url?.startsWith('//') 
+              ? `https:${module.fields.module_image.fields.file.url}` 
+              : module.fields.module_image?.fields?.file?.url ?? 'https://placehold.co/425x265'}
             description={module.fields.module_short_description}
             level={module.fields.module_level}
             unitsCount={module.fields.module_units.length}

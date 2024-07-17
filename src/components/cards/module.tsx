@@ -1,11 +1,12 @@
 import React from 'react';
-import {Card, CardBody, CardFooter, Image} from "@nextui-org/react";
+import { Card, CardBody, CardFooter, Image } from "@nextui-org/react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart } from '@fortawesome/pro-light-svg-icons';
 
 type ModuleCardProps = {
   id: string;
   title: string;
+  image: string;
   shortDescription: string;
   level: string[];
   unitsCount: number;
@@ -14,12 +15,15 @@ type ModuleCardProps = {
 
 const ModuleCard: React.FC<ModuleCardProps> = ({ 
   id, 
-  title, 
-  shortDescription, 
-  level, 
-  unitsCount, 
+  title,
+  image,
+  shortDescription,
+  level,
+  unitsCount,
   index 
 }) => {
+  console.log('ModuleCard props:', { id, title, image, shortDescription, level, unitsCount, index });
+
   return (
     <a href={`/modules/${id}`} className="no-underline h-full">
       <Card className="h-full w-full" shadow="0" key={index} isPressable>
@@ -29,7 +33,7 @@ const ModuleCard: React.FC<ModuleCardProps> = ({
             width="100%"
             alt={title}
             className="w-full object-cover h-[265px] opacity-100"
-            src="https://placehold.co/290x150"
+            src={image}
           />
         </CardBody>
         <CardFooter className="text-small flex-col h-full">
@@ -39,7 +43,7 @@ const ModuleCard: React.FC<ModuleCardProps> = ({
               <FontAwesomeIcon icon={faHeart} />
             </p>
           </div>
-          <div className="description mb-4 text-left">{shortDescription}</div>
+          <div className="description w-full mb-4 text-left">{shortDescription}</div>
           <div className="flex w-full justify-start items-center">
             <p className="text-xs gap-1 pr-2">
               {level?.map(l => l.charAt(0).toUpperCase() + l.slice(1)).join(', ')}
