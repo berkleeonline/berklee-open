@@ -51,12 +51,10 @@ const SyllabusUnit: React.FC<SyllabusUnitProps> = ({ unit, index }) => {
 
   return (
     <li className="pb-20 relative">
-      <div className="absolute top-[-15px] left-24">
-        <IconChip icon={faBookBlank} label="Unit" contentType="unit" href="/units" />
-      </div>
       
       <div className="flex md:flex-row gap-3">
-        <div className="min-w-[160px] flex-shrink-0 mr-4" style={{ flexBasis: '160px' }}>
+        <div className="min-w-[160px] flex-shrink-0 mr-4 relative" style={{ flexBasis: '160px' }}>
+          <div className="absolute top-[-15px] -right-[5px]"><IconChip icon={faBookBlank} label="Unit" contentType="unit" href="/units" /></div>
           <a href={`/units/${unit.sys.id}`} className="no-underline hover:text-blue-800">
             <img src={unitImageUrl} alt={unit_title} className="rounded-lg mr-8 object-cover" style={{ width: 175, objectFit: 'cover' }} />
           </a>
@@ -65,7 +63,7 @@ const SyllabusUnit: React.FC<SyllabusUnitProps> = ({ unit, index }) => {
           <div className="flex justify-between">
             <a href={`/units/${unit.sys.id}`} className="no-underline hover:text-blue-800">
               <div className="text-md font-bold">{unit_title}</div>
-              <div className="text-sm">[unit audience] • [unit duration]</div>
+              <div className="text-base mr-8">{unit_short_description}</div>
             </a>
             <Button isIconOnly onClick={handleToggle} className="p-2" radius="full" variant="bordered" color="default" aria-label="Expand unit row to view lessons that make up the unit.">
               <FontAwesomeIcon icon={!collapsed ? faChevronUp : faChevronDown} />
