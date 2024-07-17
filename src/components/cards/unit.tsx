@@ -23,7 +23,7 @@ const UnitCard: React.FC<UnitCardProps> = ({
   // console.log('UnitCard props:', { id, title, image, shortDescription, level, lessonsCount });
   return (
     <a href={`/units/${id}`} className="no-underline flex flex-col">
-      <Card className=" w-full h-[480px]" shadow="0" isPressable>
+      <Card className=" w-full h-[480px] relative" shadow="0" isPressable>
         <CardBody className="overflow-visible p-0 relative">
           <div className="absolute bottom-[-15px] left-0 z-20">
             <IconChip icon={faBookBlank} label="Unit" contentType="unit" href="" />
@@ -39,12 +39,12 @@ const UnitCard: React.FC<UnitCardProps> = ({
         <CardFooter className="h-full text-small flex-col">
           <div className="flex w-full mb-2 justify-between">
             <h3 className="font-bold text-lg text-left mt-4">{title}</h3>
-            <p className="text-default-500 w-4">
+            <div className="p-2 relative flex text-default-500 text-left border rounded-full w-[30px] h-[30px] items-center justify-center text-center">
               <FontAwesomeIcon icon={faHeart} />
-            </p>
+            </div>
           </div>
           <div className="description mb-4 text-left">{shortDescription}</div>
-          <div className="flex w-full justify-start items-center">
+          <div className="flex w-full justify-start items-center absolute bottom-2 left-[12px] h-[40px]">
             <p className="text-sm gap-1">
               {lessonsCount} {lessonsCount === 1 ? 'Lesson' : 'Lessons'}
             </p>
