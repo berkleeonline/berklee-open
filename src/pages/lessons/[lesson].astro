@@ -79,8 +79,25 @@ const {
   lesson_outcome,
   lesson_prerequisites,
   lesson_sections,
-  lesson_image_carousel
+  lesson_image_carousel,
+  lesson_post_materials
 } = Astro.props.fields;
+
+// get the PDF URL from the lesson post materials
+const getPdfUrl = (materials) => {
+    if (materials && materials.content) {
+      for (const item of materials.content) {
+        if (item.nodeType === 'embedded-asset-block' && item.data.target && item.data.target.fields) {
+          const url = item.data.target.fields.file.url;
+          return url.startsWith('//') ? `https:${url}` : url;
+        }
+      }
+    }
+    return null;
+  };
+
+const pdfUrl = getPdfUrl(lesson_post_materials);
+console.log('PDF URL:', pdfUrl);
 
 const id = Astro.props.sys.id;
 
@@ -105,15 +122,10 @@ const serializeForClient = (obj) => {
 
 const resolvedLessonSections = await fetchAndResolveSections(lesson_sections || []);
 
-// Debug log
-// console.log('Original lesson_sections:', JSON.stringify(lesson_sections, null, 2));
-// console.log('Resolved lesson_sections:', JSON.stringify(resolvedLessonSections, null, 2));
-// console.log('Serialized lesson_sections:', JSON.stringify(serializeForClient(resolvedLessonSections), null, 2));
-
 ---
 <a id="overview"></a>
 <MainLayout title={lesson_title}>
-  <div class="grid grid-cols-12 gap-4 -mr-6" style="background: url(https://assets.online.berklee.edu/berklee-open-placeholder/bop-rounded_blue_bg.svg) no-repeat top right; background-size: 55%;">
+  <div class="grid grid-cols-12 gap-4 -mr-6" style="background: url(https://assets.online.berklee.edu/berklee-open-placeholder/bop-rounded-blue-2.svg) no-repeat top right; background-size: 55%;">
     <div class="absolute top-0 right-0">
       <img src="" class="h-400" />
     </div>
@@ -160,8 +172,17 @@ const resolvedLessonSections = await fetchAndResolveSections(lesson_sections || 
             <FontAwesomeIcon icon={faPresentationScreen} class="text-sm" />
             Start Presentation
           </Button>
-          <Button client:load color="default" className="font-bold w-41" variant="bordered" color="primary" aria-label="Download as PDF">
-            <FontAwesomeIcon icon={faFilePdf} color="primary" class="text-sm" />
+          <Button 
+              href={pdfUrl} 
+              as={Link}
+              color="default" 
+              isExternal 
+              className="font-bold w-41 hover:bg-rose-100" 
+              variant="bordered" 
+              color="primary" 
+              aria-label="Download as PDF"
+            >
+            <FontAwesomeIcon icon={faFilePdf} color="primary" className="text-sm" />
             Download Lesson Plan
           </Button>
           <AddToLibraryButton type="lesson" hrefId={`${id}`} client:load />

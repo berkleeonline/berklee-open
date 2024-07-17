@@ -163,7 +163,7 @@ export const LessonTabs = ({
                         ? section.fields.interactiveContent.map((slide, idx) => (
                             <div key={idx}>
                                 {slide.fields.slide_instructor_notes_title && slide.fields.slide_instructor_notes_title !== "undefined" && (
-                                  <div className="pt-10 pb-6 -ml-20 bg-white relative">
+                                  <div className="pt-10 pb-6 -ml-[88px] bg-white relative">
                                     <IconHeader
                                       headerId={`${slide.fields.slide_instructor_notes_title}`}
                                       icon={faCircleDot}
