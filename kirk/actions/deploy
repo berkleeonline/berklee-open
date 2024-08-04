@@ -1,0 +1,65 @@
+#!/bin/bash
+# This overrides the default k8s deploy stuff.
+
+function topic_to_prod_attempt() {
+  [ "${env}" == 'production' ] && [ "${branch}" != 'main' ]
+}
+
+set -x
+set -e
+
+declare -gax VALID_ENVIRONMENTS=( dev production )
+
+# Source profile
+# shellcheck source=etc/profile.d/Z99-functions.sh
+source_dir='/etc/profile.d/Z99-functions.sh'
+if ! source "${source_dir}"; then
+  printf "Failed to load shell functions from ${source_dir}!\n" >&2
+  exit 42
+fi
+
+declare -gx branch=${GIT_BRANCH##*/}
+declare -gx env=''
+declare -gx topic_to_prod=false
+
+while getopts b:e:f opt; do
+  case ${opt} in
+    b)
+      branch="${OPTARG}"
+    ;;
+    e)
+      env="${OPTARG}"
+    ;;
+    t)
+      topic_to_prod=true
+    ;;
+    *)
+      true
+    ;;
+  esac
+done
+
+[ -z "${branch}" ] && die "you must pass -b to this script"
+[ -z "${env}" ] && env='dev'
+
+# No 'main' env in berklee-open, need this for CI/CD pipeline
+[ "${env}" == 'main' ] && env='production'
+
+if topic_to_prod_attempt && [ "${topic_to_prod}" != 'true' ]; then
+  die 'you must pass -t if you want to deploy a topic branch to prod'
+fi
+
+if ! array_includes "${env}" VALID_ENVIRONMENTS; then
+  die "'${env}' is not a valid env"
+fi
+
+eval $(getconfig -e "${env}" -s berklee-open)
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"
+nvm use v18.19.0
+npm install
+
+rm -rf amplify-backup
+amplify pull -y --appId "${AMPLIFY_APP_ID}" --envName "${env}"
+amplify publish -y --invalidateCloudFront

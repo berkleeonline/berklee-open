@@ -1,0 +1,11 @@
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  call-rebase-ci-branches:
+    uses: berkleeonline/github-workflows/.github/workflows/rebase-ci-branches.yml@main
+    with:
+      ci-branches: '["integration", "patch"]'
+    secrets: inherit
