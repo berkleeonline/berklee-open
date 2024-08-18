@@ -1,6 +1,6 @@
 import React from 'react';
 import algoliasearch from 'algoliasearch/lite';
-import { InstantSearch, SearchBox, Hits } from 'react-instantsearch-hooks-web';
+import { InstantSearch, SearchBox, Hits, useInstantSearch } from 'react-instantsearch-hooks-web';
 import ModuleCard from './cards/module';
 import UnitCard from './cards/unit';
 import LessonCard from './cards/lesson';
@@ -58,6 +58,23 @@ const Hit = ({ hit }) => {
   return <div class="search-unknown-content">Unknown content type</div>;
 };
 
+const NoResults = () => (
+    <div className="text-center py-10">
+        <p className="text-xl font-semibold">No results found for that search.</p>
+        <p className="text-gray-500 mt-2">Try adjusting your search or filter to find what you're looking for.</p>
+    </div>
+);
+
+const SearchResults = () => {
+  const { results } = useInstantSearch();
+
+  if (!results.__isArtificial && results.nbHits === 0) {
+    return <NoResults />;
+  }
+
+  return <Hits hitComponent={Hit} />;
+};
+
 const CustomHits = ({ hits }) => (
   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
     {hits.map(hit => <Hit key={hit.objectID} hit={hit} />)}
@@ -68,7 +85,7 @@ const Search = () => {
     return (
       <InstantSearch searchClient={searchClient} indexName="BerkleeOpen">
         <SearchBox placeholder="Search for modules, units, or lessons..." />
-        <Hits hitComponent={Hit} />
+        <SearchResults />
       </InstantSearch>
     );
   };
