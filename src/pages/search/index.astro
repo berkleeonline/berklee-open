@@ -1,3 +1,13 @@
+---
+import MainLayout from "../../layouts/main.astro";
+import Search from "../../components/search";
+---
+
+<MainLayout title="Berklee Open: Search">
+    <h1 class="search-header">Search Music Resources</h1>
+    <Search client:load />
+</MainLayout>
+
 <!-- ---
 	import MainLayout from "../../layouts/main.astro";
 ---
@@ -33,12 +43,3 @@
 
     search.start();
 </script> -->
----
-import MainLayout from "../../layouts/main.astro";
-import Search from "../../components/search";
----
-
-<MainLayout title="Berklee Open: Search">
-    <h1 class="search-header">Search Music Resources</h1>
-    <Search client:load />
-</MainLayout>
