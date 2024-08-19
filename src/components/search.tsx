@@ -61,7 +61,7 @@ const Hit = ({ hit }) => {
 const NoResults = () => (
     <div className="text-center py-10">
         <p className="text-xl font-semibold">No results found for that search.</p>
-        <p className="text-gray-500 mt-2">Try adjusting your search or filter to find what you're looking for.</p>
+        <p className="text-gray-500 mt-2 demo">Try adjusting your search or filter to find what you're looking for.</p>
     </div>
 );
 
