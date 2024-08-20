@@ -25,6 +25,7 @@
     "@kevinorriss/react-metronome": "^2.0.1",
     "@nextui-org/react": "^2.2.10",
     "@types/react": "^18.3.5",
+    "@react-pdf/renderer": "^3.4.4",
     "@types/react-dom": "^18.2.7",
     "algoliasearch": "^4.24.0",
     "astro": "^4.10.2",

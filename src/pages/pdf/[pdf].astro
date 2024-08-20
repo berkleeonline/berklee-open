@@ -1,0 +1,86 @@
+---
+import { generate } from './generate';
+import { contentfulClient } from "../../lib/contentful";
+
+// API function to fetch entry by ID
+const fetchEntryById = async (id) => {
+  const entry = await contentfulClient.getEntry(id);
+  return entry;
+};
+
+export async function getStaticPaths() {
+  const pdfs = await contentfulClient.getEntries({
+    content_type: "lesson",
+  });
+
+  let pdfsToPublish = [];
+
+  pdfs.items.map((pdf) => {
+    pdfsToPublish.push({
+      params: { pdf: pdf.sys.id },
+      props: pdf
+    });
+  });
+
+  return pdfsToPublish;
+}
+
+// Fetch and resolve lesson sections
+const fetchAndResolveSections = async (sections) => {
+  const resolvedSections = await Promise.all(
+    sections.map(async (section) => {
+      if (section.fields?.interactiveContent?.sys?.id) {
+        const interactiveContent = await fetchEntryById(section.fields.interactiveContent.sys.id);
+        return {
+          ...section,
+          fields: {
+            ...section.fields,
+            interactiveContent: interactiveContent.fields?.slides || [], // Default to an empty array if undefined
+          },
+        };
+      }
+      return {
+        ...section,
+        fields: {
+          ...section.fields,
+          interactiveContent: [], // Ensure interactiveContent is at least an empty array
+        },
+      };
+    })
+  );
+  return resolvedSections;
+};
+
+// get the PDF URL from the lesson post materials
+const getPdfUrl = (lessonPdf) => {
+  if (lessonPdf && lessonPdf.fields && lessonPdf.fields.file && lessonPdf.fields.file.url) {
+    const url = lessonPdf.fields.file.url;
+    return url.startsWith('//') ? `https:${url}` : url;
+  }
+  return null;
+};
+
+const {
+  lesson_sections
+} = Astro.props.fields;
+
+const resolvedLessonSections = await fetchAndResolveSections(lesson_sections || []);
+
+// Define the props
+const pdfProps = {
+  fields: Astro.props.fields,
+  sections: resolvedLessonSections
+};
+
+// Generate the PDF with props
+await generate(pdfProps);
+---
+
+<html>
+  <head>
+    <title>PDF Generation</title>
+  </head>
+  <body>
+    <iframe src={`/public/${pdfProps.fields.Lesson_id}.pdf`} style="height: 100vh; width: 100vw;" />
+  </body>
+</html>
