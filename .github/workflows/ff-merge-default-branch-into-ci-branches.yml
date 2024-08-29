@@ -1,0 +1,11 @@
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  call-ff-merge-default-branch-into-ci-branches:
+    uses: berkleeonline/github-workflows/.github/workflows/ff-merge-default-branch-into-ci-branches.yml@main
+    with:
+      ci-branches: '["integration", "patch"]'
+    secrets: inherit
