@@ -1,5 +1,6 @@
 ---
 import React, { useEffect, useState } from 'react';
+//import { Authenticator } from '@aws-amplify/ui-react';
 import { contentfulClient } from "../lib/contentful";
 import type { Lesson, Unit } from "../type/content-blocks";
 import { Button, Link } from "@nextui-org/react";
@@ -10,6 +11,7 @@ import MainLayout from '../layouts/main.astro';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight } from '@fortawesome/pro-light-svg-icons';
 
+//import AuthHeader from "../components/auth/header";
 
 
 const lessons = await contentfulClient.getEntries<Lesson>({
@@ -28,6 +30,11 @@ const units = await contentfulClient.getEntries<Unit>({
 <MainLayout title={`Berklee Open`}>
   <div class="mb-32">
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 h-500">
+<!--
+<Authenticator.Provider>
+      <AuthHeader />
+</Authenticator.Provider>
+-->
       <!-- Left side -->
       <div class="flex flex-col justify-center">
         <h1 class="text-6xl font-bold mb-4">Music Education Resources for Your Classroom</h1>
