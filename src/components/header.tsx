@@ -2,7 +2,10 @@ import React, { useState } from "react";
 import {Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, NavbarMenuToggle, NavbarMenu, NavbarMenuItem, Input, Button} from "@nextui-org/react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/pro-light-svg-icons';
+import { Authenticator } from '@aws-amplify/ui-react';
 import Logo from "./logo";
+
+import AuthHeader from "./auth/header";
 
 const Header = (props) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -72,6 +75,13 @@ const Header = (props) => {
         <NavbarItem>
           <Link color="foreground" href="/lessons" className="font-bold">
             Lessons
+          </Link>
+        </NavbarItem>
+        <NavbarItem>
+          <Link color="foreground" href="/auth" className="font-bold">
+            <Authenticator.Provider>
+              <AuthHeader />
+            </Authenticator.Provider>
           </Link>
         </NavbarItem>
       </NavbarContent>
