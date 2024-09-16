@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import algoliasearch from 'algoliasearch/lite';
-import { InstantSearch, SearchBox, Hits, useInstantSearch } from 'react-instantsearch-hooks-web';
+import { InstantSearch, SearchBox, Hits, useInstantSearch, useSearchBox } from 'react-instantsearch-hooks-web';
 import ModuleCard from './cards/module';
 import UnitCard from './cards/unit';
 import LessonCard from './cards/lesson';
@@ -55,13 +55,13 @@ const Hit = ({ hit }) => {
     );
   }
   
-  return <div class="search-unknown-content">Unknown content type</div>;
+  return <div className="search-unknown-content">Unknown content type</div>;
 };
 
 const NoResults = () => (
     <div className="text-center py-10">
-        <p className="text-xl font-semibold">No results found for that search.</p>
-        <p className="text-gray-500 mt-2 demo">Try adjusting your search or filter to find what you're looking for.</p>
+      <p className="text-xl font-semibold">No results found for that search.</p>
+      <p className="text-gray-500 mt-2 demo">Try adjusting your search or filter to find what you're looking for.</p>
     </div>
 );
 
@@ -75,19 +75,33 @@ const SearchResults = () => {
   return <Hits hitComponent={Hit} />;
 };
 
-const CustomHits = ({ hits }) => (
-  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-    {hits.map(hit => <Hit key={hit.objectID} hit={hit} />)}
-  </div>
-);
+const CustomSearchBox = ({ initialQuery }) => {
+  const { query, refine } = useSearchBox(); // Provides the ability to update the search query
+
+  useEffect(() => {
+    if (initialQuery) {
+      refine(initialQuery); // Set the initial search query from URL
+    }
+  }, [initialQuery, refine]);
+
+  return <SearchBox placeholder="Search resources or concepts..." />;
+};
 
 const Search = () => {
-    return (
-      <InstantSearch searchClient={searchClient} indexName="BerkleeOpen">
-        <SearchBox placeholder="Search for modules, units, or lessons..." />
-        <SearchResults />
-      </InstantSearch>
-    );
-  };
+  const [initialQuery, setInitialQuery] = useState('');
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(window.location.search); // Get query string from the URL
+    const query = searchParams.get('q') || '';  // Get the query from URL
+    setInitialQuery(query);
+  }, []);
+
+  return (
+    <InstantSearch searchClient={searchClient} indexName="BerkleeOpen">
+      <CustomSearchBox initialQuery={initialQuery} />
+      <SearchResults />
+    </InstantSearch>
+  );
+};
 
 export default Search;

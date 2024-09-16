@@ -1,15 +1,12 @@
-import React from "react";
-import {Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, NavbarMenuToggle, NavbarMenu, NavbarMenuItem, Input, DropdownItem, DropdownTrigger, Dropdown, DropdownMenu, Avatar} from "@nextui-org/react";
+import React, { useState } from "react";
+import {Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, NavbarMenuToggle, NavbarMenu, NavbarMenuItem, Input, Button} from "@nextui-org/react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/pro-light-svg-icons';
 import Logo from "./logo";
 
-type HeaderProps = {
-  text: string;
-}
-
-const Header = (props: HeaderProps) => {
-  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+const Header = (props) => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const menuItems = [
     "Profile",
@@ -24,8 +21,15 @@ const Header = (props: HeaderProps) => {
     "Log Out",
   ];
 
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      window.location.href = `/search?q=${encodeURIComponent(searchQuery.trim())}`;
+    }
+  };
+
   return (
-    <Navbar onMenuOpenChange={setIsMenuOpen} maxWidth={`2xl`}>
+    <Navbar onMenuOpenChange={setIsMenuOpen} maxWidth="2xl">
       <NavbarContent justify="start" className="justify-items-start">
         <NavbarMenuToggle
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
@@ -36,19 +40,22 @@ const Header = (props: HeaderProps) => {
             <Logo />
           </Link>
         </NavbarBrand>
-        <Input
-          classNames={{
-            base: "max-w-full sm:max-w-[20rem] h-10",
-            mainWrapper: "h-full w-full",
-            input: "text-small",
-            inputWrapper: "h-full w-full border font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20",
-          }}
-          placeholder="Search..."
-          size="sm"
-          radius="full"
-          startContent={<FontAwesomeIcon icon={faSearch} className="w-4" />}
-          type="search"
-        />
+        <form onSubmit={handleSearch} className="flex items-center">
+          <Input
+            classNames={{
+              base: "max-w-full sm:max-w-[20rem] h-10",
+              mainWrapper: "h-full",
+              input: "text-small",
+              inputWrapper: "h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20 rounded-full",
+            }}
+            placeholder="Search..."
+            size="sm"
+            startContent={<FontAwesomeIcon icon={faSearch} className="text-default-400 w-4" />}
+            type="search"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+        </form>
       </NavbarContent>
 
       <NavbarContent className="hidden sm:flex gap-4 items-right" justify="end">
@@ -73,6 +80,7 @@ const Header = (props: HeaderProps) => {
           </Link>
         </NavbarItem>
       </NavbarContent>
+
       <NavbarMenu>
         {menuItems.map((item, index) => (
           <NavbarMenuItem key={`${item}-${index}`}>
@@ -94,3 +102,4 @@ const Header = (props: HeaderProps) => {
 };
 
 export default Header;
+

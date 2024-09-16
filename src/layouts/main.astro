@@ -18,7 +18,7 @@ const { title, cssClass } = Astro.props;
     <meta name="robots" content="noindex, nofollow" />
   </head>
   <body>
-    <Header text={title} />
+    <Header text={title} client:load />
     <main class="px-6 mx-auto pt-16 max-w-[1536px]" transition:animate="slide">
       <slot />
     </main>
