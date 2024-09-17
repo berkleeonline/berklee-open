@@ -67,7 +67,7 @@ const Hit = ({ hit }) => {
 
 // Updated NoResults to accept and display the search term
 const NoResults = ({ searchTerm }) => (
-    <div className="text-center py-10">
+    <div className="text-center">
       <p className="text-xl font-semibold">No results found.</p>
       <p className="text-gray-500 mt-2 demo">Try adjusting your search or filter to find what you're looking for.</p>
     </div>
@@ -105,7 +105,7 @@ const CustomSearchBox = ({ initialQuery, setSearchTerm }) => {
       <SearchBox placeholder="Search resources or concepts..." onInput={handleChange} />
       {/* Conditionally display the search term if not empty */}
       {query && (
-        <h2 className="search-term text-center mb-24">Results for "<strong>{capitalizeFirstLetter(query || initialQuery)}</strong>"</h2>
+        <h2 className="search-term text-center mb-4">Results for "<strong>{capitalizeFirstLetter(query || initialQuery)}</strong>"</h2>
       )}
     </div>
   );
@@ -125,7 +125,7 @@ const Search = () => {
   return (
     <InstantSearch searchClient={searchClient} indexName="BerkleeOpen">
       <CustomSearchBox initialQuery={initialQuery} setSearchTerm={setSearchTerm} />
-      <SearchResults searchTerm={searchTerm} />
+      <SearchResults searchTerm={searchTerm} className="mt-24" />
     </InstantSearch>
   );
 };

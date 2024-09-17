@@ -54,10 +54,6 @@ h2.search-term {
   margin-bottom: 20px;
 }
 
-.ais-SearchBox-form {
-  margin-bottom: 2rem;
-}
-
 .ais-SearchBox-input {
   background: #ecebee;
   border: double 2px transparent;
@@ -78,7 +74,7 @@ h2.search-term {
 
 .ais-Hits {
   /* Remove any default margin/padding */
-  margin: 0;
+  margin: 5rem 0 0 0;
   padding: 0;
 }
 
