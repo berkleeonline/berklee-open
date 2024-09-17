@@ -74,11 +74,6 @@ const Header = (props) => {
             Lessons
           </Link>
         </NavbarItem>
-        <NavbarItem>
-          <Link color="foreground" href="/search" className="font-bold">
-            Search
-          </Link>
-        </NavbarItem>
       </NavbarContent>
 
       <NavbarMenu>
