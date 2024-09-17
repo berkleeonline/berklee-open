@@ -40,7 +40,7 @@ const Header = (props) => {
             <Logo />
           </Link>
         </NavbarBrand>
-        <form onSubmit={handleSearch} className="flex items-center">
+        <form onSubmit={handleSearch} className="flex items-center w-full">
           <Input
             classNames={{
               base: "max-w-full sm:max-w-[20rem] h-10",
