@@ -1,11 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import algoliasearch from 'algoliasearch/lite';
 import { InstantSearch, SearchBox, Hits, useInstantSearch, useSearchBox } from 'react-instantsearch-hooks-web';
+
 import ModuleCard from './cards/module';
 import UnitCard from './cards/unit';
 import LessonCard from './cards/lesson';
 
 const searchClient = algoliasearch('AHDTI74E4C', '8a286c5cd2c0c5f5cbd68e8a8e4eeda2');
+
+// Utility function to capitalize the first letter of the search term safely
+const capitalizeFirstLetter = (string) => {
+  if (!string) return ''; // Ensure the string is valid
+  return string.charAt(0).toUpperCase() + string.slice(1);
+};
 
 const Hit = ({ hit }) => {
   const fields = hit.fields || {};
@@ -58,48 +65,67 @@ const Hit = ({ hit }) => {
   return <div className="search-unknown-content">Unknown content type</div>;
 };
 
-const NoResults = () => (
+// Updated NoResults to accept and display the search term
+const NoResults = ({ searchTerm }) => (
     <div className="text-center py-10">
-      <p className="text-xl font-semibold">No results found for that search.</p>
+      <p className="text-xl font-semibold">No results found.</p>
       <p className="text-gray-500 mt-2 demo">Try adjusting your search or filter to find what you're looking for.</p>
     </div>
 );
 
-const SearchResults = () => {
+const SearchResults = ({ searchTerm }) => {
   const { results } = useInstantSearch();
 
   if (!results.__isArtificial && results.nbHits === 0) {
-    return <NoResults />;
+    return <NoResults searchTerm={searchTerm} />;
   }
 
   return <Hits hitComponent={Hit} />;
 };
 
-const CustomSearchBox = ({ initialQuery }) => {
+const CustomSearchBox = ({ initialQuery, setSearchTerm }) => {
   const { query, refine } = useSearchBox(); // Provides the ability to update the search query
 
   useEffect(() => {
     if (initialQuery) {
       refine(initialQuery); // Set the initial search query from URL
+      setSearchTerm(initialQuery); // Set the search term in the parent component
     }
-  }, [initialQuery, refine]);
+  }, [initialQuery, refine, setSearchTerm]);
 
-  return <SearchBox placeholder="Search resources or concepts..." />;
+  // Update the search term whenever the user types
+  const handleChange = (event) => {
+    const searchTerm = event.currentTarget.value;
+    refine(searchTerm);
+    setSearchTerm(searchTerm || ''); // Ensure the search term is always a string
+  };
+
+  return (
+    <div>
+      <SearchBox placeholder="Search resources or concepts..." onInput={handleChange} />
+      {/* Conditionally display the search term if not empty */}
+      {query && (
+        <h2 className="search-term text-center mb-24">Results for "<strong>{capitalizeFirstLetter(query || initialQuery)}</strong>"</h2>
+      )}
+    </div>
+  );
 };
 
 const Search = () => {
   const [initialQuery, setInitialQuery] = useState('');
+  const [searchTerm, setSearchTerm] = useState(''); // Store the current search term
 
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search); // Get query string from the URL
     const query = searchParams.get('q') || '';  // Get the query from URL
     setInitialQuery(query);
+    setSearchTerm(query); // Initialize search term
   }, []);
 
   return (
     <InstantSearch searchClient={searchClient} indexName="BerkleeOpen">
-      <CustomSearchBox initialQuery={initialQuery} />
-      <SearchResults />
+      <CustomSearchBox initialQuery={initialQuery} setSearchTerm={setSearchTerm} />
+      <SearchResults searchTerm={searchTerm} />
     </InstantSearch>
   );
 };

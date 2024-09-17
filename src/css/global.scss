@@ -9,12 +9,17 @@ html {
 }
 
 h1.search-header {
-  font-size: 2.75rem;
+  font-size: 2.35rem;
   font-weight: 700;
   margin-top: 3rem;
   margin-bottom: 1.5rem;
   text-align: center;
   width: 100%;
+}
+
+h2.search-term {
+  font-size: 1.75rem;
+  font-weight: 500;
 }
 
 .ais-SearchBox-form {
@@ -47,6 +52,10 @@ h1.search-header {
   flex-direction: row;
   justify-content: center;
   margin-bottom: 20px;
+}
+
+.ais-SearchBox-form {
+  margin-bottom: 2rem;
 }
 
 .ais-SearchBox-input {
