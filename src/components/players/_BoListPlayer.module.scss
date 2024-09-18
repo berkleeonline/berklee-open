@@ -1,0 +1,43 @@
+.boPlayerStyles {
+  position: relative;
+  :global {
+    .list-player {
+      background-color: rgba(58,65,67,.95);
+      color: #FFF !important;
+      position: relative;
+
+      div.controller-panel {
+        justify-content: center;
+        width: 100%;
+      }
+      button.play-btn {
+        order: 2;
+      }
+    }
+
+    .progress-bar-container {
+      position: absolute;
+      top: 30px; left: 0;
+      right: 0;
+    }
+
+    .progress-time-display {
+      color: #FFF;
+    }
+    .lt-info-panel {
+      align-items: center;
+      justify-content: center;
+    }
+    .lt-info-img-cont {
+      display: none;
+    }
+    button.mute-btn,
+    div.lt-info-stats {
+      display: none;
+    }
+
+    button.forward-btn {
+      margin-right: 0;
+    }
+  }
+}

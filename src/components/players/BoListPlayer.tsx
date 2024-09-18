@@ -1,5 +1,6 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { ListPlayer, ListPlayerContext } from 'react-list-player';
+import styles from './_BoListPlayer.module.scss';
 
 // This is just a sample listInfo object
 const testListInfo: listInfo = {
@@ -35,7 +36,7 @@ const testTracks: track[] = [
             className: 'album'
         }
     ],
-    duration: "1:58",
+    duration: "0:32",
     imageSrc: "https://cdn.pixabay.com/audio/2023/03/19/12-27-22-207_200x200.jpg"
   },
   {
@@ -296,45 +297,91 @@ const testTracks: track[] = [
 ]
 
 export default function BoListPlayer() {
-  const [selectedTrack, setSelectedTrack] = useState(-1);   // -1 means no track is selected
-  const [isPlaying, setIsPlaying] = useState(false);        // play/pause
-  const [isMuted, setIsMuted] = useState(false);            // mute/unmute
-  const [playerMode, setPlayerMode] = useState("large");
-
-  const audioRef = useRef<HTMLAudioElement>(null);
-  const audioSrcs = ["https://assets.online.berklee.edu/berklee-open-placeholder/Lesson_1_Happy_BPM+125.mp3", "/free-audio/my universe.mp3", "/free-audio/smoke.mp3", "/free-audio/good night.mp3", "/free-audio/hear me.mp3", "/free-audio/baby mandala.mp3", "/free-audio/midnight forest.mp3", "/free-audio/separation.mp3", "/free-audio/drive breakbeat.mp3", "/free-audio/glossy.mp3"];
-
-  const handleOnPlay = (index:number, resume:boolean) => {
-    if(index === selectedTrack && !resume) {
-      audioRef.current?.load();
-      audioRef.current?.play();
-    } else {
-      audioRef.current?.play();
-    }
-  }
-
-  const handleOnPause = () => {
-    audioRef.current?.pause();
-  }
-
-  return (
-    <ListPlayerContext.Provider value={{selectedTrack, setSelectedTrack, isPlaying, setIsPlaying, isMuted, setIsMuted}}>
-      <div className='container-for-sizing-player flex justify-center w-[75%] mx-auto -mt-40'>
-        <ListPlayer 
-          tracks={testTracks} 
-          listInfo={testListInfo} 
-          playerMode={playerMode}
-          playCallback={handleOnPlay} 
-          pauseCallback={handleOnPause}
-          loop
-          kbdShortcuts
+    const [selectedTrack, setSelectedTrack] = useState(-1);   // -1 means no track is selected
+    const [isPlaying, setIsPlaying] = useState(false);        // play/pause
+    const [isMuted, setIsMuted] = useState(false);            // mute/unmute
+    const [playerMode, setPlayerMode] = useState("large");
+    const [progress, setProgress] = useState(0);              // Track progress in seconds
+    const [duration, setDuration] = useState(0);              // Track total duration in seconds
+  
+    const audioRef = useRef<HTMLAudioElement>(null);
+    const audioSrcs = [
+      "https://assets.online.berklee.edu/berklee-open-placeholder/Lesson_1_Happy_BPM+125.mp3", 
+      "/free-audio/my universe.mp3", 
+      // More audio sources...
+    ];
+  
+    useEffect(() => {
+      const audio = audioRef.current;
+      if (audio) {
+        const updateProgress = () => {
+          setProgress(audio.currentTime);
+          setDuration(audio.duration || 0);
+        };
+        audio.addEventListener('timeupdate', updateProgress);
+        return () => {
+          audio.removeEventListener('timeupdate', updateProgress);
+        };
+      }
+    }, [selectedTrack]);
+  
+    const handleOnPlay = (index: number, resume: boolean) => {
+      if (index === selectedTrack && !resume) {
+        audioRef.current?.load();
+        audioRef.current?.play();
+      } else {
+        audioRef.current?.play();
+      }
+      setIsPlaying(true);
+    };
+  
+    const handleOnPause = () => {
+      audioRef.current?.pause();
+      setIsPlaying(false);
+    };
+  
+    const handleSeek = (event: React.ChangeEvent<HTMLInputElement>) => {
+      const newTime = parseFloat(event.target.value);
+      audioRef.current!.currentTime = newTime;
+      setProgress(newTime);
+    };
+  
+    return (
+      <ListPlayerContext.Provider value={{ selectedTrack, setSelectedTrack, isPlaying, setIsPlaying, isMuted, setIsMuted }}>
+        <div className={`container-for-sizing-player flex justify-center w-[75%] mx-auto -mt-40 ${styles.boPlayerStyles}`}>
+          <ListPlayer 
+            tracks={testTracks} 
+            listInfo={testListInfo} 
+            playerMode={playerMode}
+            playCallback={handleOnPlay} 
+            pauseCallback={handleOnPause}
+            loop
+            kbdShortcuts
+          />
+          {/* Progress Bar */}
+          <div className="progress-bar-container flex items-center justify-center mt-4">
+            <div className="progress-time-display ml-4">
+                {Math.floor(progress / 60)}:{Math.floor(progress % 60).toString().padStart(2, '0')}
+            </div>
+            <input
+              type="range"
+              min="0"
+              max={duration.toString()}
+              value={progress}
+              onChange={handleSeek}
+              className="progress-bar w-full"
+            />
+            <div className="progress-time-display ml-4">
+                {Math.floor(duration / 60)}:{Math.floor(duration % 60).toString().padStart(2, '0')}
+            </div>
+          </div>
+        </div>
+        <audio
+          ref={audioRef}
+          src={selectedTrack < audioSrcs.length ? audioSrcs[selectedTrack % audioSrcs.length] : undefined}
+          muted={isMuted}
+          onEnded={() => { setSelectedTrack((prev) => (prev + 1) % audioSrcs.length); }}
         />
-      </div>
-      <audio ref={audioRef} 
-        src={selectedTrack < audioSrcs.length ? audioSrcs[selectedTrack%audioSrcs.length] : undefined}
-        muted={isMuted} 
-        onEnded={() => {setSelectedTrack(selectedTrack + 1)}}
-      />
-    </ListPlayerContext.Provider>
-  )
-}
+      </ListPlayerContext.Provider>
+    );
+  }

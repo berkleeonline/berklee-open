@@ -63,6 +63,9 @@ const fetchAndResolveSections = async (sections) => {
 };
 
 const {
+  lesson_sel,
+  lesson_extension,
+  lesson_accessibility,
   lesson_title,
   lesson_summary,
   lesson_audience,
@@ -83,6 +86,8 @@ const {
   lesson_post_materials,
   lesson_pdf,
 } = Astro.props.fields;
+
+console.log('lesson_extension:', lesson_extension);
 
 // get the PDF URL from the lesson post materials
 const getPdfUrl = (lessonPdf) => {
@@ -188,6 +193,9 @@ const resolvedLessonSections = await fetchAndResolveSections(lesson_sections || 
       </div>
 
       <LessonTabs 
+        lesson_sel={serializeForClient(lesson_sel)}
+        lesson_extension={serializeForClient(lesson_extension)}
+        lesson_accessibility={serializeForClient(lesson_accessibility)}
         lesson_outcome={serializeForClient(lesson_outcome)}
         lesson_outline={serializeForClient(lesson_outline)}
         lesson_essential_questions={serializeForClient(lesson_essential_questions)}

@@ -19,6 +19,7 @@ import {
   faChalkboard,
   faSquareCheck,
   faQuestionCircle,
+  faSealQuestion,
   faCircleDot,
 } from '@fortawesome/pro-light-svg-icons';
 import styles from '../../pages/lessons/_lesson.module.scss';
@@ -35,6 +36,9 @@ const materialIcons = {
 
 export const LessonTabs = ({
   lesson_outcome,
+  lesson_sel,
+  lesson_extension,
+  lesson_accessibility,
   lesson_sticking_points,
   lesson_evidence,
   lesson_prerequisites,
@@ -59,6 +63,36 @@ export const LessonTabs = ({
       >
         <Tab key="overview" title="Overview" className="text-medium tracking-wider font-bold">
           <div className="pt-10 tracking-normal font-normal">
+              
+              <div className="mb-16">
+                <IconHeader headerId="lessonStandards" icon={faStar} label="Standards" />
+                <ul className="list-disc list-outside ml-10 pl-4">
+                  <li>Coming Soon</li>
+                </ul>
+              </div>
+            
+            {lesson_sel && lesson_sel.length > 0 && (
+              <div className="mb-16">
+                <IconHeader headerId="lessonSEL" icon={faStar} label="SEL" />
+                <ul className="list-disc list-outside ml-10 pl-4">
+                  {lesson_sel.map((sel, index) => (
+                    <li className="pb-3" key={index}>{sel}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            
+            {lesson_prerequisites && lesson_prerequisites.content.length > 0 && (
+              <div className="mb-16">
+                <IconHeader headerId="lessonPrerequisites" icon={faSquareCheck} label="Prerequisites" />
+                <ul className="list-disc list-outside ml-10 pl-4">
+                  {lesson_prerequisites.content.map((prerequisite, index) => prerequisite.nodeType === 'unordered-list' &&
+                      prerequisite.content.map((item, idx) => <li className="pb-3" key={idx}>{item.content[0]?.content[0].value}</li>))}
+                </ul>
+              </div>
+            )}
+
+
             {lesson_outcome && lesson_outcome.content.length > 0 && (
               <div className="mb-16">
                 <IconHeader headerId="learningOutcomes" icon={faSeedling} label="Learning Outcomes" />
@@ -82,7 +116,7 @@ export const LessonTabs = ({
 
             {lesson_essential_questions && lesson_essential_questions.length > 0 && (
               <div className="mb-16">
-                <IconHeader headerId="lessonEssentialQuestions" icon={faStar} label="Essential Questions" />
+                <IconHeader headerId="lessonEssentialQuestions" icon={faSealQuestion} label="Essential Questions" />
                 <ol className="list-decimal list-outside ml-10 pl-4">
                   {lesson_essential_questions?.map((question, index) => (
                     <li className="pb-3" key={index}>
@@ -90,13 +124,6 @@ export const LessonTabs = ({
                     </li>
                   ))}
                 </ol>
-              </div>
-            )}
-
-            {lesson_repertoire && lesson_repertoire.content.length > 0 && (
-              <div className="mb-16">
-                <IconHeader headerId="lessonRepertoire" icon={faMusic} label="Repertoire" />
-                <div className={`mb-7 ${styles.richContentInnerStyles}`} dangerouslySetInnerHTML={{ __html: documentToHtmlString(lesson_repertoire) }}></div>
               </div>
             )}
 
@@ -124,10 +151,10 @@ export const LessonTabs = ({
               </div>
             )}
 
-            {lesson_sticking_points && lesson_sticking_points.content.length > 0 && (
+            {lesson_repertoire && lesson_repertoire.content.length > 0 && (
               <div className="mb-16">
-                <IconHeader headerId="lessonStickingPoints" icon={faTrafficCone} label="Sticking Points" />
-                <div className={`mb-7 ${styles.richContentInnerStyles}`} dangerouslySetInnerHTML={{ __html: documentToHtmlString(lesson_sticking_points) }}></div>
+                <IconHeader headerId="lessonRepertoire" icon={faMusic} label="Repertoire" />
+                <div className={`mb-7 ${styles.richContentInnerStyles}`} dangerouslySetInnerHTML={{ __html: documentToHtmlString(lesson_repertoire) }}></div>
               </div>
             )}
 
@@ -138,15 +165,7 @@ export const LessonTabs = ({
               </div>
             )}
 
-            {lesson_prerequisites && lesson_prerequisites.content.length > 0 && (
-              <div className="mb-16">
-                <IconHeader headerId="lessonPrerequisites" icon={faSquareCheck} label="Prerequisites" />
-                <ul className="list-disc list-outside ml-10 pl-4">
-                  {lesson_prerequisites.content.map((prerequisite, index) => prerequisite.nodeType === 'unordered-list' &&
-                      prerequisite.content.map((item, idx) => <li className="pb-3" key={idx}>{item.content[0]?.content[0].value}</li>))}
-                </ul>
-              </div>
-            )}
+            
 
             
           </div>
@@ -184,6 +203,31 @@ export const LessonTabs = ({
                     </div>
                   </div>
                 ))}
+              </div>
+            )}
+          </div>
+        </Tab>
+        <Tab key="differentiated-strategies" title="Differentiated Strategies" className="text-medium tracking-wider font-bold">
+          <div className="pt-10 tracking-normal font-normal">
+            
+            {lesson_accessibility && lesson_accessibility.content.length > 0 && (
+              <div className="mb-16">
+                <IconHeader headerId="lessonAccessibility" icon={faTrafficCone} label="Accessibile Strategies" />
+                <div className={`mb-7 ${styles.richContentInnerStyles}`} dangerouslySetInnerHTML={{ __html: documentToHtmlString(lesson_accessibility) }}></div>
+              </div>
+            )}
+            
+            {lesson_sticking_points && lesson_sticking_points.content.length > 0 && (
+              <div className="mb-16">
+                <IconHeader headerId="lessonStickingPoints" icon={faTrafficCone} label="Sticking Points" />
+                <div className={`mb-7 ${styles.richContentInnerStyles}`} dangerouslySetInnerHTML={{ __html: documentToHtmlString(lesson_sticking_points) }}></div>
+              </div>
+            )}
+
+            {lesson_extension && lesson_extension.content.length > 0 && (
+              <div className="mb-16">
+                <IconHeader headerId="lessonExtension" icon={faTrafficCone} label="Extension Strategies" />
+                <div className={`mb-7 ${styles.richContentInnerStyles}`} dangerouslySetInnerHTML={{ __html: documentToHtmlString(lesson_extension) }}></div>
               </div>
             )}
           </div>
