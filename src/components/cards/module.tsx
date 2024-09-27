@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, CardBody, CardFooter, Image } from "@nextui-org/react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHeart, faBook, faSignal4, faBooks } from '@fortawesome/pro-light-svg-icons';
+import { faHeart,faShare, faBook, faSignal4, faBooks } from '@fortawesome/pro-light-svg-icons';
 import { IconChip } from "../../elements/IconChip";
 import { calculateLevel } from "../../lib/calculateLevel";
 
@@ -47,8 +47,13 @@ const ModuleCard: React.FC<ModuleCardProps> = ({
         <CardFooter className="text-small flex-col h-full">
           <div className="flex w-full mb-2 justify-between">
             <h3 className="font-bold text-lg text-left mt-4">{title}</h3>
-            <div className="p-2 flex text-default-500 text-left border rounded-full w-[30px] h-[30px] items-center justify-center text-center">
-              <FontAwesomeIcon icon={faHeart} />
+            <div className="flex flex-row gap-2">
+              <div className="p-2 flex text-default-500 text-left border rounded-full w-[30px] h-[30px] items-center justify-center text-center">
+                <FontAwesomeIcon icon={faHeart} />
+              </div>
+              <div className="p-2 flex text-default-500 text-left border rounded-full w-[30px] h-[30px] items-center justify-center text-center">
+                <FontAwesomeIcon icon={faShare} />
+              </div>
             </div>
           </div>
           <div className="description w-full mb-4 text-left">{shortDescription}</div>
