@@ -192,7 +192,7 @@ export const LessonTabs = ({
 
             {(lesson_prep || lesson_materials.length > 0) && (
               <div className="mb-8 pb-8 border-b">
-                <IconHeader headerId="lessonReferencedMaterials" icon={faChalkboard} label="Referenced Materials" />
+                <IconHeader headerId="lessonMaterials" icon={faChalkboard} label="Materials" />
 
                 {lesson_materials.length > 0 && (
                   <div className={`${styles.richContentInnerStyles}`}>
