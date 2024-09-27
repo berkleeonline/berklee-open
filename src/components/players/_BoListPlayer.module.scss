@@ -7,6 +7,8 @@
       position: relative;
 
       div.controller-panel {
+        margin: .5rem 0 0 0;
+        padding: 0;
         justify-content: center;
         width: 100%;
       }
@@ -17,10 +19,36 @@
 
     .progress-bar-container {
       position: absolute;
-      top: 30px; left: 0;
+      top: 175px; left: 0;
+      margin: 0 auto;
       right: 0;
+      width: 70%;
     }
 
+    .progress-jump {
+      display: none;
+    }
+
+    .progress-jump-forward-btn {
+      order: 4;
+    }
+
+    .progress-jump svg {
+      fill: rgba(255, 255, 255, 0.7);
+      width: 2rem;
+      height: 2rem;
+      padding: 0 .25rem;
+
+      &:hover {
+        fill: #FFF;
+      } 
+    }
+
+    div.controller-panel {
+      background: none;
+      bottom: auto;
+      top: 200px;
+    }
     .progress-time-display {
       color: #FFF;
     }
@@ -28,6 +56,7 @@
       align-items: center;
       justify-content: center;
     }
+    .lt-info-art-placeholder-cont,
     .lt-info-img-cont {
       display: none;
     }

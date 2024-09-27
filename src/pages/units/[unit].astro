@@ -76,6 +76,15 @@ const unitImageUrl = getImageUrl(unit_image);
       </div>
       <h1 class="text-4xl font-bold mb-2">{unit_title}</h1>
       <div class="text-md mb-4" set:html={documentToHtmlString(unit_description)}></div>
+      {unit_concept && unit_concept.length > 0 && (
+        <div class="mb-4">
+          {unit_concept.map((concept, index) => {
+            if (concept.fields && concept.fields.concept_name) {
+              return (<Chip key={index} variant="flat" className="mb-3 mr-3">{concept.fields.concept_name}</Chip>);
+            }
+          })} 
+        </div>
+      )}
 
       <div class="flex gap-6 mb-6 items-center">
         <div class="flex flex-row font-bold items-center"><FontAwesomeIcon className="w-4 mr-1" icon={faSignal4} />Beginner</div>
@@ -129,6 +138,17 @@ const unitImageUrl = getImageUrl(unit_image);
         </div>
       )}
 
+      {unit_concept && unit_concept.length > 0 && (
+        <div class="mb-16">
+          <IconHeader headerId="conceptsCovered" icon={} label="Concepts Covered" />
+          {unit_concept.map((concept, index) => {
+            if (concept.fields && concept.fields.concept_name) {
+              return (<Chip key={index} variant="flat" className="mb-3 mr-3">{concept.fields.concept_name}</Chip>);
+            }
+          })} 
+        </div>
+      )}
+
       {unit_prerequisite && unit_prerequisite.content.length > 0 && (
         <div class="mb-16">
           <IconHeader headerId="learningPrerequisites" icon={faSquareCheck} label="Prerequisites" />
@@ -139,18 +159,6 @@ const unitImageUrl = getImageUrl(unit_image);
               ))
             ))}
           </ul>
-        </div>
-      )}
-
-
-      {unit_concept && unit_concept.length > 0 && (
-        <div class="mb-16">
-          <IconHeader headerId="conceptsCovered" icon={} label="Concepts Covered" />
-          {unit_concept.map((concept, index) => {
-            if (concept.fields && concept.fields.concept_name) {
-              return (<Chip key={index} variant="flat" className="mb-3 mr-3">{concept.fields.concept_name}</Chip>);
-            }
-          })} 
         </div>
       )}
 

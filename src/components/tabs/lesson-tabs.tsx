@@ -19,8 +19,12 @@ import {
   faChalkboard,
   faSquareCheck,
   faQuestionCircle,
+  faNotebook,
+  faChess,
   faSealQuestion,
-  faCircleDot,
+  faCircleStar,
+  faRankingStar,
+  faLayerGroupPlus,
 } from '@fortawesome/pro-light-svg-icons';
 import styles from '../../pages/lessons/_lesson.module.scss';
 
@@ -50,6 +54,9 @@ export const LessonTabs = ({
   lesson_repertoire,
   lesson_sections,
 }) => {
+
+  console.log(JSON.stringify(lesson_prerequisites, null, 2));
+  
   return (
     <div className="flex w-full flex-col">
       <Tabs
@@ -66,7 +73,7 @@ export const LessonTabs = ({
           <div className="pt-10 tracking-normal font-normal">
               
               <div className="mb-8 pb-8 border-b">
-                <IconHeader headerId="lessonStandards" icon={faStar} label="Standards and Competencies" />
+                <IconHeader headerId="lessonStandards" icon={faCircleStar} label="Standards and Competencies" />
                 <ul className="list-disc list-outside ml-10 pl-4">
                   <li>Coming Soon</li>
                 </ul>
@@ -76,7 +83,7 @@ export const LessonTabs = ({
                     <div className="grid grid-cols-2 gap-2">
                       {lesson_sel.map((sel, index) => (
                         <div key={index} className="mb-1 flex flex-row items-center">
-                          <FontAwesomeIcon icon={materialIcons[sel] || faQuestionCircle} className="mr-3 w-4 h-4 text-center" />
+                          <FontAwesomeIcon icon={faStar} className="mr-3 w-4 h-4 text-center" />
                           {sel}
                         </div>
                       ))}
@@ -87,50 +94,58 @@ export const LessonTabs = ({
 
               {lesson_prerequisites && lesson_prerequisites.content.length > 0 && (
                 <div className="mb-8 pb-8 border-b">
-                    <IconHeader headerId="lessonPrerequisites" icon={faSquareCheck} label="Prerequisites" />
-                    {lesson_prerequisites.content.map((item, index) => {
-                      if (item.nodeType === 'unordered-list') {
-                        return (
-                          <ul className="list-disc list-outside ml-10 pl-4" key={index}>
-                            {item.content.map((listItem, idx) => {
-                              if (listItem.nodeType === 'list-item') {
-                                const paragraph = listItem.content[0];
-                                if (paragraph.nodeType === 'paragraph') {
-                                  return (
-                                    <li className="pb-3" key={idx}>
-                                      {paragraph.content.map((contentItem, contentIdx) => {
-                                        if (contentItem.nodeType === 'text') {
-                                          return <span key={contentIdx}>{contentItem.value}</span>;
-                                        } else if (contentItem.nodeType === 'embedded-entry-inline') {
-                                          const embeddedEntry = contentItem.data.target;
-                                          return (
-                                            <span key={contentIdx}>
-                                              {embeddedEntry?.sys?.id ? (
-                                                
-                                                <a href={`/lessons/${embeddedEntry.sys.id}`} target="_blank" className="underline hover:no-underline">
-                                                  {embeddedEntry?.fields?.lesson_title || 'Related Content'}
-                                                </a>
-                                              ) : (
-                                                'Related Content (No link available)'
-                                              )}
-                                            </span>
-                                          );
+                  <IconHeader headerId="lessonPrerequisites" icon={faSquareCheck} label="Prerequisites" />
+
+                  {lesson_prerequisites.content.map((item, index) => {
+                    if (item.nodeType === 'unordered-list') {
+                      return (
+                        <ul className="list-disc list-outside ml-10 pl-4" key={index}>
+                          {item.content.map((listItem, idx) => {
+                            if (listItem.nodeType === 'list-item') {
+                              const paragraph = listItem.content[0];
+                              if (paragraph.nodeType === 'paragraph') {
+                                return (
+                                  <li className="pb-3" key={idx}>
+                                    {paragraph.content.map((contentItem, contentIdx) => {
+                                      if (contentItem.nodeType === 'text') {
+                                        return <span key={contentIdx}>{contentItem.value}</span>;
+                                      } else if (contentItem.nodeType === 'embedded-entry-inline') {
+                                        const embeddedEntry = contentItem.data.target;
+                                        
+                                        // Check if the embedded entry is null
+                                        if (!embeddedEntry) {
+                                          return <span key={contentIdx}>No link available</span>;
                                         }
-                                        return null;
-                                      })}
-                                    </li>
-                                  );
-                                }
+                                        
+                                        // Check if embedded entry has sys and fields data
+                                        return (
+                                          <span key={contentIdx}>
+                                            <strong>Prerequisite lesson:</strong>{' '}
+                                            {embeddedEntry.sys?.id ? (
+                                              <a href={`/lessons/${embeddedEntry.sys.id}`} target="_blank" rel="noopener noreferrer" className="underline hover:no-underline">
+                                                {embeddedEntry.fields?.lesson_title || 'Related Content'}
+                                              </a>
+                                            ) : (
+                                              'No link available'
+                                            )}
+                                          </span>
+                                        );
+                                      }
+                                      return null;
+                                    })}
+                                  </li>
+                                );
                               }
-                              return null;
-                            })}
-                          </ul>
-                        );
-                      }
-                      return null;
-                    })}
-                  </div>
-                )}
+                            }
+                            return null;
+                          })}
+                        </ul>
+                      );
+                    }
+                    return null;
+                  })}
+                </div>
+              )}
 
 
 
@@ -144,6 +159,13 @@ export const LessonTabs = ({
                 </ul>
               </div>
             )}
+
+            <div className="mb-8 pb-8 border-b">
+              <IconHeader headerId="lessonDefinitions" icon={faNotebook} label="Definitions" />
+              <ul className="list-disc list-outside ml-10 pl-4">
+                <li>Coming soon.</li>
+              </ul>
+            </div>
 
             {lesson_outline && lesson_outline.content.length > 0 && (
               <div className="mb-8 pb-8 border-b">
@@ -170,11 +192,10 @@ export const LessonTabs = ({
 
             {(lesson_prep || lesson_materials.length > 0) && (
               <div className="mb-8 pb-8 border-b">
-                <IconHeader headerId="lessonPreparation" icon={faChalkboard} label="Preparation" />
+                <IconHeader headerId="lessonReferencedMaterials" icon={faChalkboard} label="Referenced Materials" />
 
                 {lesson_materials.length > 0 && (
                   <div className={`${styles.richContentInnerStyles}`}>
-                    <h3 className="font-bold text-lg mb-4">Referenced Materials</h3>
                     <div className="grid grid-cols-2 gap-2">
                       {lesson_materials?.map((material, index) => (
                         <div key={index} className="mb-1 flex flex-row items-center">
@@ -207,13 +228,12 @@ export const LessonTabs = ({
             )}
           </div>
         </Tab>
-        <Tab key="instructions" title="Instructions" className="tab-panel-instructions text-medium tracking-wider font-bold">
+        {/* <Tab key="instructions" title="Instructions" className="tab-panel-instructions text-medium tracking-wider font-bold">
           <div className="tracking-normal font-normal border-l-8 border-gray-100">
             {lesson_sections && lesson_sections.length > 0 && (
               <div className="mb-12 pl-0">
                 {lesson_sections.map((section, index) => (
                   <div key={index} className="mb-6">
-                    {/* <h3 className="font-bold text-lg mb-4">{section.fields.section_title}</h3> */}
                     <div className={`mb-7 ${styles.instructionInnerStyles}`}>
                       {section.fields?.interactiveContent && Array.isArray(section.fields?.interactiveContent) 
                         ? section.fields.interactiveContent.map((slide, idx) => (
@@ -243,27 +263,27 @@ export const LessonTabs = ({
               </div>
             )}
           </div>
-        </Tab>
+        </Tab> */}
         <Tab key="differentiated-strategies" title="Strategies" className="text-medium tracking-wider font-bold">
           <div className="pt-10 tracking-normal font-normal">
             
-            {lesson_accessibility && lesson_accessibility.content.length > 0 && (
+          {lesson_sticking_points && lesson_sticking_points.content.length > 0 && (
               <div className="mb-16">
-                <IconHeader headerId="lessonAccessibility" icon={faTrafficCone} label="Accessibile Strategies" />
-                <div className={`mb-7 ${styles.richContentInnerStyles}`} dangerouslySetInnerHTML={{ __html: documentToHtmlString(lesson_accessibility) }}></div>
+                <IconHeader headerId="lessonSticking" icon={faTrafficCone} label="Sticking Points" />
+                <div className={`mb-7 ${styles.richContentInnerStyles}`} dangerouslySetInnerHTML={{ __html: documentToHtmlString(lesson_sticking_points) }}></div>
               </div>
             )}
-            
-            {lesson_sticking_points && lesson_sticking_points.content.length > 0 && (
+
+            {lesson_accessibility && lesson_accessibility.content.length > 0 && (
               <div className="mb-16">
-                <IconHeader headerId="lessonStickingPoints" icon={faTrafficCone} label="Sticking Points" />
-                <div className={`mb-7 ${styles.richContentInnerStyles}`} dangerouslySetInnerHTML={{ __html: documentToHtmlString(lesson_sticking_points) }}></div>
+                <IconHeader headerId="lessonAccessibility" icon={faChess} label="Accessibile Strategies" />
+                <div className={`mb-7 ${styles.richContentInnerStyles}`} dangerouslySetInnerHTML={{ __html: documentToHtmlString(lesson_accessibility) }}></div>
               </div>
             )}
 
             {lesson_extension && lesson_extension.content.length > 0 && (
               <div className="mb-16">
-                <IconHeader headerId="lessonExtension" icon={faTrafficCone} label="Extension Strategies" />
+                <IconHeader headerId="lessonExtension" icon={faLayerGroupPlus} label="Extension Strategies" />
                 <div className={`mb-7 ${styles.richContentInnerStyles}`} dangerouslySetInnerHTML={{ __html: documentToHtmlString(lesson_extension) }}></div>
               </div>
             )}

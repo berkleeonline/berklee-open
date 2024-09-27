@@ -1,7 +1,8 @@
 import React from 'react';
 import { Card, CardBody, CardFooter, Image } from "@nextui-org/react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHeart, faBook, faSignal4 } from '@fortawesome/pro-light-svg-icons';
+import { faHeart, faBook, faSignal4, faBooks } from '@fortawesome/pro-light-svg-icons';
+import { IconChip } from "../../elements/IconChip";
 import { calculateLevel } from "../../lib/calculateLevel";
 
 type ModuleCardProps = {
@@ -32,6 +33,9 @@ const ModuleCard: React.FC<ModuleCardProps> = ({
     <a href={`/modules/${id}`} className="no-underline h-full">
       <Card className="h-full w-full relative pb-8" shadow="0" key={index} isPressable>
         <CardBody className="overflow-visible p-0">
+          <div className="absolute bottom-[-15px] left-0 z-20">
+            <IconChip icon={faBooks} label="Module" contentType="module" href="" />
+          </div>
           <Image
             radius="lg"
             width="100%"
@@ -42,7 +46,7 @@ const ModuleCard: React.FC<ModuleCardProps> = ({
         </CardBody>
         <CardFooter className="text-small flex-col h-full">
           <div className="flex w-full mb-2 justify-between">
-            <h3 className="font-bold text-lg text-left">{title}</h3>
+            <h3 className="font-bold text-lg text-left mt-4">{title}</h3>
             <div className="p-2 flex text-default-500 text-left border rounded-full w-[30px] h-[30px] items-center justify-center text-center">
               <FontAwesomeIcon icon={faHeart} />
             </div>
