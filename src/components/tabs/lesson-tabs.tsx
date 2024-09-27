@@ -228,14 +228,15 @@ export const LessonTabs = ({
             )}
           </div>
         </Tab>
-        {/* <Tab key="instructions" title="Instructions" className="tab-panel-instructions text-medium tracking-wider font-bold">
+        <Tab key="instructions" title="Instructions" className="tab-panel-instructions text-medium tracking-wider font-bold">
           <div className="tracking-normal font-normal border-l-8 border-gray-100">
             {lesson_sections && lesson_sections.length > 0 && (
               <div className="mb-12 pl-0">
                 {lesson_sections.map((section, index) => (
                   <div key={index} className="mb-6">
                     <div className={`mb-7 ${styles.instructionInnerStyles}`}>
-                      {section.fields?.interactiveContent && Array.isArray(section.fields?.interactiveContent) 
+                      <div className="mt-8 font-bold">Coming back–stronger than ever–soon.</div>
+                      {/* {section.fields?.interactiveContent && Array.isArray(section.fields?.interactiveContent) 
                         ? section.fields.interactiveContent.map((slide, idx) => (
                             <div key={idx}>
                                 {slide.fields.slide_instructor_notes_title && slide.fields.slide_instructor_notes_title !== "undefined" && (
@@ -256,14 +257,14 @@ export const LessonTabs = ({
                                 </div>
                             </div>
                           ))
-                        : <p>No interactive content available</p>}
+                        : <p>No interactive content available</p>} */}
                     </div>
                   </div>
                 ))}
               </div>
             )}
           </div>
-        </Tab> */}
+        </Tab>
         <Tab key="differentiated-strategies" title="Strategies" className="text-medium tracking-wider font-bold">
           <div className="pt-10 tracking-normal font-normal">
             
