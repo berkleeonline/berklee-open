@@ -1,0 +1,68 @@
+
+.richContentInnerStyles, .instructionInnerStyles {
+  margin-left: 2.5rem;
+
+  p:not(li p):not(blockquote p):not(:last-child) {
+    margin: 0 0 1.5rem 0;
+  }
+
+  .instructorNotesTitle {
+    font-size: 1.7rem;
+  }
+  
+  h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+  }
+
+  h4 {
+    font-size: 1rem;
+    font-weight: 700;
+  }
+
+  blockquote:not(:last-child) {
+    p:last-child {
+      margin-bottom: 0;
+    }
+    margin-bottom: 1.5rem;
+  }
+  blockquote:last-child {
+    margin-bottom: 0;
+  }
+
+  ul, ol {
+    margin: .75rem 0 .75rem 1.25rem;
+    li {
+      padding: .25rem;
+    }
+  }
+  ul {
+    list-style-type: disc;
+  }
+
+  ol {
+    list-style-type: decimal;
+  }
+
+  hr {
+    margin: 1.5rem 0;
+  }
+}
+
+.lessonActions {
+  svg {
+    font-weight: 900;
+    height: 1.35rem;
+  }
+}
+
+.listStyleCheck {
+  li {
+    list-style-type: circle;
+  }
+}
+
+
+.instructionInnerStyles {
+  margin-left: 4.5rem;
+}

@@ -1,25 +1,59 @@
 import React from 'react';
-import Time from "../../components/time"
+import { Card, CardBody, CardFooter, Image } from "@nextui-org/react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { IconChip } from "../../elements/IconChip";
+import { faHeart, faBookBlank, faScroll } from '@fortawesome/pro-light-svg-icons';
 
 type UnitCardProps = {
-  activity: {
-	title: string;
-	sections: Section[];
-  };
+  id: string;
+  title: string;
+  image: string;
+  shortDescription: string;
+  level: string[];
+  lessonsCount: number;
 };
 
-const UnitCard: React.FC<UnitCardProps> = ({ unit }) => {
-	console.log("==================");
-	
-	const {unit_title} = unit.fields;
-	
-    return (
-		<a href={`/units/${unit.sys.id}`} className="border border-gray-300 flex flex-col">
-			<div className="border-t border-gray-300 p-4">
-				<h4 className="text-xl font-bold mb-2">{unit_title}</h4>
-			</div>
-		</a>
-    );
+const UnitCard: React.FC<UnitCardProps> = ({ 
+  id, 
+  title,
+  image,
+  shortDescription,
+  lessonsCount
+}) => {
+  // console.log('UnitCard props:', { id, title, image, shortDescription, level, lessonsCount });
+  return (
+    <a href={`/units/${id}`} className="no-underline flex flex-col">
+      <Card className=" w-full h-[480px] relative" shadow="0" isPressable>
+        <CardBody className="overflow-visible p-0 relative">
+          <div className="absolute bottom-[-15px] left-0 z-20">
+            <IconChip icon={faBookBlank} label="Unit" contentType="unit" href="" />
+          </div>
+          <Image
+            radius="lg"
+            width="100%"
+            alt={title}
+            className="w-full object-cover h-[265px] opacity-100"
+            src={image}
+          />
+        </CardBody>
+        <CardFooter className="h-full text-small flex-col">
+          <div className="flex w-full mb-2 justify-between">
+            <h3 className="font-bold text-lg text-left mt-4">{title}</h3>
+            <div className="p-2 relative flex text-default-500 text-left border rounded-full w-[30px] h-[30px] items-center justify-center text-center">
+              <FontAwesomeIcon icon={faHeart} />
+            </div>
+          </div>
+          <div className="description mb-4 text-left">{shortDescription}</div>
+          <div className="flex w-full justify-start items-center absolute bottom-2 left-[12px] h-[40px]">
+            <div className="text-baseline flex flex-row items-center font-bold">
+              <FontAwesomeIcon icon={faScroll} className="w-4 mr-2" />
+              {lessonsCount} {lessonsCount === 1 ? 'Lesson' : 'Lessons'}
+            </div>
+          </div>
+        </CardFooter>
+      </Card>
+    </a>
+  );
 };
 
 export default UnitCard;
