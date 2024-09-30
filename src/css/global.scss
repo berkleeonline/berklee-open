@@ -2,6 +2,18 @@ html {
   scroll-behavior: smooth;
 }
 
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.5);
+  }
+  70% {
+    box-shadow: 0 0 20px 10px rgba(255, 0, 0, 0.5);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 0, 0, 0);
+  }
+}
+
 /* Search styles - TODO - move these to their own search file with search */
 
 #searchbox {

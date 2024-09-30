@@ -10,7 +10,7 @@ import {
   faPause,
   faPlus,
   faMinus,
-} from "@fortawesome/free-solid-svg-icons";
+} from "@fortawesome/pro-solid-svg-icons";
 
 export const Metronome: React.FC = () => {
   const [bpm, setBpm] = useState(60);
@@ -63,36 +63,52 @@ export const Metronome: React.FC = () => {
     if (workerRef.current) workerRef.current.terminate();
   };
 
-  const playTickSound = () => {
-    if (audioContextRef.current) {
-      console.log('Playing tick sound');
-      const audioContext = audioContextRef.current;
-      const bufferSize = audioContext.sampleRate * 0.05; // 50ms buffer
-      const buffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
-      const data = buffer.getChannelData(0);
+// Declare a beat counter outside the function to keep track of the current beat
+let beatCounter = 0;
 
-      // Fill the buffer with white noise
-      for (let i = 0; i < bufferSize; i++) {
-        data[i] = Math.random() * 2 - 1;
-      }
+const playTickSound = () => {
+  if (audioContextRef.current) {
+    console.log('Playing tick sound');
+    const audioContext = audioContextRef.current;
 
-      const noise = audioContext.createBufferSource();
-      noise.buffer = buffer;
+    // Increment the beat counter
+    beatCounter += 1;
 
-      const gainNode = audioContext.createGain();
-      gainNode.gain.setValueAtTime(1, audioContext.currentTime);
-      gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.02); // 20ms decay
+    // Determine the frequency based on the beat number
+    const isFirstBeat = (beatCounter - 1) % 4 === 0; // High pitch on beat 1, 5, 9, etc.
+    const frequency = isFirstBeat ? 1500 : 1000; // Higher pitch for the first beat of each 4-beat cycle
 
-      noise.connect(gainNode);
-      gainNode.connect(audioContext.destination);
+    // Create an oscillator for the tick sound
+    const oscillator = audioContext.createOscillator();
 
-      noise.start();
-      noise.stop(audioContext.currentTime + 0.05); // 50ms duration
-      console.log('Noise started and stopped');
-    } else {
-      console.log('AudioContext is not initialized');
-    }
-  };
+    // Set the frequency for the oscillator (higher pitch on the first beat)
+    oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
+
+    // Use a sine wave (or experiment with 'square', 'triangle', 'sawtooth' for different effects)
+    oscillator.type = 'sine';
+
+    // Create a gain node to control the volume and decay of the sound
+    const gainNode = audioContext.createGain();
+    gainNode.gain.setValueAtTime(1, audioContext.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.05); // 50ms decay
+
+    // Connect the oscillator to the gain node and then to the destination
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+
+    // Start the oscillator
+    oscillator.start();
+
+    // Stop the oscillator after 50ms (0.05s) for a short tick sound
+    oscillator.stop(audioContext.currentTime + 0.05);
+
+    console.log(`Oscillator started and stopped. Beat: ${beatCounter}`);
+  } else {
+    console.log('AudioContext is not initialized');
+  }
+};
+
+
 
   const handleBpmChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newBpm = Math.max(35, Math.min(250, Number(event.target.value)));
@@ -128,12 +144,19 @@ export const Metronome: React.FC = () => {
         </Button>
         {isPlaying && (
           <div className="absolute top-0 right-0">
-            <div style={{
-              backgroundColor: isBlinking ? 'white' : 'red',
-              height: 8,
-              width: 8,
-              borderRadius: 100,
-              }}></div>
+            <div
+              style={{
+                backgroundColor: isBlinking ? 'white' : 'red',
+                height: 8,
+                width: 8,
+                borderRadius: '50%',
+                boxShadow: isBlinking
+                  ? '0 0 10px 10px rgba(255, 0, 0, 0.5)' // Shadow effect for pulse
+                  : 'none',
+                transition: 'box-shadow 0.2s ease',
+                animation: isBlinking ? 'pulse 0.5s infinite' : 'none',
+              }}
+            ></div>
           </div>
         )}
       </div>
