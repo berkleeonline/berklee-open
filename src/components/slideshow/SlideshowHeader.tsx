@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Navbar, NavbarContent, NavbarItem, Button } from "@nextui-org/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Keyboard } from "../music/keyboard/keyboard";
+import { Metronome } from "../metronome";
 import { 
     faArrowLeft,
     faArrowRight,
@@ -57,6 +58,9 @@ export const SlideshowHeader: React.FC<SlideshowHeaderProps> = ({
           </button>
         </NavbarContent>
         <NavbarContent justify="end" className="sm:flex">
+          <NavbarItem className="hidden lg:flex border-r pr-5">
+            <Metronome />
+          </NavbarItem>
           <NavbarItem className="hidden lg:flex border-r pr-5">
             <Button onClick={() => setShowKeyboard(!showKeyboard)} isIconOnly className="bg-white text-xl">
               <FontAwesomeIcon icon={faPianoKeyboard} />
