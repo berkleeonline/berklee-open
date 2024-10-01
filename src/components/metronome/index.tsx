@@ -14,6 +14,8 @@ import {
 
 export const Metronome: React.FC = () => {
   const [bpm, setBpm] = useState(60);
+  const [inputBpm, setInputBpm] = useState('60'); // Raw input value
+  const [error, setError] = useState<string | null>(null); // Error state for invalid BPM
   const [isPlaying, setIsPlaying] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const [isBlinking, setIsBlinking] = useState(false);
@@ -63,72 +65,64 @@ export const Metronome: React.FC = () => {
     if (workerRef.current) workerRef.current.terminate();
   };
 
-// Declare a beat counter outside the function to keep track of the current beat
-let beatCounter = 0;
-
-const playTickSound = () => {
-  if (audioContextRef.current) {
-    console.log('Playing tick sound');
-    const audioContext = audioContextRef.current;
-
-    // Increment the beat counter
-    beatCounter += 1;
-
-    // Determine the frequency based on the beat number
-    const isFirstBeat = (beatCounter - 1) % 4 === 0; // High pitch on beat 1, 5, 9, etc.
-    const frequency = isFirstBeat ? 1500 : 1000; // Higher pitch for the first beat of each 4-beat cycle
-
-    // Create an oscillator for the tick sound
-    const oscillator = audioContext.createOscillator();
-
-    // Set the frequency for the oscillator (higher pitch on the first beat)
-    oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
-
-    // Use a sine wave (or experiment with 'square', 'triangle', 'sawtooth' for different effects)
-    oscillator.type = 'sine';
-
-    // Create a gain node to control the volume and decay of the sound
-    const gainNode = audioContext.createGain();
-    gainNode.gain.setValueAtTime(1, audioContext.currentTime);
-    gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.05); // 50ms decay
-
-    // Connect the oscillator to the gain node and then to the destination
-    oscillator.connect(gainNode);
-    gainNode.connect(audioContext.destination);
-
-    // Start the oscillator
-    oscillator.start();
-
-    // Stop the oscillator after 50ms (0.05s) for a short tick sound
-    oscillator.stop(audioContext.currentTime + 0.05);
-
-    console.log(`Oscillator started and stopped. Beat: ${beatCounter}`);
-  } else {
-    console.log('AudioContext is not initialized');
-  }
-};
-
-
+  const playTickSound = () => {
+    if (audioContextRef.current) {
+      const audioContext = audioContextRef.current;
+      const frequency = 1000;
+      const oscillator = audioContext.createOscillator();
+      oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
+      oscillator.type = 'sine';
+      const gainNode = audioContext.createGain();
+      gainNode.gain.setValueAtTime(1, audioContext.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.05); // 50ms decay
+      oscillator.connect(gainNode);
+      gainNode.connect(audioContext.destination);
+      oscillator.start();
+      oscillator.stop(audioContext.currentTime + 0.05);
+    }
+  };
 
   const handleBpmChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const newBpm = Math.max(35, Math.min(250, Number(event.target.value)));
-    setBpm(newBpm);
-    if (isPlaying && workerRef.current) {
-      workerRef.current.postMessage({ bpm: newBpm });
+    setInputBpm(event.target.value); // Update raw input value
+  };
+
+  const handleBpmBlur = () => {
+    const newBpm = Number(inputBpm);
+    if (newBpm < 35 || newBpm > 250) {
+      setError("Choose a BPM between 35-250"); // Set error message if out of range
+    } else {
+      setError(null); // Clear error if valid
+      setBpm(newBpm);
+      setInputBpm(String(newBpm)); // Update input field with constrained value
+      if (isPlaying && workerRef.current) {
+        workerRef.current.postMessage({ bpm: newBpm });
+      }
     }
   };
 
   const handleIncrement = () => {
+    if (bpm >= 250) {
+      setError("Choose a BPM between 35-250"); // Set error message if already at the max
+      return;
+    }
     const newBpm = Math.min(250, bpm + 1);
     setBpm(newBpm);
+    setInputBpm(String(newBpm)); // Sync inputBpm with bpm
+    setError(null); // Clear error on valid input
     if (isPlaying && workerRef.current) {
       workerRef.current.postMessage({ bpm: newBpm });
     }
   };
 
   const handleDecrement = () => {
+    if (bpm <= 35) {
+      setError("Choose a BPM between 35-250"); // Set error message if already at the minimum
+      return;
+    }
     const newBpm = Math.max(35, bpm - 1);
     setBpm(newBpm);
+    setInputBpm(String(newBpm)); // Sync inputBpm with bpm
+    setError(null); // Clear error on valid input
     if (isPlaying && workerRef.current) {
       workerRef.current.postMessage({ bpm: newBpm });
     }
@@ -182,19 +176,21 @@ const playTickSound = () => {
               `}</style>
               <input
                 type="number"
-                value={bpm}
+                value={inputBpm}
                 onChange={handleBpmChange}
+                onBlur={handleBpmBlur}
                 min="35"
                 max="250"
-                className="appearance-none text-4xl text-center font-medium"
+                className="appearance-none text-4xl text-center font-medium w-20 border-1 border-slate-200 rounded-sm"
               />
               <span className="text-sm">BPM</span>
+              {error && <div className="text-red-500 mt-2">{error}</div>} {/* Conditionally render error message */}
             </div>
             <div className="mb-4 w-full flex gap-4">
               <div>
                 <button
                   onClick={handleDecrement}
-                  className="border-2 rounded-full h-10 w-10 text-xl flex items-center justify-center"
+                  className="border-2 rounded-full h-10 w-10 text-xl flex items-center justify-center border-slate-200"
                 >
                   <FontAwesomeIcon icon={faMinus} />
                 </button>
@@ -202,8 +198,9 @@ const playTickSound = () => {
               <div className="w-full flex items-center">
                 <input
                   type="range"
-                  value={bpm}
+                  value={inputBpm}
                   onChange={handleBpmChange}
+                  onBlur={handleBpmBlur}
                   min="35"
                   max="250"
                   className="w-full h-[3px] bg-gray-300 rounded-lg appearance-none cursor-pointer"
@@ -235,7 +232,7 @@ const playTickSound = () => {
               <div>
                 <button
                   onClick={handleIncrement}
-                  className="border-2 rounded-full h-10 w-10 flex items-center justify-center"
+                  className="border-2 rounded-full h-10 w-10 flex items-center justify-center border-slate-200"
                 >
                   <FontAwesomeIcon icon={faPlus} />
                 </button>
