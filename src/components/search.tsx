@@ -47,6 +47,10 @@ const Hit = ({ hit }) => {
         lessonsCount={fields.unit_lessons?.length || 0}
       />
     );
+  } else if (fields.slideshow_title) {
+    return (
+      <h1>Slide</h1>
+    );
   } else if (fields.lesson_title) {
     return (
       <LessonCard
@@ -102,7 +106,7 @@ const CustomSearchBox = ({ initialQuery, setSearchTerm }) => {
 
   return (
     <div>
-      <SearchBox placeholder="Search resources or concepts..." onInput={handleChange} />
+      <SearchBox placeholder="Search resources or concepts..." onInput={handleChange} className="w-3/4 mx-auto" />
       {/* Conditionally display the search term if not empty */}
       {query && (
         <h2 className="search-term text-center mb-4">Results for "<strong>{capitalizeFirstLetter(query || initialQuery)}</strong>"</h2>

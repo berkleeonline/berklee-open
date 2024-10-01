@@ -2,11 +2,14 @@
   position: relative;
   :global {
     .list-player {
-      background-color: rgba(58,65,67,.95);
+      background-color: rgba(58,65,67,.98);
       color: #FFF !important;
       position: relative;
 
       div.controller-panel {
+        background: none;
+        bottom: auto;
+        top: 100px;
         margin: .5rem 0 0 0;
         padding: 0;
         justify-content: center;
@@ -17,10 +20,23 @@
       }
     }
 
+    div.track {
+      align-items: flex-start;
+    }
+
+    div.meta-cont {
+      display: flex !important
+    }
+
+    .lg-meta-cont {
+      display: none !important;
+    }
+
     .progress-bar-container {
       position: absolute;
-      top: 175px; left: 0;
+      top: 75px;
       margin: 0 auto;
+      left: 0;
       right: 0;
       width: 70%;
     }
@@ -44,11 +60,6 @@
       } 
     }
 
-    div.controller-panel {
-      background: none;
-      bottom: auto;
-      top: 200px;
-    }
     .progress-time-display {
       color: #FFF;
     }
@@ -60,9 +71,15 @@
     .lt-info-img-cont {
       display: none;
     }
-    button.mute-btn,
+ 
     div.lt-info-stats {
       display: none;
+    }
+
+    button.mute-btn {
+      order: 5;
+      position: absolute;
+      right: 30px;
     }
 
     button.forward-btn {

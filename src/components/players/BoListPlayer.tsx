@@ -138,7 +138,7 @@ export default function BoListPlayer() {
         <ListPlayer
           tracks={audioTracks}
           listInfo={audioListInfo}
-          playerMode="large"
+          playerMode="small"
           playCallback={handleOnPlay}
           pauseCallback={handleOnPause}
           loop
