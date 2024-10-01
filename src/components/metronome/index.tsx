@@ -22,6 +22,7 @@ export const Metronome: React.FC = () => {
   const [beatCount, setBeatCount] = useState(0);
   const workerRef = useRef<Worker | null>(null);
   const audioContextRef = useRef<AudioContext | null>(null);
+  const debounceTimeoutRef = useRef<NodeJS.Timeout | null>(null); // Ref to hold the debounce timer
 
   useEffect(() => {
     audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
@@ -39,7 +40,6 @@ export const Metronome: React.FC = () => {
   const startMetronome = () => {
     if (audioContextRef.current?.state === 'suspended') {
       audioContextRef.current.resume().then(() => {
-        console.log('AudioContext resumed');
         initializeWorker();
       });
     } else {
@@ -50,10 +50,8 @@ export const Metronome: React.FC = () => {
   const initializeWorker = () => {
     if (workerRef.current) workerRef.current.terminate();
     workerRef.current = new Worker(new URL('./worker.ts', import.meta.url));
-    console.log('Worker created:', workerRef.current);
     workerRef.current.postMessage({ bpm });
     workerRef.current.onmessage = (event) => {
-      console.log('Worker message received:', event.data);
       setIsBlinking(true);
       setTimeout(() => setIsBlinking(false), 100); // Blink duration
       setBeatCount((prevCount) => (prevCount + 1) % 4);
@@ -84,6 +82,25 @@ export const Metronome: React.FC = () => {
 
   const handleBpmChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputBpm(event.target.value); // Update raw input value
+
+    // Clear the previous timeout if any
+    if (debounceTimeoutRef.current) {
+      clearTimeout(debounceTimeoutRef.current);
+    }
+
+    // Set a new timeout to update the BPM after 1 second
+    debounceTimeoutRef.current = setTimeout(() => {
+      const newBpm = Number(event.target.value);
+      if (newBpm < 35 || newBpm > 250) {
+        setError("Choose a BPM between 35-250");
+      } else {
+        setError(null);
+        setBpm(newBpm);
+        if (isPlaying && workerRef.current) {
+          workerRef.current.postMessage({ bpm: newBpm });
+        }
+      }
+    }, 500); // 1-second delay
   };
 
   const handleBpmBlur = () => {
