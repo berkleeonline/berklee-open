@@ -1,5 +1,6 @@
 ---
 import '@fontsource-variable/nunito-sans'; // Supports weights 200-900
+import App from "../components/app";
 import Header from "../components/header";
 import { ViewTransitions } from 'astro:transitions';
 import type { HeaderProps } from "../type/layout";
@@ -20,11 +21,13 @@ const { title, cssClass } = Astro.props;
     <meta name="robots" content="noindex, nofollow" />
   </head>
   <body>
-    <Header text={title} client:load />
-    <main class={cssClass}>
-      <div class="px-6 mx-auto w-full pt-16 max-w-[1536px]" transition:animate="slide">
-        <slot />
-      </div>
-    </main>
+    <App client:load>
+      <Header text={title} client:load />
+      <main class={cssClass}>
+        <div class="px-6 mx-auto w-full pt-16 max-w-[1536px]" transition:animate="slide">
+          <slot />
+        </div>
+      </main>
+    </App>
   </body>
 </html>

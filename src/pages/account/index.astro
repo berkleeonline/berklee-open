@@ -1,0 +1,45 @@
+---
+import { Authenticator } from '@aws-amplify/ui-react';
+import MainLayout from "../../layouts/main.astro";
+import '@aws-amplify/ui-react/styles.css';
+
+---
+
+<MainLayout title={`Berklee Open: Account`}>
+  <div class="flex gap-20">
+    <div class="w-full">
+      <h1 class="text-4xl font-bold mb-8">Account</h1>
+      <Authenticator client:load />
+    </div>
+  </div>
+</MainLayout>
+
+<script>
+  ((win, doc) => {
+
+    const buttonId =
+      win.location.hash === '#sign-in'
+      ? 'signIn-tab'
+      : win.location.hash === '#sign-up'
+      ? 'signUp-tab'
+      : null;
+
+    const initTab = () => {
+      if (buttonId !== null) {
+        const button = doc.getElementById(buttonId);
+
+        if (button === null) {
+          setTimeout(() => initTab(), 50);
+          return;
+        }
+
+        if (button.ariaSelected === 'false') {
+          button.click();
+        }
+      }
+    };
+
+    initTab();
+
+  })(window, document);
+</script>
