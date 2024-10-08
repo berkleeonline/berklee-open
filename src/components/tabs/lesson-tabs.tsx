@@ -23,8 +23,8 @@ import {
   faChess,
   faSealQuestion,
   faCircleStar,
-  faRankingStar,
   faLayerGroupPlus,
+  faFileCircleInfo
 } from '@fortawesome/pro-light-svg-icons';
 import styles from '../../pages/lessons/_lesson.module.scss';
 
@@ -54,9 +54,35 @@ export const LessonTabs = ({
   lesson_repertoire,
   lesson_sections,
 }) => {
-
-  console.log(JSON.stringify(lesson_prerequisites, null, 2));
   
+
+  console.log("Lesson Sectionddds:", lesson_sections);
+
+  const renderSlideReferences = (slideRefs) => {
+    if (!slideRefs || !Array.isArray(slideRefs) || slideRefs.length === 0) {
+      return null;
+    }
+
+    return (
+      <div>
+        Slides referenced: {slideRefs.map((slide, index) => {
+          // Check if slide is an object with sys and fields properties
+          if (slide && slide.sys && slide.fields) {
+            return (
+              <span key={slide.sys.id}>
+                {slide.fields.slide_number || 'Missing slide number assignment'}
+                {index < slideRefs.length - 1 ? ', ' : ''}
+              </span>
+            );
+          }
+          // If it's just a string or number, render it directly
+          return <span key={index}>{slide}{index < slideRefs.length - 1 ? ', ' : ''}</span>;
+        })}
+      </div>
+    );
+  };
+
+
   return (
     <div className="flex w-full flex-col">
       <Tabs
@@ -147,8 +173,6 @@ export const LessonTabs = ({
                 </div>
               )}
 
-
-
             {lesson_outcome && lesson_outcome.content.length > 0 && (
               <div className="mb-8 pb-8 border-b">
                 <IconHeader headerId="learningOutcomes" icon={faSeedling} label="Learning Outcomes" />
@@ -229,39 +253,34 @@ export const LessonTabs = ({
           </div>
         </Tab>
         <Tab key="instructions" title="Instructions" className="tab-panel-instructions text-medium tracking-wider font-bold">
-          <div className="tracking-normal font-normal border-l-8 border-gray-100">
-            {lesson_sections && lesson_sections.length > 0 && (
-              <div className="mb-12 pl-0">
-                {lesson_sections.map((section, index) => (
-                  <div key={index} className="mb-6">
-                    <div className={`mb-7 ${styles.instructionInnerStyles}`}>
-                      <div className="mt-8 font-bold">Coming back–stronger than ever–soon.</div>
-                      {/* {section.fields?.interactiveContent && Array.isArray(section.fields?.interactiveContent) 
-                        ? section.fields.interactiveContent.map((slide, idx) => (
-                            <div key={idx}>
-                                {slide.fields.slide_instructor_notes_title && slide.fields.slide_instructor_notes_title !== "undefined" && (
-                                  <div className="pt-10 pb-6 -ml-[88px] bg-white relative">
-                                    <IconHeader
-                                      headerId={`${slide.fields.slide_instructor_notes_title}`}
-                                      icon={faCircleDot}
-                                      label={`${slide.fields.slide_instructor_notes_title}`}
-                                    />
+          <div className="tracking-normal font-normal">
+            {lesson_sections && lesson_sections.length > 0 ? (
+              <div className="mb-12 pl-0 pt-10">
+                {lesson_sections.map((section, sectionIndex) => (
+                  <div key={sectionIndex} className="mb-6">
+                    <div className="mb-7">
+                      {section.fields.interactiveContent && Array.isArray(section.fields.interactiveContent) 
+                        ? section.fields.interactiveContent.map((instruction, idx) => (
+                            <div key={idx} className="pb-6 mb-6 border-b-1 border-slate-300">
+                              <IconHeader headerId="lessonEvidence" icon={faFileCircleInfo} label={instruction.fields.instruction_title} />
+                              <div className={`mb-7 ${styles.instructionInnerStyles}`}>
+                                {instruction.fields.slide_ref && instruction.fields.slide_ref.length > 0 && (
+                                  <div className="text-sm">
+                                    {renderSlideReferences(instruction.fields.slide_ref)}
                                   </div>
                                 )}
-                                <div key={idx} className="mt-8 mb-16 border border-gray-300 p-8 rounded-lg relative">
-                                    <div className="absolute -top-8 -left-6 p-3 rounded-lg border border-gray-300 bg-white font-bold">Slide {idx + 1}</div>
-                                    {slide.fields.title && <h3 className="pb-4">{slide.fields.title}</h3>}
-                                    {slide.fields.slide_instructor_notes && (
-                                      <div dangerouslySetInnerHTML={{ __html: documentToHtmlString(slide.fields.slide_instructor_notes) }}></div>
-                                )}
-                                </div>
+                                <div className="mb-3" dangerouslySetInnerHTML={{ __html: documentToHtmlString(instruction.fields.instruction_content) }}></div>
+                              </div>
                             </div>
                           ))
-                        : <p>No interactive content available</p>} */}
+                        : <p>No interactive content available for this section</p>
+                      }
                     </div>
                   </div>
                 ))}
               </div>
+            ) : (
+              <p>No lesson sections available</p>
             )}
           </div>
         </Tab>

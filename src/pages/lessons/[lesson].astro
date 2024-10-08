@@ -41,20 +41,22 @@ const fetchAndResolveSections = async (sections) => {
   const resolvedSections = await Promise.all(
     sections.map(async (section) => {
       if (section.fields?.interactiveContent?.sys?.id) {
+        // Fetch the interactive content entry by its ID
         const interactiveContent = await fetchEntryById(section.fields.interactiveContent.sys.id);
         return {
           ...section,
           fields: {
             ...section.fields,
-            interactiveContent: interactiveContent.fields?.slides || [], // Default to an empty array if undefined
+            interactiveContent: interactiveContent.fields?.instructions || [], // Instructions array
           },
         };
       }
+
       return {
         ...section,
         fields: {
           ...section.fields,
-          interactiveContent: [], // Ensure interactiveContent is at least an empty array
+          interactiveContent: [], // Default to empty array
         },
       };
     })
@@ -204,11 +206,10 @@ const resolvedLessonSections = await fetchAndResolveSections(lesson_sections || 
         lesson_sticking_points={serializeForClient(lesson_sticking_points)}
         lesson_evidence={serializeForClient(lesson_evidence)}
         lesson_prerequisites={serializeForClient(lesson_prerequisites)}
-        lesson_sections={serializeForClient(resolvedLessonSections)} 
+        lesson_sections={serializeForClient(resolvedLessonSections)}
         client:visible
       />
-      
-
+  
     </div>
     <div class="col-end-12 col-span-5 relative">
       <SwiperCarousel lessonImages={lesson_image_carousel} client:load />

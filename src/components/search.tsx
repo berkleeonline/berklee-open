@@ -47,10 +47,6 @@ const Hit = ({ hit }) => {
         lessonsCount={fields.unit_lessons?.length || 0}
       />
     );
-  } else if (fields.slideshow_title) {
-    return (
-      <h1>Slide</h1>
-    );
   } else if (fields.lesson_title) {
     return (
       <LessonCard

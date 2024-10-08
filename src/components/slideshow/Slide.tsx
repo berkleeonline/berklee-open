@@ -36,6 +36,7 @@ type SlideProps = {
         embed?: string;
         audio?: string;
         title_embed?: string;
+        slide_embedded_audio?: { sys: { id: string }, fields?: { title?: string, file?: { url?: string, fileName?: string } } }[];
         flashCards?: { question: string, answer: string }[];
     }
   };
@@ -116,17 +117,25 @@ export const Slide: React.FC<SlideProps> = ({ slide }) => {
             break;
         }
 
+        // In the Slide component (parent)
         case 'slide_embed_audio': {
             const title = slide.fields.title || '';
             const embed = slide?.fields.embed || '';
-            const audio = slide?.fields.audio || '';
-
-            console.log('Audio embed:', audio);
-
-            slideContent = <SlideEmbedAudio title={title} embed={embed} audio={audio} />;
+            const slide_embedded_audio = slide?.fields?.slide_embedded_audio || [];
+            const fullEntries: { [key: string]: FullAudioEntry } = {};
+            
+        
+            console.log('Audio embed:', embed);
+            console.log('Slide embedded audio:', slide_embedded_audio);
+        
+            slideContent = <SlideEmbedAudio 
+                title={title} 
+                embed={embed} 
+                slide_embedded_audio={slide_embedded_audio}
+                fullEntries={fullEntries}
+            />;
             break;
         }
-
 
         case 'slide_two_column_embed': {
             const title = slide.fields.title || '';
