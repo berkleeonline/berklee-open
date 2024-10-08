@@ -1,10 +1,12 @@
 ---
 import '@fontsource-variable/nunito-sans'; // Supports weights 200-900
+import App from "../components/app";
 import Header from "../components/header";
 import type { HeaderProps } from "../type/layout";
 import '../fontAwesome'; // Import the Font Awesome configuration
 import '../css/global.scss';
 
+import { Authenticator } from '@aws-amplify/ui-react';
 let header: HeaderProps | undefined = undefined;
 
 const { title, cssClass } = Astro.props;
@@ -18,9 +20,11 @@ const { title, cssClass } = Astro.props;
     <meta name="robots" content="noindex, nofollow" />
   </head>
   <body>
-    <Header text={title} client:load />
-    <main class="px-6 mx-auto pt-16 max-w-[1536px]" transition:animate="slide">
-      <slot />
-    </main>
+    <App client:load>
+      <Header text={title} client:load />
+      <main class="px-6 mx-auto pt-16 max-w-[1536px]" transition:animate="slide">
+        <slot />
+      </main>
+    </App>
   </body>
 </html>
