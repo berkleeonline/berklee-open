@@ -13,7 +13,7 @@
     bottom: 0;
     left: 0;
     right: 0;
-    height: 160px; /* Adjust based on your piano's height */
+    height: auto; /* Adjust based on your piano's height */
     background-color: transparent;
     z-index: 1000;
   }
@@ -143,19 +143,6 @@
     cursor: pointer;
   }
   
-  .pianoOctaveDown:before {
-    content: "OCTAVES";
-    position: absolute;
-    top: -40px;
-    z-index: 10px;
-    left: 0px;
-    font-size: 12px;
-    background: black;
-    padding: 9px;
-    border: 1px solid white;
-    pointer-events: none;
-  }
-  
   #pianoPlacement .pianoOctaveDown,
   #pianoPlacement .pianoOctaveUp,
   #pianoPlacement #pianoHelp,
@@ -166,11 +153,10 @@
     width: 31px;
     padding: 5px 0;
     font-size: 18px;
-    background-color: black;
-    color: white;
+    background-color: #FFF;
+    color: #222;
     cursor: pointer;
     text-align: center;
-    border: 1px solid white;
   
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -200,147 +186,7 @@
     text-align: left;
     line-height: 170%;
   }
-  
-  #pianoPlacement .pianoOctaveUp {
-    left: 90px;
-  }
-  
-  #pianoPlacement .pianoHideBtn:active,
-  #pianoPlacement .pianoOctaveDown:active,
-  #pianoPlacement .pianoOctaveUp:active {
-    background-color: red;
-  }
-  
-  /*Piano Quiz*/
-  .pianoQuiz {
-  
-  }
-  
-  .pianoQuizKeyboard {
-    width: 100%;
-    overflow-x: scroll;
-    padding: 10px;
-    position: relative;
-  }
-  
-  .pianoQuizKeyboard .pianoOctaveDown,
-  .pianoQuizKeyboard .pianoOctaveUp,
-  .pianoQuizKeyboard #pianoHelp,
-  .pianoQuizKeyboard #pianoHelpDialog {
-    display: inline-block;
-    width: 31px;
-    padding: 5px 0;
-    font-size: 18px;
-    background-color: black;
-    color: white;
-    cursor: pointer;
-    text-align: center;
-    border: 1px solid white;
-  
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-  }
-  
-  .pianoQuizKeyboard #pianoHelp {
-    left: 100px;
-    background-color: red;
-  }
-  
-  .pianoQuizKeyboard #pianoHelp:active {
-    background-color: black;
-  }
-  
-  .pianoQuizKeyboard #pianoHelpDialog {
-    left: 100px;
-    top: -160px;
-    width: 300px;
-    height: 100px;
-    padding: 10px;
-    display: none;
-    font-size: 14px;
-    text-align: left;
-    line-height: 170%;
-  }
-  
-  .pianoQuizKeyboard .pianoOctaveUp {
-    left: 50px;
-  }
-  
-  .pianoQuizKeyboard .pianoHideBtn:active,
-  .pianoQuizKeyboard .pianoOctaveDown:active,
-  .pianoQuizKeyboard .pianoOctaveUp:active {
-    background-color: red;
-  }
-  
-  .pianoQuizKeyboard .questionFeedbackRight,
-  .pianoQuizKeyboard .questionFeedbackWrong {
-    display: none;
-    position: absolute;
-    z-index: 1000;
-    left: calc(50% - 100px);
-    width: 100px;
-    text-align: center;
-    top: 50%;
-    font-weight: 700;
-    color: #FF0000;
-    -webkit-box-shadow: rgba(0,0,0,0.2) 0 2px 6px;
-    box-shadow: rgba(0,0,0,0.2) 0 2px 6px;
-    padding: 20px;
-    background-color: #fff;
-  
-    -webkit-transition: display .5s;
-    transition: display .5s;
-  }
-  
-  .pianoQuizKeyboard .questionFeedbackRight {
-    color: #30E06E;
-  }
-  
-  .pianoQuizKeyboard .questionFeedbackRight.active,
-  .pianoQuizKeyboard .questionFeedbackWrong.active {
-    display: block;
-  }
-  
-  .pianoQuizKeyboard .previewBtn,
-  .pianoQuizKeyboard .prevQuestion,
-  .pianoQuizKeyboard .nextQuestion,
-  .pianoQuizKeyboard .clearKeyboard,
-  .pianoQuizKeyboard .checkAnswer,
-  .pianoQuizKeyboard .showAnswer {
-    background-color: #fff;
-    color: #000;
-    border: 2px solid black;
-    padding: 10px;
-    cursor: pointer;
-    display: inline-block;
-    border-radius: 5px;
-    margin: 2px;
-    margin-bottom: 10px;
-  
-    -webkit-transition: background-color .25s, color .25s;
-    transition: background-color .25s, color .25s;
-  
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-  }
-  
-  .pianoQuizKeyboard .previewBtn:hover,
-  .pianoQuizKeyboard .prevQuestion:hover,
-  .pianoQuizKeyboard .nextQuestion:hover,
-  .pianoQuizKeyboard .clearKeyboard:hover,
-  .pianoQuizKeyboard .checkAnswer:hover,
-  .pianoQuizKeyboard .showAnswer:hover {
-    background-color: #3097E0;
-    color: #FFFFFF;
-  }
+
   
   div.inactive {
     cursor: default;
@@ -351,19 +197,6 @@
   div.inactive:hover {
     background-color: inherit!important;
     color: inherit!important;
-  }
-  
-  .pianoQuizKeyboard .questionContent {
-    text-align: center;
-  }
-  
-  .pianoQuizKeyboard .pianoOuterWrapper {
-    overflow-x: scroll;
-  
-  }
-  
-  .pianoQuizKeyboard .pianoOuterWrapper .pianoContainer {
-    padding: 10px 0;
   }
   
   /*Piano Sample Click*/
@@ -389,43 +222,129 @@
     margin-right: 1px;
   }
 
-  #pianoHelp {
-    left: 100px;
-    background-color: var(--red-orange);
-    display: none;
-  }
-  
-  #pianoHelp:active {
-    background-color: black;
-  }
-  
   #pianoHelpDialog {
-    left: 100px;
-    top: -160px;
-    width: 300px;
-    height: 100px;
-    padding: 10px;
     display: none;
-    font-size: 14px;
+    padding: 10px;
+    font-size: 1.15rem;
     text-align: left;
     line-height: 170%;
-  } 
-
-  .pianoOctaveDown, .pianoOctaveUp, #pianoHelp, #pianoHelpDialog {
-    position: fixed;
-    bottom: 180px;
-    left: 10px;
-    width: 31px;
-    padding: 5px 0;
-    font-size: 18px;
-    background-color: black;
-    color: white;
-    cursor: pointer;
+    width: 100%;
+    left: 0;
+    right: 0;
+    bottom: 100px;
+    background: #FFF;
+    color: #222;
+    padding: 1rem;
+    height: auto;
     text-align: center;
-    border: 1px solid white;
+    max-width: 1440px;
+  }
+  
+  .piano-close-button:hover {
+    background-color: #e44a4a;
+  }
+  
+  .piano-close-button:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(244, 67, 54, 0.5);
   }
 
-  .pianoOctaveUp {
-    left: 53px;
+  /*************/
+  .piano-octave-controls {
+    position: absolute;
+    top: -58px; /* Match the top position of the close button */
+    left: 20px; /* Adjust this value to position it horizontally */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1001; /* Ensure it's above the piano */
   }
+  
+  .pianoOctaveDown,
+  .pianoOctaveUp {
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+    background-color: #000;
+    color: #FFF;
+    cursor: pointer;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .pianoOctaveDown {
+    border-radius: 20px 0 0 20px;
+  }
+  .pianoOctaveDown:before {
+    content: "OCTAVES";
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    font-weight: 800;
+    top: 0px;
+    left: 35px;
+    height: 40px;
+    font-size: 12px;
+    background: #000;
+    padding: 9px;
+    pointer-events: none;
+    border-left: 1px solid #FFF;
+  }
+  
+  .pianoOctaveUp {
+    border-radius: 0 20px 20px 0;
+    left: 114px;
+    position: absolute;
+    border-radius: 0 30px 30px 0;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .pianoHelp {
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+    background-color: #000;
+    color: #FFF;
+    cursor: pointer;
+    border: none;
+    border-radius: 50%;
+    margin-left: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    left: 160px;
+  }
+  
+  /* Ensure the close button styling remains the same */
+  .piano-close-button {
+    position: absolute;
+    top: -58px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #222;
+    color: white;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    z-index: 1003;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+  }
+
+.pianoOctaveDown:hover,
+.pianoOctaveUp:hover {
+  background-color: #888;
+  color: #fff;
+}
   

@@ -93,6 +93,9 @@ Piano.prototype.run = function () {
 
   config.numberOfOctaves = parseInt(config.numberOfOctaves);
   config.revealCorrectAnswerAfter = parseInt(config.revealCorrectAnswerAfter);
+  var containerWidth = document.querySelector('.piano-scroll-wrapper').clientWidth;
+  var desiredKeys = 40; // Number of white keys
+  config.keyWidth = Math.floor(containerWidth / desiredKeys) - 2; // Subtract 2 for borders
 
   //No ID, no dice
   this.id = config.placementId;
@@ -877,17 +880,10 @@ Piano.prototype.run = function () {
     }
 
     if ((!config.quiz || !config.quiz.oneKeyEntry) && !config.noKeys && !config.midiKeyboardIn) {
-      octaveUp = document.createElement('div');
-      octaveUp.textContent = '+';
-      octaveUp.className = 'pianoOctaveUp';
-      octaveUp.addEventListener('click', function () {
-        if (config.selectedOctave < config.numberOfOctaves) {
-          config.selectedOctave += 1;
-          highlightOctave(1);
-        }
-      });
-
-      octaveDown = document.createElement('div');
+      var octaveControlsContainer = document.createElement('div');
+      octaveControlsContainer.className = 'piano-octave-controls';
+    
+      octaveDown = document.createElement('button');
       octaveDown.textContent = '-';
       octaveDown.className = 'pianoOctaveDown';
       octaveDown.addEventListener('click', function () {
@@ -896,29 +892,37 @@ Piano.prototype.run = function () {
           highlightOctave(-1);
         }
       });
-
-      helpDialog = document.createElement('div');
-      helpDialog.textContent = 'TIP: Use your keyboard or mouse to play the piano. To shift the current selected octave range, click the - and + buttons or use the +/- keys on your keyboard.';
-      helpDialog.id = 'pianoHelpDialog';
-
-      helpMe = document.createElement('div');
-      helpMe.textContent = '?';
-      helpMe.id = 'pianoHelp';
-      helpMe.addEventListener('click', function () {
-        var helpElement = document.getElementById('pianoHelpDialog');
-
-        if (helpElement.style.display === 'block') {
-          helpElement.style.display = '';
-        } else {
-          helpElement.style.display = 'block';
+    
+      octaveUp = document.createElement('button');
+      octaveUp.textContent = '+';
+      octaveUp.className = 'pianoOctaveUp';
+      octaveUp.addEventListener('click', function () {
+        if (config.selectedOctave < config.numberOfOctaves) {
+          config.selectedOctave += 1;
+          highlightOctave(1);
         }
       });
-
-      pianoContainer.parentNode.appendChild(helpMe);
-      pianoContainer.parentNode.appendChild(helpDialog);
-      pianoContainer.parentNode.appendChild(octaveDown);
-      pianoContainer.parentNode.appendChild(octaveUp);
-
+    
+      helpMe = document.createElement('button');
+      helpMe.textContent = '?';
+      helpMe.className = 'pianoHelp';
+      helpMe.addEventListener('click', function () {
+        var helpElement = document.getElementById('pianoHelpDialog');
+        helpElement.style.display = helpElement.style.display === 'block' ? 'none' : 'block';
+      });
+    
+      octaveControlsContainer.appendChild(octaveDown);
+      octaveControlsContainer.appendChild(octaveUp);
+      octaveControlsContainer.appendChild(helpMe);
+    
+      helpDialog = document.createElement('div');
+      helpDialog.textContent = 'Use your keyboard or mouse to play the piano. To shift the current selected octave range, click the - and + buttons or use the +/- keys on your keyboard.';
+      helpDialog.id = 'pianoHelpDialog';
+    
+      // Insert the octave controls container before the piano container
+      pianoContainer.parentNode.insertBefore(octaveControlsContainer, pianoContainer);
+      pianoContainer.parentNode.insertBefore(helpDialog, pianoContainer);
+    
       highlightOctave(false);
     }
 
@@ -931,6 +935,25 @@ Piano.prototype.run = function () {
       placementId.children[0].style.display = 'none';
       document.piano = false;
     }
+
+    var closeButton = document.createElement('button');
+    closeButton.className = 'piano-close-button';
+    closeButton.innerHTML = '&times;'; // × symbol
+    closeButton.setAttribute('aria-label', 'Close piano');
+    closeButton.addEventListener('click', function() {
+      var pianoElement = document.getElementById(id);
+      if (pianoElement) {
+        pianoElement.style.display = 'none';
+      }
+      document.piano = false;
+    });
+  
+    // Add the close button as the first child of the piano container
+    if (pianoWrapper) {
+      pianoWrapper.insertBefore(closeButton, pianoWrapper.firstChild);
+    } else {
+      placementId.insertBefore(closeButton, placementId.firstChild);
+    }  
 
     return 'Piano Built Sucessfully!';
   }
