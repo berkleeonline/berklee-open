@@ -402,11 +402,6 @@ Piano.prototype.run = function () {
       var maxScroll = pianoContainer.clientWidth - viewportWidth;
       centerPosition = Math.max(0, Math.min(centerPosition, maxScroll));
   
-      console.log('Viewport width:', viewportWidth);
-      console.log('Piano width:', pianoContainer.clientWidth);
-      console.log('Octave width:', octaveWidth);
-      console.log('Calculated center position:', centerPosition);
-  
       // Scroll the container
       scrollWrapper.scrollLeft = centerPosition;
   
@@ -940,8 +935,15 @@ Piano.prototype.run = function () {
     closeButton.className = 'piano-close-button';
     closeButton.innerHTML = '&times;'; // × symbol
     closeButton.setAttribute('aria-label', 'Close piano');
+    // get header piano toggle, so we can let it know when the piano is closed
+    const headerPianoToggle = document.querySelector('.header-piano-toggle');
     closeButton.addEventListener('click', function() {
       var pianoElement = document.getElementById(id);
+      if (headerPianoToggle) {
+        // This externally sets the state of the header piano toggle
+        // without the extensive state management from ancestor to descendant
+        headerPianoToggle.click(); 
+      }
       if (pianoElement) {
         pianoElement.style.display = 'none';
       }

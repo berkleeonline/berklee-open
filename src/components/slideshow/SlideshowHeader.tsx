@@ -63,7 +63,7 @@ export const SlideshowHeader: React.FC<SlideshowHeaderProps> = ({
             <Metronome />
           </NavbarItem>
           <NavbarItem className="hidden lg:flex border-r pr-5">
-            <Button onClick={() => setShowKeyboard(!showKeyboard)} isIconOnly className="bg-white text-xl">
+            <Button onClick={() => setShowKeyboard(!showKeyboard)} isIconOnly className="header-piano-toggle bg-white text-xl">
               <FontAwesomeIcon icon={faPianoKeyboard} />
             </Button>
           </NavbarItem>
