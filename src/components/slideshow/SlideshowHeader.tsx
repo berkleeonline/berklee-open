@@ -33,6 +33,7 @@ export const SlideshowHeader: React.FC<SlideshowHeaderProps> = ({
   const [showKeyboard, setShowKeyboard] = useState(false);
 
   return (
+    <>
     <div className="relative">
       <Navbar className="bg-white" maxWidth="full">
         <NavbarContent className="hidden sm:flex gap-4" justify="start">
@@ -83,11 +84,14 @@ export const SlideshowHeader: React.FC<SlideshowHeaderProps> = ({
           </NavbarItem>
         </NavbarContent>
       </Navbar>
-      {showKeyboard && (
-        <div className="absolute top-full w-1/4">
-          <Keyboard />
-        </div>
-      )}
     </div>
+    <div>
+    {showKeyboard && (
+      <div className="piano-outer-container">
+        <Keyboard />
+      </div>
+    )}
+    </div>
+    </>
   );
 };

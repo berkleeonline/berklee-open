@@ -7,6 +7,29 @@
     -ms-user-select: none;
     user-select: none;
   }
+
+  .piano-outer-container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 160px; /* Adjust based on your piano's height */
+    background-color: transparent;
+    z-index: 1000;
+  }
+  
+  .piano-scroll-wrapper {
+    width: 100%;
+    height: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-behavior: smooth;
+  }
+  
+  #piano-container {
+    height: 100%;
+    /* The width will be set by the Piano instance */
+  }
   
   .blackKey {
     background: black;
@@ -97,10 +120,10 @@
   
   /*Toolbar Piano*/
   .piano-toolbar {
-    position: fixed;
+    position: absolute;
     left: 0;
     right: 0;
-    bottom: 0;
+    top: 0;
     opacity: 0.7;
   }
   
@@ -125,7 +148,7 @@
     position: absolute;
     top: -40px;
     z-index: 10px;
-    left: -1px;
+    left: 0px;
     font-size: 12px;
     background: black;
     padding: 9px;
@@ -139,7 +162,7 @@
   #pianoPlacement #pianoHelpDialog {
     position: absolute;
     top: -31px;
-    left: 10px;
+    left: 300px;
     width: 31px;
     padding: 5px 0;
     font-size: 18px;
@@ -156,7 +179,7 @@
     -ms-user-select: none;
     user-select: none;
   }
-  
+
   #pianoPlacement #pianoHelp {
     left: 100px;
     background-color: red;
@@ -179,7 +202,7 @@
   }
   
   #pianoPlacement .pianoOctaveUp {
-    left: 50px;
+    left: 90px;
   }
   
   #pianoPlacement .pianoHideBtn:active,
@@ -400,5 +423,9 @@
     cursor: pointer;
     text-align: center;
     border: 1px solid white;
+  }
+
+  .pianoOctaveUp {
+    left: 53px;
   }
   

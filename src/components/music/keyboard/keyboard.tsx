@@ -29,6 +29,8 @@ export const Keyboard: React.FC<KeyboardProps> = () => {
   }, []);
 
   return (
-    <div id="piano-container" ref={pianoRef}></div>
+    <div className="piano-scroll-wrapper">
+      <div id="piano-container" ref={pianoRef}></div>
+    </div>
   );
 }

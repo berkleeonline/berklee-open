@@ -155,9 +155,9 @@ Piano.prototype.run = function () {
 
   function listInputs (inputs) {
     var input = inputs.value;
-    log('Input port : [ type:\'' + input.type + '\' id: \'' + input.id +
-          '\' manufacturer: \'' + input.manufacturer + '\' name: \'' + input.name +
-          '\' version: \'' + input.version + '\']');
+    // log('Input port : [ type:\'' + input.type + '\' id: \'' + input.id +
+    //       '\' manufacturer: \'' + input.manufacturer + '\' name: \'' + input.name +
+    //       '\' version: \'' + input.version + '\']');
   }
 
   function noteOn (midiNote, velocity) {
@@ -355,9 +355,12 @@ Piano.prototype.run = function () {
       newOctaveStart = octaves[octaveNames[newOctave - 1]],
       newOctaveEnd = octaves[octaveNames[newOctave]],
       keyName = ['A', 'W', 'S', 'E', 'D', 'F', 'T', 'G', 'Y', 'H', 'U', 'J', 'K', 'O', 'L', 'P', ';', '\''],
-      container = document.getElementById(config.placementId),
+      scrollWrapper = document.querySelector('.piano-scroll-wrapper'),
+      pianoContainer = document.querySelector('.pianoContainer'),
       i, cnt, currKey, evt;
-
+  
+    console.log('Highlighting octave:', newOctave);
+  
     if (shift) {
       for (i = oldOctaveStart; i < oldOctaveEnd + 6; i++) {
         currKey = document.getElementById('key_' + i);
@@ -368,22 +371,47 @@ Piano.prototype.run = function () {
         }
       }
     }
-
+  
     for (i = newOctaveStart, cnt = 0; i < newOctaveEnd + 6; i++, cnt++) {
       currKey = document.getElementById('key_' + i);
       if (currKey) {
         currKey.style.borderColor = config.octaveHighlightColor;
-
+  
         if (config.hotKeys) {
-          currKey.appendChild(document.createElement('p'));
+          if (!currKey.querySelector('p')) {
+            currKey.appendChild(document.createElement('p'));
+          }
           currKey.setAttribute('shortcut', keyName[cnt]);
         }
       }
     }
-
-    //Scroll piano so that selected octave is always in view
-    container.scrollLeft = (container.children[0].clientWidth / 12) * (newOctave - 1);
-
+  
+    if (scrollWrapper && pianoContainer) {
+      // Calculate the octave width and scroll position
+      var octaveWidth = pianoContainer.clientWidth / config.numberOfOctaves;
+      var scrollPosition = octaveWidth * (newOctave - 1);
+      
+      // Calculate the center position
+      var viewportWidth = scrollWrapper.clientWidth;
+      var centerPosition = scrollPosition - (viewportWidth / 2) + (octaveWidth / 2);
+  
+      // Ensure the scroll position is within bounds
+      var maxScroll = pianoContainer.clientWidth - viewportWidth;
+      centerPosition = Math.max(0, Math.min(centerPosition, maxScroll));
+  
+      console.log('Viewport width:', viewportWidth);
+      console.log('Piano width:', pianoContainer.clientWidth);
+      console.log('Octave width:', octaveWidth);
+      console.log('Calculated center position:', centerPosition);
+  
+      // Scroll the container
+      scrollWrapper.scrollLeft = centerPosition;
+  
+      console.log('Set scrollLeft to:', scrollWrapper.scrollLeft);
+    } else {
+      console.error('Could not find piano container or scroll wrapper');
+    }
+  
     evt = document.createEvent('CustomEvent');
     evt.initCustomEvent('piano-octavechanged', false, false, { 'detail':  octaveNames[newOctave]});
     document.getElementById(config.placementId).dispatchEvent(evt);
@@ -948,16 +976,14 @@ Piano.prototype.run = function () {
     });
   }
 
-  //Process keypresses (If those are enabled) --
-  //Functions declared one step up the scope chain in order to be in-scope when
-  //listener removal is done with destroy method.
-  if ((!config.quiz || !config.quiz.oneKeyEntry ) && !config.noKeys && !config.midiKeyboardIn) {
+  //Process keypresses (If those are enabled)
+  if ((!config.quiz || !config.quiz.oneKeyEntry) && !config.noKeys && !config.midiKeyboardIn) {
     this.keyDown = function (evt) {
       var keyCode = evt.keyCode !== 59 ? evt.keyCode : 186,
         keyIndex;
 
-      /* eslint-disable-next-line ember/no-jquery */
-      if ($('#piano-hide-handle').prop('checked')) {
+      // Remove this condition to allow keyboard input regardless of the checkbox state
+      // if ($('#piano-hide-handle').prop('checked')) {
         if (document.piano) {
           //Prevent repeating keys
           keyIndex = impKeys.indexOf(keyCode);
@@ -982,7 +1008,7 @@ Piano.prototype.run = function () {
             highlightOctave(-1);
           }
         }
-      }
+      // }
     };
 
     this.keyUp = function (evt) {
@@ -990,22 +1016,23 @@ Piano.prototype.run = function () {
         keyIndex = impKeys.indexOf(keyCode),
         mn;
 
-      /* eslint-disable-next-line ember/no-jquery */
-      if ($('#piano-hide-handle').prop('checked')) {
+      // Remove this condition to allow keyboard input regardless of the checkbox state
+      // if ($('#piano-hide-handle').prop('checked')) {
         if (document.piano) {
           if (keyIndex > -1) {
             keyIndex += octaves[octaveNames[config.selectedOctave - 1]];
             if (keyIndex < 85) {
               mn = 'key_' + keyIndex;
               document.getElementById(mn).style.background = '';
-              /* eslint-disable-next-line ember/no-jquery */
-              $(config.tempAudio[mn]).animate({volume: 0}, 500);
-              delete config.tempAudio[mn];
+              if (config.tempAudio[mn]) {
+                $(config.tempAudio[mn]).animate({volume: 0}, 500);
+                delete config.tempAudio[mn];
+              }
               delete downKeys[keyCode];
             }
           }
         }
-      }
+      // }
     };
 
     window.document.addEventListener('keydown', this.keyDown);
@@ -1044,24 +1071,31 @@ Piano.prototype.getKeyFromNoteID = function getKeyFromNoteString(noteID) {
 Piano.prototype.destroy = function () {
   var outerContainer = document.getElementById(this.id);
 
+  // Remove event listeners
   document.removeEventListener('keydown', this.keyDown);
   document.removeEventListener('keyup', this.keyUp);
 
-  //Remove all placementId children, but keep the node.
-  //Since the object wasn't the one that created it, it shouldn't do the destruction.
-  while (outerContainer.firstChild) {
-    outerContainer.removeChild(outerContainer.firstChild);
+  // Check if outerContainer exists before attempting to remove children
+  if (outerContainer) {
+    // Remove all placementId children, but keep the node.
+    while (outerContainer.firstChild) {
+      outerContainer.removeChild(outerContainer.firstChild);
+    }
+  } else {
+    console.warn('Piano container not found during destroy.');
   }
 
-  //There is no more active piano on the given page.
+  // There is no more active piano on the given page.
   delete document.piano;
 };
 
 Piano.prototype.toggle = function () {
-  var pianoBtn = document.getElementsByClassName('pianoHideBtn')[0];
+  var pianoBtn = document.querySelector('.pianoHideBtn');
 
   if (pianoBtn) {
     pianoBtn.click();
+  } else {
+    console.warn('Piano hide button not found during toggle.');
   }
 };
 
