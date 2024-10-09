@@ -7,9 +7,8 @@
  * Param: customConfig object
  * Methods: run, destroy, toggle
  * DOM Requirements: Container DIV with unique ID (customConfig.placementId)
- * CSS: theme/berkleemusic3/user_styles.css
  **/
-import $ from 'jquery';
+
 
 function Piano (customConfig) {
   this.keyUp = false;
@@ -67,16 +66,9 @@ Piano.prototype.run = function () {
       hotKeys : false,
       noteLabels: false,
       orderLabel: false,
-      loadOnClick: false,
-      quiz: false
+      loadOnClick: false
     },
-    midi, data, type, note, velocity,
-    // Quiz
-    currentQuestion = false,
     downKeys = [],
-    thisVF,
-    // Staff
-    staffContainer, staffDiv, staffRenderer, staffContext, renderedStaves = [],
     prop;
 
   //There can be only ONE -- piano running at a time
@@ -108,87 +100,11 @@ Piano.prototype.run = function () {
     config.selectedOctave += octaveNames.indexOf(config.firstOctave);
   }
 
-  // request MIDI access
-  if (navigator.requestMIDIAccess) {
-    navigator.requestMIDIAccess({
-      sysex: false
-    }).then(onMIDISuccess, onMIDIFailure);
-  }
-
-  // midi functions
-  function onMIDISuccess (midiAccess) {
-    midi = midiAccess;
-    config.midiKeyboardIn = true;
-    var inputs = midi.inputs.values();
-    // loop through all inputs
-    for (var input = inputs.next(); input && !input.done; input = inputs.next()) {
-      // listen for midi messages
-      input.value.onmidimessage = onMIDIMessage;
-      // this just lists our inputs in the console
-      listInputs(input);
-    }
-    // listen for connect/disconnect message
-    midi.onstatechange = onStateChange;
-  }
-
-  function onMIDIMessage (event) {
-    // these variables are defined in the parent
-    // scope (the Piano.prototype.run function)
-    data = event.data;
-    type = data[0] & 0xf0;
-    note = data[1];
-    velocity = data[2];
-
-    switch (type) {
-    case 144: // noteOn message
-      noteOn(note, velocity);
-      break;
-    case 128: // noteOff message
-      noteOff();
-      break;
-    }
-  }
-
   function onStateChange (event) {
     var port = event.port,
       state = port.state,
       name = port.name,
       type = port.type;
-  }
-
-  function listInputs (inputs) {
-    var input = inputs.value;
-    // log('Input port : [ type:\'' + input.type + '\' id: \'' + input.id +
-    //       '\' manufacturer: \'' + input.manufacturer + '\' name: \'' + input.name +
-    //       '\' version: \'' + input.version + '\']');
-  }
-
-  function noteOn (midiNote, velocity) {
-    var mn;
-    /* eslint-disable-next-line ember/no-jquery */
-    if ($('#piano-hide-handle').prop('checked')) {
-      midiNote = midiNote - 24;
-      if (midiNote < 85 && velocity > 0) {
-        document.getElementById('key_' + midiNote).style.background = config.keyDownColor;
-        playAudio('key_' + midiNote, velocity);
-      } else if (velocity === 0 && midiNote < 85) {
-        mn = 'key_' + midiNote;
-        if (config.tempAudio[mn]) {
-          /* eslint-disable-next-line ember/no-jquery */
-          $(config.tempAudio[mn]).animate({volume: 0}, 500);
-          delete config.tempAudio[mn];
-        }
-        document.getElementById('key_' + midiNote).style.background = '';
-      }
-    }
-  }
-
-  function noteOff () {
-    // Note Off chng duration
-  }
-
-  function onMIDIFailure (e) {
-    log('No access to MIDI devices or your browser doesn\'t support WebMIDI API. Please use WebMIDIAPIShim ' + e);
   }
 
   // Playing functions
@@ -205,151 +121,6 @@ Piano.prototype.run = function () {
   }
 
   this.playAudio = playAudio;
-
-  function drawStaff (keyedNotes) {
-    var toDraw = [],
-      spl, note, octave, i, fullNote, totalNotes,
-      keys = config.quiz.signature.split('/'),
-      notesPerLine = config.quiz.measuresPerLine * keys[0],
-      numRows = keyedNotes && keyedNotes.length > 0 ? Math.ceil(keyedNotes.length / notesPerLine) : 1,
-      voiceVal = 0,
-      barSplit = 0,
-      currentNotesCount = 0,
-      voices = [];
-
-    staffRenderer.resize(750, (numRows * 130) + 40);
-
-    if(config.renderStaff === 'false') {
-      return;
-    }
-
-    staffContext.clear();
-    renderedStaves = [];
-
-    if (keyedNotes && keyedNotes.length > 0) {
-      for (i = 0; i < keyedNotes.length; i++) {
-        spl = keyedNotes[i].split('_')[1];
-        note = notes[spl % notes.length];
-
-        if (!toDraw[barSplit]) {
-          toDraw[barSplit] = [];
-        } else if (currentNotesCount === notesPerLine) {
-          barSplit++;
-          currentNotesCount = 0;
-          toDraw[barSplit] = [];
-        }
-
-        // check if we should be using flats, sub accordingly.
-        if (currentQuestion.accidental === 'b') {
-          note = noteSynonyms[note] || note;
-        }
-
-        octave = Math.floor(spl / notes.length) + 1;
-        fullNote = note + '/' + octave;
-
-        if (currentNotesCount % keys[0] === 0 && currentNotesCount !== 0) {
-          toDraw[barSplit].push(new thisVF.BarNote());
-        }
-
-        voiceVal += 1;
-
-        // check the note name for an accidental and draw if needed
-        if (!(/[A-G][#b]/.test(note))) {
-          toDraw[barSplit].push(new thisVF.StaveNote({
-            clef: 'treble',
-            keys: [fullNote],
-            duration: 'q',
-            auto_stem: true
-          }));
-        } else {
-          toDraw[barSplit].push(new thisVF.StaveNote({
-            clef: 'treble',
-            keys: [fullNote],
-            duration: 'q',
-            auto_stem: true
-          }).addAccidental(0, new thisVF.Accidental(currentQuestion.accidental)));
-        }
-
-        currentNotesCount++;
-      }
-
-      totalNotes = (barSplit * notesPerLine) + currentNotesCount;
-    } else {
-      toDraw = [[]];
-    }
-
-    for (i = 0; i < toDraw.length; i++) {
-      var drawThis = toDraw[i],
-        staffLoc = 0,
-        beatCount = totalNotes > notesPerLine ? notesPerLine : totalNotes;
-
-      totalNotes -= notesPerLine;
-
-      // Render stave
-      if (renderedStaves.length > 0) {
-        staffLoc = renderedStaves[renderedStaves.length - 1].y + renderedStaves[renderedStaves.length - 1].height + 40;
-      }
-      renderedStaves.push(new thisVF.Stave(0, staffLoc, 750));
-
-      if (i === 0) {
-        // Add a clef and time signature.
-        renderedStaves[renderedStaves.length - 1].addClef('treble').addTimeSignature(config.quiz.signature);
-      }
-
-      // Connect it to the rendering context and draw!
-      renderedStaves[renderedStaves.length - 1].setContext(staffContext).draw();
-
-      if (drawThis.length > 0) {
-        voices.push(new thisVF.Voice({num_beats: beatCount, beat_value: keys[1]}));
-
-        voices[voices.length - 1].addTickables(drawThis);
-
-        // Format and justify the notes to 400 pixels.
-        new thisVF.Formatter().joinVoices([voices[voices.length - 1]]).format([voices[voices.length - 1]], 50 * drawThis.length);
-
-        // Render voice
-        voices[voices.length - 1].draw(staffContext, renderedStaves[renderedStaves.length - 1]);
-      }
-    }
-  }
-
-  function clearPiano (red) {
-    var blueKeys = document.getElementById(config.placementId).querySelectorAll('.pianoContainer > div'),
-      blueKeyLength = blueKeys.length,
-      key;
-
-    if (blueKeyLength > 0) {
-      if (red) {
-        blueKeys = document.querySelectorAll('#' + config.placementId + ' .selected');
-        blueKeyLength = blueKeys.length;
-        for (key = 0; key < blueKeyLength; key++) {
-          blueKeys[key].classList.add('incorrect');
-        }
-      } else {
-        blueKeys[0].parentNode.classList.remove('filled');
-        config.quiz.selectedKeys = [];
-
-        for (key = 0; key < blueKeyLength; key++) {
-          blueKeys[key].classList.remove('selected');
-          blueKeys[key].classList.remove('correct');
-          blueKeys[key].classList.remove('incorrect');
-        }
-      }
-
-      drawStaff(false);
-    }
-  }
-
-  function selectKeys (key) {
-    var keyNode, i;
-    if (typeof key === 'object') {
-      for (i = 0; i < key.length; i++) {
-        keyNode = document.getElementById(config.placementId).querySelectorAll('#key_' + key[i]);
-        keyNode[0].classList.add('selected');
-        config.quiz.selectedKeys.push('key_' + key[i]);
-      }
-    }
-  }
 
   function highlightOctave (shift) {
     var newOctave = config.selectedOctave,
@@ -470,53 +241,8 @@ Piano.prototype.run = function () {
       halfBlackKey = '-' + blackKey.width / 2 + 'px',
       placementId = document.getElementById(id),
       pianoKeys = [],
-      questionContentDiv,
-      questionContentText,
-      questionFeedbackRight, questionFeedbackWrong,
-      checkAnswerDiv, showAnswerDiv,
-      prevQuestionDiv, nextQuestionDiv,
-      clearKeyboardDiv,
       pianoContainer, pianoWrapper, i, keyCount, hideBtn, previewBtn,
-      octaveUp, octaveDown, helpMe, helpDialog, kPrsEvt,
-
-      changeQuestion = function (questionNumber) {
-        if (questionNumber >= 0) {
-          questionFeedbackWrong.classList.remove('active');
-          questionFeedbackRight.classList.remove('active');
-
-          if (questionNumber > 0) {
-            prevQuestionDiv.classList.remove('inactive');
-          } else {
-            prevQuestionDiv.classList.add('inactive');
-          }
-
-          if (parseInt(questionNumber) === parseInt(config.quiz.questions.length - 1)) {
-            nextQuestionDiv.classList.add('inactive');
-          } else {
-            nextQuestionDiv.classList.remove('inactive');
-          }
-
-          if (currentQuestion.questionContent) {
-            questionContentText.innerHTML = currentQuestion.questionContent;
-          }
-
-          if (currentQuestion.feedbackWrong) {
-            questionFeedbackWrong.textContent = currentQuestion.feedbackWrong;
-          }
-
-          if (currentQuestion.feedbackRight) {
-            questionFeedbackRight.textContent = currentQuestion.feedbackRight;
-          }
-
-          currentQuestion.attempts = 0;
-
-          clearPiano();
-
-          if (currentQuestion.firstNote[0]) {
-            selectKeys(currentQuestion.firstNote);
-          }
-        }
-      };
+      octaveUp, octaveDown, helpMe, helpDialog, kPrsEvt;
 
     //Some browsers handle ready events poorly. Final check to make sure DOM is loaded
     if (!placementId) {
@@ -540,223 +266,8 @@ Piano.prototype.run = function () {
     config.load = loadSoundAudioTag;
     config.play = playSoundAudioTag;
 
-    if (config.quiz) {
-      currentQuestion = config.quiz.questions[0];
-      currentQuestion.number = 0;
-      currentQuestion.attempts = 0;
-    }
-
-    if (currentQuestion) {
-      questionContentDiv = document.createElement('div');
-      questionContentDiv.className = 'questionContent';
-
-      if (currentQuestion.questionContent) {
-        questionContentText = document.createElement('p');
-        questionContentText.innerHTML = currentQuestion.questionContent;
-
-        questionContentDiv.appendChild(questionContentText);
-      }
-
-      placementId.appendChild(questionContentDiv);
-
-      if (currentQuestion.feedbackWrong) {
-        questionFeedbackWrong = document.createElement('div');
-        questionFeedbackWrong.className = 'questionFeedbackWrong';
-        questionFeedbackWrong.textContent = currentQuestion.feedbackWrong;
-        placementId.appendChild(questionFeedbackWrong);
-      }
-
-      if (currentQuestion.feedbackRight) {
-        questionFeedbackRight = document.createElement('div');
-        questionFeedbackRight.className = 'questionFeedbackRight';
-        questionFeedbackRight.textContent = currentQuestion.feedbackRight;
-        placementId.appendChild(questionFeedbackRight);
-      }
-
-      if (currentQuestion.previewInput) {
-        previewBtn = document.createElement('div');
-        previewBtn.className = 'previewBtn fas fa-play';
-        //previewBtn.textContent = ' Preview';
-        placementId.appendChild(previewBtn);
-        previewBtn.addEventListener('click', function () {
-          var selKeyCount = config.quiz.selectedKeys.length,
-            waitTime, totalWait;
-
-          if (currentQuestion.previewInput === 'chord') {
-            waitTime = 10;
-          } else {
-            waitTime = 500;
-          }
-
-          for (i = 0; i < selKeyCount; i++) {
-            setTimeout(function () {
-              playAudio(config.quiz.selectedKeys[arguments[0]]);
-            }.bind(false, i), i * waitTime);
-          }
-
-          if (currentQuestion.previewInput === 'both') {
-            totalWait = (i + 1) * waitTime;
-            waitTime = 10;
-
-            for (i = 0; i < selKeyCount; i++) {
-              setTimeout(function () {
-                playAudio(config.quiz.selectedKeys[arguments[0]]);
-              }.bind(false, i), (i * waitTime) + totalWait);
-            }
-          }
-        });
-      }
-
-      clearKeyboardDiv = document.createElement('div');
-      clearKeyboardDiv.className = 'clearKeyboard far fa-trash';
-      clearKeyboardDiv.setAttribute('tooltip', 'Clear Keyboard');
-      //clearKeyboardDiv.textContent = ' Clear Keyboard'
-      clearKeyboardDiv.addEventListener('click', function () {
-        questionFeedbackWrong.classList.remove('active');
-        questionFeedbackRight.classList.remove('active');
-        clearPiano();
-        if (currentQuestion.firstNote[0]) {
-          selectKeys(currentQuestion.firstNote);
-        }
-      });
-      placementId.appendChild(clearKeyboardDiv);
-
-      showAnswerDiv = document.createElement('div');
-      showAnswerDiv.className = 'showAnswer fas fa-eye';
-      showAnswerDiv.setAttribute('tooltip', 'Reveal Answer');
-      //showAnswerDiv.textContent = ' Reveal Answer';
-      showAnswerDiv.addEventListener('click', function () {
-        var currKey;
-        if (config.easyMode || currentQuestion.attempts >= config.revealCorrectAnswerAfter) {
-          clearPiano(true);
-          for (i = 0; i < currentQuestion.answer.length; i++) {
-            currKey = document.querySelectorAll('#' + config.placementId + ' #key_' + currentQuestion.answer[i])[0];
-            currKey.classList.add('correct');
-          }
-
-          if (currentQuestion.number + 1 < config.quiz.questions.length) {
-            //config.easyMode = true;
-            nextQuestionDiv.classList.remove('inactive');
-          }
-        }
-
-      });
-      placementId.appendChild(showAnswerDiv);
-
-      checkAnswerDiv = document.createElement('div');
-      checkAnswerDiv.className = 'checkAnswer fas fa-check';
-      checkAnswerDiv.setAttribute('tooltip', 'Check Answer');
-      //checkAnswerDiv.textContent = ' Check Answer';
-      checkAnswerDiv.addEventListener('click', function () {
-        var answerIsCorrect = false,
-          answerLength = config.quiz.selectedKeys.length;
-
-        if (currentQuestion.answer.length === answerLength) {
-          for (i = 0; i < answerLength; i++) {
-            if (currentQuestion.orderMatters) {
-              if ('key_' + currentQuestion.answer[i].toString() === config.quiz.selectedKeys[i]) {
-                answerIsCorrect = true;
-              } else {
-                answerIsCorrect = false;
-                break;
-              }
-            } else {
-              if (config.quiz.selectedKeys.indexOf('key_' + currentQuestion.answer[i].toString()) > -1) {
-                answerIsCorrect = true;
-              } else {
-                answerIsCorrect = false;
-                break;
-              }
-            }
-          }
-          if (answerIsCorrect) {
-            questionFeedbackWrong.classList.remove('active');
-            questionFeedbackRight.classList.add('active');
-
-            /*if (currentQuestion.number + 1 < config.quiz.questions.length) {
-              nextQuestionDiv.classList.remove('inactive');
-            }*/
-          } else {
-            questionFeedbackWrong.classList.add('active');
-            questionFeedbackRight.classList.remove('active');
-            currentQuestion.attempts += 1;
-          }
-        } else {
-          questionFeedbackWrong.classList.add('active');
-          questionFeedbackRight.classList.remove('active');
-          currentQuestion.attempts += 1;
-        }
-      });
-      placementId.appendChild(checkAnswerDiv);
-
-      prevQuestionDiv = document.createElement('div');
-      prevQuestionDiv.className = 'prevQuestion inactive fas fa-arrow-left';
-      prevQuestionDiv.setAttribute('tooltip', 'Previous Question');
-      //prevQuestionDiv.textContent = ' Previous Question';
-      prevQuestionDiv.addEventListener('click', function () {
-        var newNumber = currentQuestion.number - 1;
-
-        if (!prevQuestionDiv.classList.contains('inactive')) {
-          currentQuestion = config.quiz.questions[newNumber];
-          currentQuestion.number = newNumber;
-          changeQuestion(newNumber);
-        }
-      });
-      placementId.appendChild(prevQuestionDiv);
-
-
-      nextQuestionDiv = document.createElement('div');
-      nextQuestionDiv.className = 'nextQuestion fas fa-arrow-right';
-      nextQuestionDiv.setAttribute('tooltip', 'Next Question');
-      //nextQuestionDiv.textContent = ' Next Question';
-      nextQuestionDiv.addEventListener('click', function () {
-        var newNumber = currentQuestion.number + 1;
-
-        if (!nextQuestionDiv.classList.contains('inactive')) {
-          currentQuestion = config.quiz.questions[newNumber];
-          currentQuestion.number = newNumber;
-          changeQuestion(newNumber);
-        }
-      });
-      placementId.appendChild(nextQuestionDiv);
-
-      pianoWrapper = document.createElement('div');
-      pianoWrapper.className = 'pianoOuterWrapper';
-    }
-
     pianoContainer = document.createElement('div');
     pianoContainer.className = 'pianoContainer';
-
-    staffContainer = document.createElement('div');
-    staffContainer.className = 'staffContainer';
-
-
-
-    // Render Staff
-    if (config.renderStaff === 'true') {
-      thisVF = Vex.Flow;
-
-      // Create an SVG renderer and attach it to the DIV element named "boo".
-      staffDiv = staffContainer;
-      staffRenderer = new thisVF.Renderer(staffDiv, thisVF.Renderer.Backends.SVG);
-
-      // Configure the rendering context.
-      staffRenderer.resize(750, 120);
-      staffContext = staffRenderer.getContext();
-      staffContext.setFont('Arial', 10, '').setBackgroundFillStyle('#eed');
-
-      // Create a stave of width 400 at position 10, 40 on the canvas.
-      renderedStaves.push(new thisVF.Stave(0, 0, 750));
-
-      // Add a clef and time signature.
-      renderedStaves[renderedStaves.length - 1].addClef('treble').addTimeSignature(config.quiz.signature);
-
-      // Connect it to the rendering context and draw!
-      renderedStaves[renderedStaves.length - 1].setContext(staffContext).draw();
-
-      // Render piano
-      placementId.appendChild(staffContainer);
-    }
 
     if (pianoWrapper) {
       placementId.appendChild(pianoWrapper);
@@ -800,43 +311,7 @@ Piano.prototype.run = function () {
       pianoContainer.appendChild(pianoKeys[i]);
 
       pianoKeys[i].addEventListener(kPrsEvt, function () {
-        if (config.quiz && config.quiz.oneKeyEntry) {
-
-          if (config.oneKeyAtATime === 'true') {
-            clearPiano();
-          }
-
-          questionFeedbackWrong.classList.remove('active');
-          questionFeedbackRight.classList.remove('active');
-
-          if (this.classList.contains('selected')) {
-            this.classList.remove('selected');
-            this.classList.remove('correct');
-            this.classList.remove('incorrect');
-            if (config.orderLabel === 'true') {
-              this.removeAttribute('order');
-            }
-            config.quiz.selectedKeys.splice(config.quiz.selectedKeys.indexOf(this.id), 1);
-
-            if (config.quiz.maxKeys && config.quiz.selectedKeys.length < config.quiz.maxKeys) {
-              this.parentNode.classList.remove('filled');
-            }
-          } else if (!this.parentNode.classList.contains('filled')) {
-            playAudio(this.id);
-            if (config.orderLabel === 'true') {
-              this.setAttribute('order', config.quiz.selectedKeys.length + 1);
-            }
-            this.classList.add('selected');
-            config.quiz.selectedKeys.push(this.id);
-
-            if (config.quiz.maxKeys && config.quiz.selectedKeys.length >= config.quiz.maxKeys) {
-              this.parentNode.classList.add('filled');
-            }
-          }
-          drawStaff(config.quiz.selectedKeys);
-        } else {
-          playAudio(this.id);
-        }
+        playAudio(this.id);
       });
 
       //Buffer audio
@@ -874,7 +349,7 @@ Piano.prototype.run = function () {
       });
     }
 
-    if ((!config.quiz || !config.quiz.oneKeyEntry) && !config.noKeys && !config.midiKeyboardIn) {
+    if (!config.noKeys) {
       var octaveControlsContainer = document.createElement('div');
       octaveControlsContainer.className = 'piano-octave-controls';
     
@@ -921,9 +396,6 @@ Piano.prototype.run = function () {
       highlightOctave(false);
     }
 
-    if (currentQuestion && currentQuestion.firstNote[0]) {
-      selectKeys(currentQuestion.firstNote);
-    }
     document.piano = true;
 
     if (config.hidden) {
@@ -1002,7 +474,7 @@ Piano.prototype.run = function () {
   }
 
   //Process keypresses (If those are enabled)
-  if ((!config.quiz || !config.quiz.oneKeyEntry) && !config.noKeys && !config.midiKeyboardIn) {
+  if (!config.noKeys ) {
     this.keyDown = function (evt) {
       var keyCode = evt.keyCode !== 59 ? evt.keyCode : 186,
         keyIndex;
@@ -1050,8 +522,23 @@ Piano.prototype.run = function () {
               mn = 'key_' + keyIndex;
               document.getElementById(mn).style.background = '';
               if (config.tempAudio[mn]) {
-                $(config.tempAudio[mn]).animate({volume: 0}, 500);
-                delete config.tempAudio[mn];
+                const audioElement = config.tempAudio[mn];
+                
+                // Set the initial volume
+                const fadeOutDuration = 500; // 500 milliseconds
+                const stepTime = 50; // Step every 50ms
+                const steps = fadeOutDuration / stepTime;
+                const volumeStep = audioElement.volume / steps;
+              
+                const fadeOutInterval = setInterval(() => {
+                  if (audioElement.volume > volumeStep) {
+                    audioElement.volume = Math.max(0, audioElement.volume - volumeStep);
+                  } else {
+                    // Stop the fade-out and delete the audio element when volume reaches 0
+                    clearInterval(fadeOutInterval);
+                    delete config.tempAudio[mn];
+                  }
+                }, stepTime);
               }
               delete downKeys[keyCode];
             }
@@ -1070,9 +557,23 @@ Piano.prototype.playNotes = async function playNoteRange(noteIDs, waitTime, noOv
 
   for (let i = 0; i < keys.length; i++) {
     if (noOverlap && i > 0 && this.config.tempAudio[keys[i - 1]]) {
-      /* eslint-disable-next-line ember/no-jquery */
-      $(this.config.tempAudio[keys[i - 1]]).animate({volume: 0}, 500);
-      delete this.config.tempAudio[keys[i - 1]];
+      const audioElement = this.config.tempAudio[keys[i - 1]];
+    
+      // Set the initial volume
+      const fadeOutDuration = 500; // 500 milliseconds
+      const stepTime = 50; // Step every 50ms
+      const steps = fadeOutDuration / stepTime;
+      const volumeStep = audioElement.volume / steps;
+    
+      const fadeOutInterval = setInterval(() => {
+        if (audioElement.volume > volumeStep) {
+          audioElement.volume = Math.max(0, audioElement.volume - volumeStep);
+        } else {
+          // Stop the fade-out and delete the audio element when volume reaches 0
+          clearInterval(fadeOutInterval);
+          delete this.config.tempAudio[keys[i - 1]];
+        }
+      }, stepTime);
     }
     this.playAudio(keys[i]);
     await wait(waitTime);
