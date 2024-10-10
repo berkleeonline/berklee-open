@@ -416,9 +416,6 @@ Piano.prototype.run = function () {
         // without the extensive state management from ancestor to descendant
         headerPianoToggle.click(); 
       }
-      if (pianoElement) {
-        pianoElement.style.display = 'none';
-      }
       document.piano = false;
     });
   
@@ -595,34 +592,32 @@ Piano.prototype.getKeyFromNoteID = function getKeyFromNoteString(noteID) {
 };
 
 Piano.prototype.destroy = function () {
-  var outerContainer = document.getElementById(this.id);
+  var pianoContainer = document.getElementById(this.id);
 
   // Remove event listeners
   document.removeEventListener('keydown', this.keyDown);
   document.removeEventListener('keyup', this.keyUp);
 
-  // Check if outerContainer exists before attempting to remove children
+  // Remove the 'open' class from the outer container
+  var outerContainer = document.querySelector('.piano-outer-container');
   if (outerContainer) {
-    // Remove all placementId children, but keep the node.
-    while (outerContainer.firstChild) {
-      outerContainer.removeChild(outerContainer.firstChild);
-    }
-  } else {
-    console.warn('Piano container not found during destroy.');
+    outerContainer.classList.remove('open');
   }
 
   // There is no more active piano on the given page.
-  delete document.piano;
+  document.piano = false;
 };
 
-Piano.prototype.toggle = function () {
-  var pianoBtn = document.querySelector('.pianoHideBtn');
+Piano.prototype.show = function () {
+  var pianoContainer = document.getElementById(this.id);
 
-  if (pianoBtn) {
-    pianoBtn.click();
-  } else {
-    console.warn('Piano hide button not found during toggle.');
+  // Add the 'open' class to the outer container
+  var outerContainer = document.querySelector('.piano-outer-container');
+  if (outerContainer) {
+    outerContainer.classList.add('open');
   }
+
+  document.piano = true;
 };
 
 export default Piano;

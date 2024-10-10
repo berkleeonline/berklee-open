@@ -86,11 +86,7 @@ export const SlideshowHeader: React.FC<SlideshowHeaderProps> = ({
       </Navbar>
     </div>
     <div>
-    {showKeyboard && (
-      <div className="piano-outer-container">
-        <Keyboard />
-      </div>
-    )}
+      <Keyboard isVisible={showKeyboard}  />
     </div>
     </>
   );
