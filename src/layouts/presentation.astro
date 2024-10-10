@@ -1,0 +1,19 @@
+---
+import '@fontsource-variable/nunito-sans'; // Supports weights 200-900
+import type { HeaderProps } from "../type/layout";
+import '../fontAwesome'; // Import the Font Awesome configuration
+
+const { title } = Astro.props;
+
+---
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <link href="/public/favicon.svg" rel="shortcut icon" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex, nofollow" />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
