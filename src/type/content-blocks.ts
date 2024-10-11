@@ -28,15 +28,49 @@ export interface TakeawaysData {
   };
 }
 
+export interface Module {
+  contentTypeId: "module",
+  fields: {
+    module_title: EntryFieldTypes.Text,
+    module_short_description: EntryFieldTypes.Text,
+    module_description: EntryFieldTypes.RichText,
+    module_level: EntryFieldTypes.Array,
+    module_units: EntryFieldTypes.Array,
+    module_related: EntryFieldTypes.Array,
+    module_id: EntryFieldTypes.Text,
+    module_image: EntryFieldTypes.AssetLink
+  }
+}
+
 export interface Unit {
   contentTypeId: "unit",
   fields: {
     unit_title: EntryFieldTypes.Text
+    unit_short_description: EntryFieldTypes.Text,
     unit_description: EntryFieldTypes.RichText,
     unit_activities: EntryFieldTypes.Array,
     unit_related: EntryFieldTypes.Array,
     unit_prerequisites: EntryFieldTypes.Array,
     Unit_essential_questions: EntryFieldTypes.Array,
-    Unit_image: EntryFieldTypes.AssetLink
+    unit_image: EntryFieldTypes.AssetLink
+  }
+}
+
+export interface Lesson {
+  contentTypeId: "lesson",
+  fields: {
+    lesson_title: EntryFieldTypes.Text
+    lesson_short_description: EntryFieldTypes.RichText,
+    lesson_prerequisites: EntryFieldTypes.Array,
+    lesson_sel: EntryFieldTypes.Text,
+    lesson_extension: EntryFieldTypes.Text,
+    lesson_accessibility: EntryFieldTypes.Text,
+    lesson_duration: EntryFieldTypes.Text,
+    lesson_grade: EntryFieldTypes.Text,
+    lesson_summary: EntryFieldTypes.Array,
+    lesson_audience: EntryFieldTypes.Array,
+    lesson_materials: EntryFieldTypes.Array,
+    lesson_image: EntryFieldTypes.AssetLink
+    lesson_sections: EntryFieldTypes.Array,
   }
 }
