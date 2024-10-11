@@ -26,10 +26,24 @@ export const Keyboard: React.FC<KeyboardProps> = ({ isVisible }) => {
       config['keyDirs']['key_' + i] = 'https://intro.online.berklee.edu/audio/piano/key_' + i + '.mp3';
     }
 
-    if (!pianoInstanceRef.current && pianoRef.current) {
-      pianoInstanceRef.current = new Piano(config);
-      pianoInstanceRef.current.run();
-      setIsInitialized(true);
+    if (isVisible) {
+      // If a previous piano exists, destroy it and clear the DOM
+      if (pianoInstanceRef.current) {
+        pianoInstanceRef.current.destroy();
+        pianoInstanceRef.current = null;
+      }
+
+      // Clear the piano-container to avoid stacking new pianos
+      if (pianoRef.current) {
+        pianoRef.current.innerHTML = ''; // Clear previous piano DOM elements
+      }
+
+      // Initialize the piano
+      if (!pianoInstanceRef.current && pianoRef.current) {
+        pianoInstanceRef.current = new Piano(config);
+        pianoInstanceRef.current.run();
+        setIsInitialized(true);
+      }
     }
 
     return () => {
@@ -38,7 +52,7 @@ export const Keyboard: React.FC<KeyboardProps> = ({ isVisible }) => {
         pianoInstanceRef.current = null;
       }
     };
-  }, []);
+  }, [isVisible]); // Only run this effect when isVisible changes
 
   return (
     <div className={`piano-outer-container ${isVisible ? 'open' : ''}`}>
