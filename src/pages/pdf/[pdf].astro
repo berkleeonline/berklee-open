@@ -8,42 +8,27 @@ const fetchEntryById = async (id) => {
   return entry;
 };
 
-export async function getStaticPaths() {
-  const pdfs = await contentfulClient.getEntries({
-    content_type: "lesson",
-  });
-
-  let pdfsToPublish = [];
-
-  pdfs.items.map((pdf) => {
-    pdfsToPublish.push({
-      params: { pdf: pdf.sys.id },
-      props: pdf
-    });
-  });
-
-  return pdfsToPublish;
-}
-
-// Fetch and resolve lesson sections
+// Fetch and resolve lesson sections and instructions
 const fetchAndResolveSections = async (sections) => {
   const resolvedSections = await Promise.all(
     sections.map(async (section) => {
+      let interactiveContent = [];
+      let instructions = [];
+
       if (section.fields?.interactiveContent?.sys?.id) {
-        const interactiveContent = await fetchEntryById(section.fields.interactiveContent.sys.id);
-        return {
-          ...section,
-          fields: {
-            ...section.fields,
-            interactiveContent: interactiveContent.fields?.slides || [], // Default to an empty array if undefined
-          },
-        };
+        const interactiveContentEntry = await fetchEntryById(section.fields.interactiveContent.sys.id);
+        interactiveContent = interactiveContentEntry.fields?.slides || [];
+
+        // Fetch instructions if available
+        instructions = interactiveContentEntry.fields?.instructions || [];
       }
+
       return {
         ...section,
         fields: {
           ...section.fields,
-          interactiveContent: [], // Ensure interactiveContent is at least an empty array
+          interactiveContent,
+          instructions, // Include instructions in the resolved section
         },
       };
     })
@@ -51,26 +36,34 @@ const fetchAndResolveSections = async (sections) => {
   return resolvedSections;
 };
 
-// get the PDF URL from the lesson post materials
-const getPdfUrl = (lessonPdf) => {
-  if (lessonPdf && lessonPdf.fields && lessonPdf.fields.file && lessonPdf.fields.file.url) {
-    const url = lessonPdf.fields.file.url;
-    return url.startsWith('//') ? `https:${url}` : url;
-  }
-  return null;
+// Fetch the lesson data
+const fetchLessonData = async (lessonId) => {
+  const lessonEntry = await contentfulClient.getEntry(lessonId);
+  const lessonFields = lessonEntry.fields;
+
+  const resolvedSections = await fetchAndResolveSections(lessonFields.lesson_sections || []);
+  return {
+    fields: lessonFields,
+    sections: resolvedSections,
+  };
 };
 
-const {
-  lesson_sections
-} = Astro.props.fields;
+// Define getStaticPaths for dynamic routes
+export async function getStaticPaths() {
+  const pdfs = await contentfulClient.getEntries({
+    content_type: "lesson",
+  });
 
-const resolvedLessonSections = await fetchAndResolveSections(lesson_sections || []);
+  return pdfs.items.map((pdf) => ({
+    params: { pdf: pdf.sys.id },
+  }));
+}
 
-// Define the props
-const pdfProps = {
-  fields: Astro.props.fields,
-  sections: resolvedLessonSections
-};
+// Get the lesson ID from the URL params
+const { pdf: lessonId } = Astro.params;
+
+// Fetch the lesson data
+const pdfProps = await fetchLessonData(lessonId);
 
 // Generate the PDF with props
 await generate(pdfProps);
