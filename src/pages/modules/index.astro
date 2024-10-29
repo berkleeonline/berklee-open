@@ -1,0 +1,36 @@
+---
+	import { contentfulClient } from "../../lib/contentful";
+	import type { Module } from "../../type/content-blocks";
+	
+	import MainLayout from "../../layouts/authenticated.astro"
+	import ModuleCard from "../../components/cards/module"
+
+	const modules = await contentfulClient.getEntries<Module>({
+  		content_type: "module",
+	});
+---
+
+<MainLayout title={`Berklee Open: Modules`}>
+  <div class="flex gap-20">
+    <div class="w-full">
+      <h1 class="text-4xl font-bold mb-8">Modules</h1>
+      <div class="grid grid-cols-3 gap-8 mt-auto">
+        {modules.items.map((module, index) => (
+          <ModuleCard 
+            key={module.sys.id}
+            id={module.sys.id}
+            title={module.fields.module_title}
+            image={module.fields.module_image?.fields?.file?.url?.startsWith('//') 
+              ? `https:${module.fields.module_image.fields.file.url}` 
+              : module.fields.module_image?.fields?.file?.url ?? 'https://placehold.co/425x265'}
+            shortDescription={module.fields.module_short_description}
+            level={module.fields.module_level}
+            unitsCount={module.fields.module_units.length}
+            index={index}
+            client:load 
+          />
+        ))}
+      </div>
+    </div>
+  </div>
+</MainLayout>

@@ -1,0 +1,241 @@
+---
+import { contentfulClient } from "../../lib/contentful";
+import { calculateLevel } from "../../lib/calculateLevel";
+import { calculateDuration } from "../../lib/calculateDuration";
+import { Button } from "@nextui-org/react";
+import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
+import type { Module } from "../../type/content-blocks";
+import { IconChip } from "../../elements/IconChip";
+import { IconHeader } from "../../elements/IconHeader";
+import { AddToLibraryButton } from "../../elements/AddToLibraryButton";
+import { ShareButton } from "../../elements/ShareButton";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBooks, faPresentationScreen, faStar, faClock, faSeedling, faSignal4 } from '@fortawesome/pro-light-svg-icons';
+import MainLayout from "../../layouts/authenticated.astro";
+import SyllabusUnitWrapper from '../../components/syllabus/syllabus-unit-wrapper';
+import styles from './_module.module.scss';
+
+export async function getStaticPaths() {
+  const modules = await contentfulClient.getEntries<Module>({
+    content_type: "module",
+  });
+
+  let modulesToPublish = [];
+
+  modules.items.forEach((module) => {
+    modulesToPublish.push({
+      params: { module: module.sys.id },
+      props: module
+    });
+  });
+
+  return modulesToPublish;
+}
+
+const {
+  module_title,
+  module_description,
+  module_units = [],
+  module_level = [],
+  Module_essential_questions = [],
+  module_image,
+} = Astro.props.fields;
+
+const id = Astro.props.sys.id;
+
+// Helper function to get the URL - need to globalize
+const getImageUrl = (image) => {
+  if (image && image.fields && image.fields.file && image.fields.file.url) {
+    const url = image.fields.file.url;
+    return url.startsWith('//') ? `https:${url}` : url;
+  }
+  return 'https://placehold.co/425x265';
+};
+
+// Get the URL
+const moduleImageUrl = getImageUrl(module_image);
+
+let level = '';
+
+if (module_level.length > 0) {
+  level = calculateLevel(module_level);
+}
+
+let lessons = [];
+let lessonTime = [];
+let outcomes = [];
+let evidences = [];
+let repertoires = [];
+
+if (module_units.length > 0) {
+  await Promise.all(module_units.map(async (unit) => {
+    if (unit.fields && unit.fields.unit_lessons && Array.isArray(unit.fields.unit_lessons)) {
+      const unitLessons = await Promise.all(unit.fields.unit_lessons.map(async (lessonLink) => {
+        try {
+          const lessonEntry = await contentfulClient.getEntry(lessonLink.sys.id);
+          lessons.push(lessonEntry);
+          return lessonEntry;
+        } catch (error) {
+          console.error(`Error fetching lesson with ID ${lessonLink.sys.id}:`, error);
+          return null;
+        }
+      }));
+
+      unit.fields.unit_lessons = unitLessons.filter(Boolean); // Replace links with full lesson data and remove any null values
+
+      // Collect additional data
+      unitLessons.forEach((lessonEntry) => {
+        if (lessonEntry && lessonEntry.fields.lesson_duration) {
+          lessonTime.push(...lessonEntry.fields.lesson_duration);
+        }
+
+        if (lessonEntry?.fields?.lesson_outcome?.content) {
+          lessonEntry.fields.lesson_outcome.content.forEach((outcome) => {
+            outcome.content.forEach((item) => {
+              if (item.content && item.content.length > 0) {
+                outcomes.push(item.content[0].content[0].value);
+              }
+            });
+          });
+        }
+
+        if (lessonEntry?.fields?.lesson_evidence?.content) {
+          lessonEntry.fields.lesson_evidence.content.forEach((evidence) => {
+            evidence.content.forEach((item) => {
+              if (item.content && item.content.length > 0) {
+                evidences.push(item.content[0].content[0].value);
+              }
+            });
+          });
+        }
+
+        if (lessonEntry?.fields?.lesson_repertoire?.content) {
+          lessonEntry.fields.lesson_repertoire.content.forEach((repertoire) => {
+            repertoire.content.forEach((item) => {
+              if (item.content && item.content.length > 0) {
+                repertoires.push(item.content[0].content[0].value);
+              }
+            });
+          });
+        }
+      });
+    }
+
+    if (unit.fields && unit.fields.unit_concept && Array.isArray(unit.fields.unit_concept)) {
+      const unitConcepts = await Promise.all(unit.fields.unit_concept.map(async (conceptLink) => {
+        try {
+          const conceptEntry = await contentfulClient.getEntry(conceptLink.sys.id);
+          return conceptEntry;
+        } catch (error) {
+          console.error(`Error fetching concept with ID ${conceptLink.sys.id}:`, error);
+          return null;
+        }
+      }));
+      unit.fields.unit_concept = unitConcepts.filter(Boolean); // Replace links with full concept data and remove any null values
+    }
+  }));
+}
+
+if (lessonTime && lessonTime.length > 0) {
+  lessonTime = calculateDuration(lessonTime);
+}
+
+// Simplify the units data to avoid cyclic references
+const simplifiedUnits = module_units.map(unit => ({
+  sys: unit.sys,
+  fields: {
+    unit_title: unit.fields?.unit_title,
+    unit_short_description: unit.fields?.unit_short_description,
+    unit_image: unit.fields?.unit_image,
+    unit_description: unit.fields?.unit_description,
+    unit_concept: unit.fields?.unit_concept,
+    unit_lessons: unit.fields?.unit_lessons?.map(lesson => ({
+      sys: lesson.sys,
+      fields: {
+        lesson_title: lesson.fields?.lesson_title,
+        lesson_image: lesson.fields?.lesson_image,
+        lesson_short_description: lesson.fields?.lesson_short_description,
+        lesson_audience: lesson.fields?.lesson_audience,
+        lesson_duration: lesson.fields?.lesson_duration,
+        lesson_concepts: lesson.fields?.lesson_concepts,
+      }
+    }))
+  }
+}));
+
+---
+
+<MainLayout title={module_title} cssClass="via-white to-slate-white">
+  <div class="grid grid-cols-12 gap-20">
+    <div class="col-span-7">
+      <div class="mb-4">
+        <IconChip icon={faBooks} label="Module" contentType="module" href="/modules" />
+      </div>
+      <h1 class="text-4xl font-bold mb-6">{module_title}</h1>
+      <div class="mb-5" set:html={documentToHtmlString(module_description)}></div>
+      <div class="flex gap-4 mb-6">
+        <div class="flex flex-row items-center font-bold"><FontAwesomeIcon className="w-5 mr-1" icon={faSignal4} />{ level }</div>
+        <div class="flex flex-row items-center font-bold"><FontAwesomeIcon className="w-5 mr-2" icon={faClock} /> { lessonTime }</div>
+      </div>
+
+      <div class={`flex flex-row gap-4 mb-16 items-center ${styles.moduleActions}`}>
+        <Button client:load color="primary" className="font-bold w-36" aria-label="Start Module">
+          <FontAwesomeIcon icon={faPresentationScreen} class="text-sm" />
+          Start Module
+        </Button>
+        <AddToLibraryButton type="module" href="" client:load />
+        <ShareButton type="module" href="" client:load />
+      </div>
+      
+      {outcomes && outcomes.length > 0 && (
+        <div class="mb-12">
+          <IconHeader headerId="learningOutcomes" icon={faSeedling} label="Learning Outcomes" />
+          <h4 class="text-lg font-bold pl-10">Upon completion of this module, students will be able to:</h4>
+          <ul class="list-disc list-outside ml-10 pl-4">
+            { outcomes.map((outcome) => (
+              <li class="mt-4">{ outcome }</li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {Module_essential_questions && Module_essential_questions.length > 0 && (
+        <div class="mb-12">
+          <IconHeader headerId="essentialQuestions" icon={faStar} label="Essential Questions" />
+          <ul class="list-disc list-outside ml-10 pl-4">
+            { Module_essential_questions.map((question, index) => (
+              <li class="mt-4" key={index}>{ question.fields?.question || "No question available" }</li>
+            ))}
+          </ul>
+        </div>
+      )}
+      
+      <div class="mb-12">
+        <IconHeader headerId="moduleSyllabus" label="Module Syllabus" />
+        <p class="mt-2 mb-16">
+          Below is a map of lessons within units, in the order of suggested presentation. You will
+          find a variety of introductory lessons that present a new concept for the first time, practice activities
+          that contain ear training, recognizing, and identifying a concept, and reinforcing activities that include
+          creating with, producing with or performing a concept.
+        </p>
+        <div class="grid grid-cols-1 gap-6">
+          <SyllabusUnitWrapper module_units={simplifiedUnits} client:load />
+        </div>
+      </div>
+
+    </div>
+    <div class="col-span-5">
+      <div class="self-start sticky top-24 col-span-4">
+        <div class="border rounded-lg bg-white">
+          <img src={moduleImageUrl} alt="" class="rounded-t-lg object-cover w-full">
+          <ul class="flex flex-col sticky top-40">
+            <li><a class="p-2 px-4 block font-bold text-sm hover:underline" href="#overview">Overview</a></li>
+            <li><a class="p-2 px-4 block font-bold text-sm hover:underline" href="#learningOutcomes">Learning Outcomes</a></li>
+            <li><a class="p-2 px-4 block font-bold text-sm hover:underline" href="#essentialQuestions">Essential Questions</a></li>
+            <li><a class="p-2 px-4 block font-bold text-sm hover:underline" href="#unitsCovered">Units Covered</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</MainLayout>
