@@ -23,10 +23,12 @@ const styles = StyleSheet.create({
   orderedList: {
     fontSize: '11pt',
     fontWeight: 300,
+    marginBottom: 10,
   },
   unorderedList: {
     fontSize: '11pt',
     fontWeight: 300,
+    marginBottom: 10,
   },
   listItem: {
     fontSize: '11pt',
@@ -50,15 +52,15 @@ export const Rendering = ({ content }) => {
                 switch (contentItem.nodeType) {
                 case 'paragraph':
                     return (
-                    <Text key={contentIndex} style={styles.paragraph}>
-                        {contentItem.content.map((textItem, textIndex) => textItem.value).join('')}
-                    </Text>
+                        <Text key={contentIndex} style={styles.paragraph}>
+                            {contentItem.content.map((textItem, textIndex) => textItem.value).join('')}
+                        </Text>
                     );
                 case 'heading-3':
                     return (
-                    <Text key={contentIndex} style={styles.heading3}>
-                        {contentItem.content.map((textItem, textIndex) => textItem.value).join('')}
-                    </Text>
+                        <Text key={contentIndex} style={styles.heading3}>
+                            {contentItem.content.map((textItem, textIndex) => textItem.value).join('')}
+                        </Text>
                     );
                 case 'heading-4':
                     return (

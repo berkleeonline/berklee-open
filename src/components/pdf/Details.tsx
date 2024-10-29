@@ -68,7 +68,7 @@ export const Details = ({
           </View>
         </View>
       )}
-      {lesson_repertoire.content && (
+      {lesson_repertoire?.content && (
         <View style={{flexDirection: 'row', marginBottom: 20}}>
           <View style={{width: 20, marginRight: 10}}>
             <FontAwesomeIcon faIcon={faMusic} />
