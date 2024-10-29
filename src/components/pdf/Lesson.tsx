@@ -4,6 +4,8 @@ import { contentfulClient } from "../../lib/contentful";
 import { FontAwesomeIcon } from './FontAwesomeIcon';
 import { faSignalBarsStrong, faClock } from '@fortawesome/pro-light-svg-icons';
 import { IconText } from './IconText';
+import { Details } from './Details';
+import { Rendering } from './Rendering'; 
 
 Font.register({ family: 'Nunito Sans', fonts: [{
     src: 'src/components/pdf/fonts/nunito-sans/NunitoSans_10pt-Regular.ttf'
@@ -48,7 +50,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   headerSectionText: {
-    fontSize: '16pt',
+    fontSize: '10pt',
     fontWeight: 'normal'
   },
   contentContainer: {
@@ -98,6 +100,28 @@ interface LessonPDFProps {
 export const Lesson: React.FC<LessonPDFProps> = ({ fields, sections }) => {
   const instructions = sections[0].fields.instructions;
 
+  const {
+    lesson_title,
+    lesson_summary,
+    lesson_audience,
+    lesson_step,
+    lesson_outline,
+    lesson_materials,
+    lesson_essential_questions,
+    lesson_repertoire,
+    lesson_prep,
+    lesson_sticking_points,
+    lesson_evidence,
+    lesson_duration,
+    lesson_concepts,
+    lesson_outcome,
+    lesson_prerequisites,
+    lesson_sections,
+    lesson_image_carousel,
+    lesson_post_materials,
+    lesson_pdf,
+  } = fields;
+
   return (
     <Document>
       <Page size="LETTER" style={styles.page} wrap>
@@ -135,7 +159,7 @@ export const Lesson: React.FC<LessonPDFProps> = ({ fields, sections }) => {
           </View>
         </View>
         <View style={{flexGrow: 1}}>
-          <View style={{display: 'flex', flexDirection: 'row', gap: 10, marginBottom: 5}}>
+          <View style={{display: 'flex', flexDirection: 'row', gap: 10, marginBottom: 15}}>
             <View style={{width: '65%'}}>
               <Text style={{fontSize: 28, lineHeight: 1.14, marginBottom: 10, fontWeight: 700}}>{fields.lesson_title}</Text>
               <View style={{display: 'flex', flexDirection: 'row', gap: 10, marginBottom: 10}}>  
@@ -150,6 +174,19 @@ export const Lesson: React.FC<LessonPDFProps> = ({ fields, sections }) => {
                 ))}
               </View>
             </View>
+          </View>
+          <View>
+            <Details 
+                lesson_outcome={lesson_outcome}
+                lesson_outline={lesson_outline}
+                lesson_essential_questions={lesson_essential_questions}
+                lesson_repertoire={lesson_repertoire}
+                lesson_prep={lesson_prep}
+                lesson_materials={lesson_materials}
+                lesson_sticking_points={lesson_sticking_points}
+                lesson_evidence={lesson_evidence}
+                lesson_prerequisites={lesson_prerequisites}
+              />
           </View>
         </View>
       </Page>
@@ -190,17 +227,19 @@ export const Lesson: React.FC<LessonPDFProps> = ({ fields, sections }) => {
         <View style={{flexGrow: 1}}>
           {/* Start Lesson section */}
           <View>
-            <View>
-              <Text style={{fontWeight: 900, fontSize: '19pt', marginBottom: 10}}>Running the Lesson {instructions.length}</Text>
-            </View>
+            <View fixed>
+              <View>
+                <Text style={{fontWeight: 900, fontSize: '19pt', marginBottom: 10}}>Running the Lesson</Text>
+              </View>
 
-            <View style={{backgroundColor: '#eff1f3', borderRadius: '100%', flexDirection: 'row', marginBottom: 15}}>
-                <View style={{width: '70%'}}>
-                  <Text style={{fontSize: '11pt', fontWeight: 900, padding: 10, paddingLeft: 15, borderRight: '1', borderColor: '#fff'}}>Lesson Breakdown</Text>
-                </View>
-                <View style={{width: '25%'}}>
-                  <Text style={{fontSize: '11pt', fontWeight: 900, padding: 10, paddingLeft: 15}}>Notes</Text>
-                </View>
+              <View style={{backgroundColor: '#eff1f3', borderRadius: '100%', flexDirection: 'row', marginBottom: 15}}>
+                  <View style={{width: '70%'}}>
+                    <Text style={{fontSize: '11pt', fontWeight: 900, padding: 10, paddingLeft: 15, borderRight: '1', borderColor: '#fff'}}>Lesson Breakdown</Text>
+                  </View>
+                  <View style={{width: '25%'}}>
+                    <Text style={{fontSize: '11pt', fontWeight: 900, padding: 10, paddingLeft: 15}}>Notes</Text>
+                  </View>
+              </View>
             </View>
 
             <View style={styles.sectionContainer}>
@@ -211,70 +250,9 @@ export const Lesson: React.FC<LessonPDFProps> = ({ fields, sections }) => {
                       <Text style={{fontWeight: 700, marginBottom: 15}}>{instruction.fields.instruction_title}</Text>
                     </View>
                     <View>
-                      {instruction?.fields?.instruction_content?.content?.map((contentItem, contentIndex) => {
-                        switch (contentItem.nodeType) {
-                          case 'paragraph':
-                            return (
-                              <Text key={contentIndex} style={styles.paragraph}>
-                                {contentItem.content.map((textItem, textIndex) => textItem.value).join('')}
-                              </Text>
-                            );
-                          case 'heading-3':
-                            return (
-                              <Text key={contentIndex} style={styles.heading3}>
-                                {contentItem.content.map((textItem, textIndex) => textItem.value).join('')}
-                              </Text>
-                            );
-                          case 'heading-4':
-                            return (
-                              <Text key={contentIndex} style={styles.heading4}>
-                                {contentItem.content.map((textItem, textIndex) => textItem.value).join('')}
-                              </Text>
-                            );
-                          case 'ordered-list':
-                            return (
-                              <View key={contentIndex} style={styles.orderedList}>
-                                {contentItem.content.map((listItem, listIndex) => (
-                                  <View style={{flexDirection: 'row'}}>
-                                    <View style={{width: 15}}>
-                                      <Text key={listIndex} style={styles.listItem}>
-                                        {`${listIndex + 1}.`}
-                                      </Text>
-                                    </View>
-                                    <View>
-                                      <Text key={listIndex} style={styles.listItem}>
-                                        {`${listItem.content[0].content[0].value}`}
-                                      </Text>
-                                    </View>
-                                  </View>
-                                ))}
-                              </View>
-                            );
-                          case 'unordered-list':
-                            return (
-                              <View key={contentIndex} style={styles.unorderedList}>
-                                {contentItem.content.map((listItem, listIndex) => (
-                                  <View style={{flexDirection: 'row'}}>
-                                    <View style={{width: 15}}>
-                                      <Text key={listIndex} style={{textAlign: 'center'}}>
-                                        &middot;
-                                      </Text>
-                                    </View>
-                                    <View>
-                                      <Text key={listIndex} style={styles.listItem}>
-                                        {`${listItem.content[0].content[0].value}`}
-                                      </Text>
-                                    </View>
-                                  </View>
-                                ))}
-                              </View>
-                            );
-                          case 'hr':
-                            return <View key={contentIndex} style={styles.hr} />;
-                          default:
-                            return null;
-                        }
-                      })}
+                      {instruction?.fields?.instruction_content?.content && (
+                        <Rendering content={instruction.fields.instruction_content.content} />
+                      )}
                     </View>
                   </View>
                 );
