@@ -1,0 +1,79 @@
+---
+import { generate } from './generate';
+import { contentfulClient } from "../../lib/contentful";
+
+// API function to fetch entry by ID
+const fetchEntryById = async (id) => {
+  const entry = await contentfulClient.getEntry(id);
+  return entry;
+};
+
+// Fetch and resolve lesson sections and instructions
+const fetchAndResolveSections = async (sections) => {
+  const resolvedSections = await Promise.all(
+    sections.map(async (section) => {
+      let interactiveContent = [];
+      let instructions = [];
+
+      if (section.fields?.interactiveContent?.sys?.id) {
+        const interactiveContentEntry = await fetchEntryById(section.fields.interactiveContent.sys.id);
+        interactiveContent = interactiveContentEntry.fields?.slides || [];
+
+        // Fetch instructions if available
+        instructions = interactiveContentEntry.fields?.instructions || [];
+      }
+
+      return {
+        ...section,
+        fields: {
+          ...section.fields,
+          interactiveContent,
+          instructions, // Include instructions in the resolved section
+        },
+      };
+    })
+  );
+  return resolvedSections;
+};
+
+// Fetch the lesson data
+const fetchLessonData = async (lessonId) => {
+  const lessonEntry = await contentfulClient.getEntry(lessonId);
+  const lessonFields = lessonEntry.fields;
+
+  const resolvedSections = await fetchAndResolveSections(lessonFields.lesson_sections || []);
+  return {
+    fields: lessonFields,
+    sections: resolvedSections,
+  };
+};
+
+// Define getStaticPaths for dynamic routes
+export async function getStaticPaths() {
+  const pdfs = await contentfulClient.getEntries({
+    content_type: "lesson",
+  });
+
+  return pdfs.items.map((pdf) => ({
+    params: { pdf: pdf.sys.id },
+  }));
+}
+
+// Get the lesson ID from the URL params
+const { pdf: lessonId } = Astro.params;
+
+// Fetch the lesson data
+const pdfProps = await fetchLessonData(lessonId);
+
+// Generate the PDF with props
+await generate(pdfProps);
+---
+
+<html>
+  <head>
+    <title>PDF Generation</title>
+  </head>
+  <body>
+    <iframe src={`/public/${pdfProps.fields.Lesson_id}.pdf`} style="height: 100vh; width: 100vw;" />
+  </body>
+</html>
