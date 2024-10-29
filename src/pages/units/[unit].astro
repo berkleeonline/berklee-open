@@ -30,7 +30,8 @@ const {
   unit_activities
 } = Astro.props.fields;
 
-console.log(unit_activities);
+console.log(Astro.props.fields); // Log the entire fields object
+console.log(unit_activities); // Log unit_activities to check its value
 ---
 
 <MainLayout title={unit_title}>
@@ -38,10 +39,9 @@ console.log(unit_activities);
     <div class="w-2/3">
       <h1 class="text-5xl font-bold mb-4">{unit_title}</h1>
       <div set:html={documentToHtmlString(unit_description)}></div>
-      <div class="mb-4">{unit_activities.length} Acitivties</div>
+      <div class="mb-4">
+        {unit_activities ? `${unit_activities.length} Activities` : 'No activities available'}
+      </div>
     </div>
   </div>
 </MainLayout>
-
-
-
