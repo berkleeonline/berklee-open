@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet } from '@react-pdf/renderer';
-import { Logo } from './logo'
+import { View, Text, StyleSheet } from '@react-pdf/renderer';
+import { Logo } from './Logo'
 
 interface HeaderProps {
   lessonTitle: string;
