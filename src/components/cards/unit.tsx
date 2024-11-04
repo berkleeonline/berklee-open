@@ -9,10 +9,7 @@ type UnitCardProps = {
 };
 
 const UnitCard: React.FC<UnitCardProps> = ({ unit }) => {
-	console.log("==================");
-	
 	const {unit_title} = unit.fields;
-	
     return (
 		<a href={`/units/${unit.sys.id}`} className="border border-gray-300 flex flex-col">
 			<div className="border-t border-gray-300 p-4">
