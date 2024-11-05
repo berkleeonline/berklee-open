@@ -1,5 +1,6 @@
 ---
 import { Authenticator } from '@aws-amplify/ui-react';
+import { Link } from "@nextui-org/react";
 import MainLayout from "../../layouts/main.astro";
 import '@aws-amplify/ui-react/styles.css';
 
@@ -9,7 +10,11 @@ import '@aws-amplify/ui-react/styles.css';
   <div class="flex gap-20">
     <div class="w-full">
       <h1 class="text-4xl font-bold mb-8">Account</h1>
-      <Authenticator client:load />
+      <Authenticator client:load>
+        <Link href="/account/password">
+          Change your password
+        </Link>
+      </Authenticator>
     </div>
   </div>
 </MainLayout>

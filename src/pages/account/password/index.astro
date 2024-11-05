@@ -1,0 +1,25 @@
+---
+import { AccountSettings, Authenticator } from '@aws-amplify/ui-react';
+import { Link } from "@nextui-org/react";
+import MainLayout from "../../../layouts/main.astro";
+import '@aws-amplify/ui-react/styles.css';
+
+const handleSuccess = () => {
+  alert('Password changed successfully');
+};
+
+---
+
+<MainLayout title={`Berklee Open: Change Password`}>
+  <div class="flex gap-20">
+    <div class="w-full">
+      <Link href="/account">
+        &lt; Back to Account
+      </Link>
+      <h1 class="text-4xl font-bold mb-8">Change Password</h1>
+      <Authenticator client:load>
+        <AccountSettings.ChangePassword onSuccess={handleSuccess} client:load />
+      </Authenticator>
+    </div>
+  </div>
+</MainLayout>
