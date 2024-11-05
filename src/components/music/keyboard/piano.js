@@ -594,9 +594,9 @@ Piano.prototype.getKeyFromNoteID = function getKeyFromNoteString(noteID) {
 Piano.prototype.destroy = function () {
   var pianoContainer = document.getElementById(this.id);
 
-  // Remove event listeners
-  document.removeEventListener('keydown', this.keyDown);
-  document.removeEventListener('keyup', this.keyUp);
+  // Remove event listeners when the piano is destroyed
+  window.document.removeEventListener('keydown', this.keyDown);
+  window.document.removeEventListener('keyup', this.keyUp);
 
   // Remove the 'open' class from the outer container
   var outerContainer = document.querySelector('.piano-outer-container');
@@ -616,6 +616,10 @@ Piano.prototype.show = function () {
   if (outerContainer) {
     outerContainer.classList.add('open');
   }
+
+  // Attach the keydown and keyup event listeners when showing the piano
+  window.document.addEventListener('keydown', this.keyDown);
+  window.document.addEventListener('keyup', this.keyUp);
 
   document.piano = true;
 };
