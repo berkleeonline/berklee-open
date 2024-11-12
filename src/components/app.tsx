@@ -2,7 +2,7 @@
 import { Amplify } from 'aws-amplify';
 import { Authenticator, useAuthenticator } from '@aws-amplify/ui-react';
 
-import awsconfig from '../aws-exports';
+import awsconfig from '../amplifyconfiguration.json';
 Amplify.configure(awsconfig);
 
 const AppContext = (props: any) => {
