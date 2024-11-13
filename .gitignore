@@ -43,3 +43,4 @@ amplifytools.xcconfig
 **.sample
 public/*.pdf
 #amplify-do-not-edit-end
+.amplify-hosting
