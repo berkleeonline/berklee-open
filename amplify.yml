@@ -7,6 +7,7 @@ frontend:
     build:
       commands:
         - 'npm run build'
+        - 'du -hms *'
         - 'mv node_modules ./.amplify-hosting/compute/default'
   artifacts:
     baseDirectory: .amplify-hosting
@@ -15,4 +16,4 @@ frontend:
   cache:
     paths:
       - '.npm/**/*'
-            
+
