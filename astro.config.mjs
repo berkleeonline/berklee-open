@@ -6,7 +6,8 @@ import sass from 'sass';
 // https://astro.build/config
 export default defineConfig({
   integrations: [
-    tailwind(), react()
+    tailwind(), 
+    react(),
   ],
   css: {
     preprocessorOptions: {
@@ -14,5 +15,5 @@ export default defineConfig({
         implementation: sass,
       },
     },
-  },
+  }
 });

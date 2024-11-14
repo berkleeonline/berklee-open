@@ -50,7 +50,6 @@ const {
 } = Astro.props.fields;
 
 const id = Astro.props.sys.id;
-console.log(id);
 // Get the first lesson's ID if available
 const firstLessonId = unit_lessons && unit_lessons.length > 0 ? unit_lessons[0].sys.id : null;
 
