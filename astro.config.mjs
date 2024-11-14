@@ -2,7 +2,6 @@ import { defineConfig } from 'astro/config';
 import tailwind from "@astrojs/tailwind";
 import react from "@astrojs/react";
 import sass from 'sass';
-import awsAmplify from 'astro-aws-amplify';
 
 // https://astro.build/config
 export default defineConfig({
@@ -16,7 +15,5 @@ export default defineConfig({
         implementation: sass,
       },
     },
-  },
-  adapter: awsAmplify(),
-  output: 'hybrid',
+  }
 });

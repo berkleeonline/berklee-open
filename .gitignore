@@ -41,6 +41,6 @@ amplify-gradle-config.json
 amplifytools.xcconfig
 .secret-*
 **.sample
-public/*.pdf
+public/**/*.pdf
 #amplify-do-not-edit-end
 .amplify-hosting
