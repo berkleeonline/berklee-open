@@ -18,5 +18,5 @@ export default defineConfig({
     },
   },
   adapter: awsAmplify(),
-  output: 'server',
+  output: 'hybrid',
 });
