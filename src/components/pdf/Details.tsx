@@ -90,7 +90,7 @@ export const Details = ({
             {lesson_materials.length > 0 && (
               <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 20 }}>
                 {lesson_materials.map((material, index) => (
-                  <View key={index} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 5, alignItems: 'center' }}>
+                  <View key={index} style={{ flexDirection: 'row', marginBottom: 5, alignItems: 'center' }}>
                     <View style={{width: 12, marginRight: 10}}>
                       <FontAwesomeIcon faIcon={materialIcons[material] || faQuestionCircle} />
                     </View>
