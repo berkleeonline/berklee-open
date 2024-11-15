@@ -28,6 +28,16 @@ const styles = StyleSheet.create({
   }
 });
 
+// Materials get an icon assigned manually. Add as needed here.
+const materialIcons = {
+  Handouts: faFile,
+  Keyboard: faPianoKeyboard,
+  'Audio / Video': faPhotoFilmMusic,
+  'Unpitched Instrument': faDrum,
+  'Audio Examples' : faMusic,
+  Metronome: faTriangleInstrument,
+};
+
 export const Details = ({
   lesson_outcome,
   lesson_sticking_points,
@@ -55,7 +65,7 @@ export const Details = ({
         </View>
       )}
       {lesson_outcome.content && (
-        <View style={{flexDirection: 'row', marginBottom: 20}}>
+        <View style={{flexDirection: 'row'}}>
           <View style={{width: 20, marginRight: 10}}>
             <FontAwesomeIcon faIcon={faSeedling} />
           </View>
@@ -65,6 +75,35 @@ export const Details = ({
               <Text style={{fontSize: 11, fontWeight: 700}}>Upon completion of this lesson, students will be able to:</Text>
             </View>
             <Rendering content={lesson_outcome.content} />
+          </View>
+        </View>
+      )}
+      {(lesson_prep || lesson_materials.length > 0) && (
+        <View style={{flexDirection: 'row', marginBottom: 20}}>
+          <View style={{width: 20, marginRight: 10}}>
+            <FontAwesomeIcon faIcon={faChalkboard} />
+          </View>
+          <View style={{flexGrow: 1}}>
+            <View style={{marginBottom: 5}}>
+              <Text style={styles.h3}>Materials</Text>
+            </View>
+            {lesson_materials.length > 0 && (
+              <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 20 }}>
+                {lesson_materials.map((material, index) => (
+                  <View key={index} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 5, alignItems: 'center' }}>\
+                    <View style={{width: 12, marginRight: 10}}>
+                      <FontAwesomeIcon faIcon={materialIcons[material] || faQuestionCircle} />
+                    </View>
+                    <Text style={{fontSize: 12}}>{material}</Text>
+                  </View>
+                ))}
+              </View>
+            )}
+            {lesson_prep && lesson_prep.content.length > 0 && (
+              <View style={{ marginBottom: 15 }}>
+                <Rendering content={lesson_prep.content} />
+              </View>
+            )}
           </View>
         </View>
       )}

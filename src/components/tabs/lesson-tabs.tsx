@@ -54,10 +54,6 @@ export const LessonTabs = ({
   lesson_repertoire,
   lesson_sections,
 }) => {
-  
-
-  console.log("Lesson Sectionddds:", lesson_sections);
-
   const renderSlideReferences = (slideRefs) => {
     if (!slideRefs || !Array.isArray(slideRefs) || slideRefs.length === 0) {
       return null;
