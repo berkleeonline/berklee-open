@@ -16,7 +16,7 @@ const AccountHeader = () => {
 
   const AnonHeader = () => (
     <>  
-      <NavbarItem className="border-l pl-3">
+      <NavbarItem className="border-l pl-4">
         <Link color="foreground" href="/account#sign-up" className="font-bold">
           <span>Sign up</span>
         </Link>
