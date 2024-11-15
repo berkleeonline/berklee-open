@@ -2,49 +2,48 @@
 import { Authenticator } from '@aws-amplify/ui-react';
 import { Link } from "@nextui-org/react";
 import MainLayout from "../../layouts/main.astro";
+import AccountCustomized from "../../components/account/account-customized";
 import '@aws-amplify/ui-react/styles.css';
+import Logo from "../../components/logo";
 
 ---
 
-<MainLayout title={`Berklee Open: Account`}>
+<MainLayout title={`Berklee Open: Account`} showHeader={false} cssClass="authentication">
   <div class="flex gap-20">
     <div class="w-full">
-      <h1 class="text-4xl font-bold mb-8">Account</h1>
-      <Authenticator client:load>
-        <Link href="/account/password">
-          Change your password
+      <div class="w-full mx-auto flex justify-center mb-16">
+        <Link color="foreground" href="/" className="scale-125">
+          <Logo />
         </Link>
-      </Authenticator>
+      </div>
+      <AccountCustomized client:load />
     </div>
   </div>
 </MainLayout>
 
 <script>
   ((win, doc) => {
+      const targetText =
+        win.location.hash === '#sign-in'
+        ? 'Sign in'
+        : win.location.hash === '#sign-up'
+        ? 'Sign up'
+        : null;
 
-    const buttonId =
-      win.location.hash === '#sign-in'
-      ? 'signIn-tab'
-      : win.location.hash === '#sign-up'
-      ? 'signUp-tab'
-      : null;
+      const initTab = () => {
+        if (targetText !== null) {
+          const links = Array.from(doc.querySelectorAll('a'));
+          const targetLink = links.find(link => link.textContent.trim() === targetText);
 
-    const initTab = () => {
-      if (buttonId !== null) {
-        const button = doc.getElementById(buttonId);
+          if (targetLink === null || targetLink === undefined) {
+            setTimeout(() => initTab(), 50);
+            return;
+          }
 
-        if (button === null) {
-          setTimeout(() => initTab(), 50);
-          return;
+          targetLink.click();
         }
+      };
 
-        if (button.ariaSelected === 'false') {
-          button.click();
-        }
-      }
-    };
-
-    initTab();
-
-  })(window, document);
+      initTab();
+    })(window, document);
 </script>

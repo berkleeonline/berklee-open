@@ -77,9 +77,7 @@ const Header = (props) => {
               Lessons
             </Link>
           </NavbarItem>
-          <NavbarItem>
-            <AccountHeader />
-          </NavbarItem>
+          <AccountHeader />
         </NavbarContent>
 
         <NavbarMenu>

@@ -6,10 +6,19 @@ import type { HeaderProps } from "../type/layout";
 import '../fontAwesome'; // Import the Font Awesome configuration
 import '../css/global.scss';
 
-import { Authenticator } from '@aws-amplify/ui-react';
+interface Props {
+  title: string;
+  cssClass?: string;
+  showHeader?: boolean; // New prop
+}
+
 let header: HeaderProps | undefined = undefined;
 
-const { title, cssClass } = Astro.props;
+const { 
+  title, 
+  cssClass, 
+  showHeader = true // Default to true
+} = Astro.props;
 
 ---
 <html lang="en">
@@ -21,7 +30,7 @@ const { title, cssClass } = Astro.props;
   </head>
   <body>
     <App client:load>
-      <Header text={title} client:load />
+      {showHeader && <Header text={title} cssClass={cssClass} client:load />}
       <main class="px-6 mx-auto pt-16 max-w-[1536px]" transition:animate="slide">
         <slot />
       </main>
