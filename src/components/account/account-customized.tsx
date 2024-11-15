@@ -9,13 +9,6 @@ const AccountCustomized = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    const listener = async (state) => {
-      if (state === "signedin") {
-        setIsLoading(true);
-        window.location.href = "/dashboard";
-      }
-    };
-
     // Check current auth state
     getCurrentUser()
       .then((user) => {
@@ -25,15 +18,18 @@ const AccountCustomized = () => {
       .catch(() => {
         // User is not signed in, stay on page
       });
-
-    // Subscribe to auth changes
+  
+    // Subscribe to auth changes with correct event names
     const subscription = Hub.listen('auth', ({ payload }) => {
       const { event } = payload;
-      if (event === 'signedIn') {
+      console.log('Auth event:', event); // Add this for debugging
+      
+      if (event === 'signedIn' || event === 'signIn') {
+        setIsLoading(true);
         window.location.href = "/dashboard";
       }
     });
-
+  
     return () => {
       subscription();
     };

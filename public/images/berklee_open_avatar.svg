@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 1080 1080">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #62a744;
+      }
+
+      .cls-2 {
+        stroke-width: 31px;
+      }
+
+      .cls-2, .cls-3 {
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      .cls-2, .cls-3, .cls-4 {
+        fill: none;
+        stroke: #231f20;
+      }
+
+      .cls-3 {
+        stroke-width: 16px;
+      }
+
+      .cls-4 {
+        stroke-miterlimit: 10;
+        stroke-width: 60px;
+      }
+    </style>
+  </defs>
+  <!-- Generator: Adobe Illustrator 28.7.2, SVG Export Plug-In . SVG Version: 1.2.0 Build 154)  -->
+  <g>
+    <g id="Layer_1">
+      <rect class="cls-1" width="1080" height="1080"/>
+      <g>
+        <polygon class="cls-2" points="175.7 355.1 855.6 276 880.5 748.1 218.7 811.4 175.7 355.1"/>
+        <line class="cls-3" x1="318.1" y1="802.4" x2="278.5" y2="343.6"/>
+        <line class="cls-3" x1="414" y1="790.7" x2="371.3" y2="329.9"/>
+        <line class="cls-3" x1="797.4" y1="757" x2="752.4" y2="289.2"/>
+        <line class="cls-3" x1="698.9" y1="768.4" x2="654" y2="303.1"/>
+        <line class="cls-3" x1="600.7" y1="777.5" x2="555.1" y2="314.1"/>
+        <line class="cls-3" x1="508.7" y1="783.8" x2="460" y2="323.1"/>
+        <line class="cls-4" x1="304" y1="642" x2="276.6" y2="349.6"/>
+        <line class="cls-4" x1="398.6" y1="636" x2="371.3" y2="343.6"/>
+        <line class="cls-4" x1="582.5" y1="615.5" x2="555.1" y2="323.1"/>
+        <line class="cls-4" x1="681.3" y1="602.5" x2="654" y2="310.1"/>
+        <line class="cls-4" x1="784.6" y1="589.5" x2="757.2" y2="297.1"/>
+      </g>
+    </g>
+  </g>
+</svg>

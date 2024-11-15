@@ -5,6 +5,7 @@ import Header from "../components/header";
 import type { HeaderProps } from "../type/layout";
 import '../fontAwesome'; // Import the Font Awesome configuration
 import '../css/global.scss';
+import AuthHandler from "../components/account/account-auth-handler";
 
 interface Props {
   title: string;
@@ -30,6 +31,7 @@ const {
   </head>
   <body>
     <App client:load>
+      <AuthHandler client:load />
       {showHeader && <Header text={title} cssClass={cssClass} client:load />}
       <main class="px-6 mx-auto pt-16 max-w-[1536px]" transition:animate="slide">
         <slot />
