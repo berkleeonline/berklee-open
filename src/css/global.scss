@@ -110,6 +110,60 @@ h2.search-term {
   }
 }
 
+/* Amplify Authentication Override Styles */
+
+div[data-amplify-router] {
+  border-color: transparent !important;
+  border-radius: 8px;
+}
+
+.amplify-button--primary {
+  background-color: #0E1416 !important;
+  color: #FFF !important;
+  border-radius: 8px !important;
+  padding-top: 1rem !important;
+  padding-bottom: 1rem !important;
+  margin-top: 1rem !important;
+
+  &:hover {
+    background-color: #777 !important;
+  }
+}
+
+.amplify-tabs .amplify-tabs__list {
+  display: none !important;
+}
+
+.amplify-tabs__item--active {
+  color: #ee243c !important;
+  border-color: #ee243c !important;
+}
+
+.amplify-heading--3 {
+  font-size: 1.5rem !important;
+  font-weight: 700 !important;
+  text-align: center !important;
+}
+
+.amplify-heading--4 {
+  text-align: center !important;
+}
+
+form[data-amplify-authenticator-forgotpassword] .amplify-heading--3 {
+  padding-bottom: 1.75rem !important;
+
+
+}
+.amplify-button--link.amplify-button--small {
+  color: #ee243c !important;
+  font-weight: 500 !important;
+  padding-top: 1rem;
+
+  &:hover {
+    background: none;;
+  }
+}
+
 /* Responsive adjustments */
 @media (min-width: 768px) {
   .ais-Hits-list {

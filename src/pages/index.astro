@@ -10,8 +10,6 @@ import MainLayout from '../layouts/main.astro';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight } from '@fortawesome/pro-light-svg-icons';
 
-
-
 const lessons = await contentfulClient.getEntries<Lesson>({
   content_type: "lesson",
   limit: 4,
