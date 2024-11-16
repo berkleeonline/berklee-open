@@ -1,4 +1,3 @@
-# Coming soon
+# Berklee Open
 
-
-
+Berklee is OPEN
