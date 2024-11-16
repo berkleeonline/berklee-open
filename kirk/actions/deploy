@@ -3,6 +3,10 @@
 
 # This overrides the default k8s deploy action.
 
+set -x
+set -e
+set -u
+
 while getopts b:c:e:ft opt; do
   case ${opt} in
     b)

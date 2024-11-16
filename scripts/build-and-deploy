@@ -41,6 +41,7 @@ function topic_to_prod_attempt() {
 
 set -x
 set -e
+set -u
 
 declare -gax VALID_ENVIRONMENTS=( dev production )
 
