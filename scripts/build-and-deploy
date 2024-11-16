@@ -1,8 +1,5 @@
 #!/bin/bash
 # shellcheck disable=SC1090,SC1091
-# This overrides the default k8s deploy stuff. It is mostly called
-# by the CI/CD pipeline but can be run from a manual job as well.
-# Not really possible to run this on the CLI unless you are on Hammer.
 
 function array_includes() {
   local needle="${1}"
@@ -56,11 +53,8 @@ declare -gx topic_to_prod=false
 
 # Any option such as -c that isn't processed is here just to satisfy CI/CD
 # stuff which passes some default arguments (like -c for cluster).
-while getopts a:b:c:e:ft opt; do
+while getopts b:c:e:ft opt; do
   case ${opt} in
-    a)
-      AMPLIFY_APP_ID="${OPTARG}"
-    ;;
     b)
       branch="${OPTARG}"
     ;;
@@ -79,7 +73,6 @@ while getopts a:b:c:e:ft opt; do
   esac
 done
 
-[ -z "${AMPLIFY_APP_ID}" ] && die "you must pass -a app_id to this script"
 [ -z "${branch}" ] && die "you must pass -b to this script"
 [ -z "${env}" ] && env='dev'
 [ "${branch}" == 'main' ] && env='production'
@@ -103,6 +96,7 @@ fi
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"
+nvm install v18.19.0
 nvm use v18.19.0
 npm install
 

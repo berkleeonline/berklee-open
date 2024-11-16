@@ -3,8 +3,14 @@
 
 # This overrides the default k8s deploy action.
 
+eval "$(getconfig -s berklee-open -e "${environment}")"
 root_dir="$(dirname "${0}")/../../"
 docker build \
+  --build-arg AMPLIFY_APP_ID="${AMPLIFY_APP_ID}" \
+  --build-arg CONTENTFUL_DELIVERY_TOKEN="${CONTENTFUL_DELIVERY_TOKEN}" \
+  --build-arg CONTENTFUL_PREVIEW_TOKEN="${CONTENTFUL_PREVIEW_TOKEN}" \
+  --build-arg CONTENTFUL_SPACE_ID="${CONTENTFUL_SPACE_ID}" \
+  --build-arg WEBHOOK="${WEBHOOK}" \
   --build-arg branch="${branch}" \
   --build-arg environment="${environment}" \
   -f "${root_dir}/scripts/Dockerfile" \
