@@ -1,0 +1,96 @@
+#!/bin/bash
+# shellcheck disable=SC1090,SC1091
+# This overrides the default k8s deploy stuff. It is mostly called
+# by the CI/CD pipeline but can be run from a manual job as well.
+# Not really possible to run this on the CLI unless you are on Hammer.
+
+function standard_deploy_attempt() {
+  [[ \
+    ( "${branch}" == "${env}" && "${branch}" == 'dev' ) \
+    || ( "${branch}" == 'main' && "${env}" == 'production' ) \
+  ]]
+}
+
+function topic_to_prod_attempt() {
+  [ "${env}" == 'production' ] && [ "${branch}" != 'main' ]
+}
+
+set -x
+set -e
+
+declare -gax VALID_ENVIRONMENTS=( dev production )
+
+# Source profile
+# shellcheck source=/etc/profile.d/Z99-functions.sh
+source_dir='/etc/profile.d/Z99-functions.sh'
+if ! source "${source_dir}"; then
+  printf \
+    "Failed to load shell functions from %s!\n" \
+    "${source_dir}" \
+  >&2
+
+  exit 42
+fi
+
+declare -gx branch=${GIT_BRANCH##*/}
+[ -z "${branch}" ] && branch='dev'
+
+declare -gx env=''
+declare -gx force=false
+declare -gx topic_to_prod=false
+
+# Any option such as -c that isn't processed is here just to satisfy CI/CD
+# stuff which passes some default arguments (like -c for cluster).
+while getopts a:b:c:e:ft opt; do
+  case ${opt} in
+    a)
+      AMPLIFY_APP_ID="${OPTARG}"
+    ;;
+    b)
+      branch="${OPTARG}"
+    ;;
+    f)
+      force=true
+    ;;
+    e)
+      env="${OPTARG}"
+    ;;
+    t)
+      topic_to_prod=true
+    ;;
+    *)
+      true
+    ;;
+  esac
+done
+
+[ -z "${AMPLIFY_APP_ID}" ] && die "you must pass -a app_id to this script"
+[ -z "${branch}" ] && die "you must pass -b to this script"
+[ -z "${env}" ] && env='dev'
+[ "${branch}" == 'main' ] && env='production'
+
+if topic_to_prod_attempt && [ "${topic_to_prod}" != 'true' ]; then
+  die 'you must pass -t if you want to deploy a topic branch to prod'
+fi
+
+# This is also kind of only for CI/CD, forces dev for anything invalid
+if ! array_includes "${env}" VALID_ENVIRONMENTS; then
+  perror "WARNING: forcing 'dev' environment as '${env}' is not a valid env"
+  env='dev'
+fi
+
+if ! standard_deploy_attempt && [ "${force}" != 'true' ]; then
+  perror "You must pass -f (force) to deploy what you're asking to deploy."
+  perror "Please understand the implications."
+
+  exit 0
+fi
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"
+nvm use v18.19.0
+npm install
+
+rm -rf amplify-backup
+amplify pull -y --appId "${AMPLIFY_APP_ID}" --envName "${env}"
+amplify publish -y --invalidateCloudFront
