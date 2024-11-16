@@ -9,7 +9,7 @@ declare -gx branch=dev
 
 # Any option such as -c that isn't processed is here just to satisfy CI/CD
 # stuff which passes some default arguments (like -c for cluster).
-while getopts b:c:e:ft opt; do
+while getopts ":" opt; do
   case ${opt} in
     b)
       branch="${OPTARG}"
@@ -20,10 +20,6 @@ while getopts b:c:e:ft opt; do
   esac
 done
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"
-nvm install v18.19.0
-nvm use v18.19.0
 npm install
 
 rm -rf amplify-backup

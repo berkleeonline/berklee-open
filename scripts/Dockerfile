@@ -1,4 +1,4 @@
-ARG alpine_version="3.19"
+ARG alpine_version="3.20"
 ARG branch="dev"
 
 ARG AMPLIFY_APP_ID="d2aaugixocxhg8"
