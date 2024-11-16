@@ -14,16 +14,29 @@
   .instructorNotesTitle {
     font-size: 1.7rem;
   }
+
+  h1 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-top: 1.5rem;
+  }
+
+  h2 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-top: 1.5rem;
+  }
   
   h3 {
-    font-size: 1.1rem;
+    font-size: 1rem;
     font-weight: 700;
     margin-top: 1.5rem;
   }
 
   h4 {
-    font-size: 1rem;
+    font-size: .95rem;
     font-weight: 700;
+    margin-top: 1.5rem;
   }
 
   blockquote:not(:last-child) {

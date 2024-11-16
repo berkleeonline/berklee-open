@@ -87,7 +87,11 @@ const {
   lesson_image_carousel,
   lesson_post_materials,
   lesson_pdf,
+  lesson_standards,
+  lesson_terms,
 } = Astro.props.fields;
+
+console.log("lesson_terms:", lesson_terms);
 
 
 // get the PDF URL from the lesson post materials
@@ -206,6 +210,8 @@ const resolvedLessonSections = await fetchAndResolveSections(lesson_sections || 
         lesson_sticking_points={serializeForClient(lesson_sticking_points)}
         lesson_evidence={serializeForClient(lesson_evidence)}
         lesson_prerequisites={serializeForClient(lesson_prerequisites)}
+        lesson_standards={serializeForClient(lesson_standards)}
+        lesson_terms={serializeForClient(lesson_terms)}
         lesson_sections={serializeForClient(resolvedLessonSections)}
         client:visible
       />

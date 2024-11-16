@@ -7,6 +7,8 @@ import { documentToHtmlString } from '@contentful/rich-text-html-renderer';
 import {
   faCompass,
   faStar,
+  faImages,
+  faGuitar,
   faFile,
   faPianoKeyboard,
   faPhotoFilmMusic,
@@ -32,8 +34,10 @@ import styles from '../../pages/lessons/_lesson.module.scss';
 const materialIcons = {
   Handouts: faFile,
   Keyboard: faPianoKeyboard,
+  Images: faImages,
   'Audio / Video': faPhotoFilmMusic,
   'Unpitched Instrument': faDrum,
+  'Pitched Instrument': faGuitar,
   'Audio Examples' : faMusic,
   Metronome: faTriangleInstrument,
   // Add more mappings as needed
@@ -53,6 +57,8 @@ export const LessonTabs = ({
   lesson_materials,
   lesson_repertoire,
   lesson_sections,
+  lesson_standards,
+  lesson_terms,
 }) => {
   const renderSlideReferences = (slideRefs) => {
     if (!slideRefs || !Array.isArray(slideRefs) || slideRefs.length === 0) {
@@ -95,10 +101,12 @@ export const LessonTabs = ({
           <div className="pt-10 tracking-normal font-normal">
               
               <div className="mb-8 pb-8 border-b">
-                <IconHeader headerId="lessonStandards" icon={faCircleStar} label="Standards and Competencies" />
-                <ul className="list-disc list-outside ml-10 pl-4">
-                  <li>Coming Soon</li>
-                </ul>
+                {lesson_standards && lesson_standards.content.length > 0 && (
+                  <>
+                  <IconHeader headerId="lessonStandards" icon={faCircleStar} label="Standards and Competencies" />
+                  <div className={` ${styles.richContentInnerStyles}`} dangerouslySetInnerHTML={{ __html: documentToHtmlString(lesson_standards) }}></div>
+                  </>
+                )}
                 {lesson_sel && lesson_sel.length > 0 && (
                   <div className={`mt-8 ${styles.richContentInnerStyles}`}>
                     <h3 className="font-bold text-lg mb-4">Social-emotional Learning</h3>
@@ -180,12 +188,19 @@ export const LessonTabs = ({
               </div>
             )}
 
-            <div className="mb-8 pb-8 border-b">
-              <IconHeader headerId="lessonDefinitions" icon={faNotebook} label="Definitions" />
-              <ul className="list-disc list-outside ml-10 pl-4">
-                <li>Coming soon.</li>
-              </ul>
-            </div>
+            {lesson_terms && lesson_terms.length > 0 && (
+              <div className="mb-8 pb-8 border-b">
+                <IconHeader headerId="lessonDefinitions" icon={faNotebook} label="Definitions" />
+                <ul className="list-disc list-outside ml-10 pl-4">
+                  {lesson_terms.map((term, index) => (
+                    <li key={index}>
+                      <strong>{term.fields.term_name}</strong>
+                      <span className={`${styles.richContentInnerStyles}`} dangerouslySetInnerHTML={{ __html: documentToHtmlString(term.fields.term_definition) }}></span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
 
             {lesson_outline && lesson_outline.content.length > 0 && (
               <div className="mb-8 pb-8 border-b">
