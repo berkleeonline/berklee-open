@@ -1,6 +1,5 @@
 ARG alpine_version="3.19"
 ARG branch="dev"
-ARG environment="dev"
 
 ARG AMPLIFY_APP_ID="d2aaugixocxhg8"
 ARG CONTENTFUL_DELIVERY_TOKEN
@@ -28,5 +27,4 @@ RUN bash -x -c " \
   export WEBHOOK="${WEBHOOK}"; \
   scripts/build-and-deploy \
     -b ${branch} \
-    -e ${env} \
 "

@@ -1,56 +1,11 @@
 #!/bin/bash
 # shellcheck disable=SC1090,SC1091
 
-function array_includes() {
-  local needle="${1}"
-  local array_name="${2}"
-  local -n array="${array_name}"
-
-  for item in "${array[@]}"; do
-    [ "${item}" == "${needle}" ] && return 0
-  done
-
-  return 1
-}
-
-function die() {
-  if [ -n "${2}" ]; then
-    exitcode="${2}"
-  else
-    exitcode="-1"
-  fi
-
-  perror "${1}"
-  exit "${exitcode}"
-}
-
-function perror() {
-  printf "%s\n" "$1" >&2
-}
-
-function standard_deploy_attempt() {
-  [[ \
-    ( "${branch}" == "${env}" && "${branch}" == 'dev' ) \
-    || ( "${branch}" == 'main' && "${env}" == 'production' ) \
-  ]]
-}
-
-function topic_to_prod_attempt() {
-  [ "${env}" == 'production' ] && [ "${branch}" != 'main' ]
-}
-
 set -x
 set -e
 set -u
 
-declare -gax VALID_ENVIRONMENTS=( dev production )
-
-declare -gx branch=${GIT_BRANCH##*/}
-[ -z "${branch}" ] && branch='dev'
-
-declare -gx env=''
-declare -gx force=false
-declare -gx topic_to_prod=false
+declare -gx branch=dev
 
 # Any option such as -c that isn't processed is here just to satisfy CI/CD
 # stuff which passes some default arguments (like -c for cluster).
@@ -59,41 +14,11 @@ while getopts b:c:e:ft opt; do
     b)
       branch="${OPTARG}"
     ;;
-    f)
-      force=true
-    ;;
-    e)
-      env="${OPTARG}"
-    ;;
-    t)
-      topic_to_prod=true
-    ;;
     *)
       true
     ;;
   esac
 done
-
-[ -z "${branch}" ] && die "you must pass -b to this script"
-[ -z "${env}" ] && env='dev'
-[ "${branch}" == 'main' ] && env='production'
-
-if topic_to_prod_attempt && [ "${topic_to_prod}" != 'true' ]; then
-  die 'you must pass -t if you want to deploy a topic branch to prod'
-fi
-
-# This is also kind of only for CI/CD, forces dev for anything invalid
-if ! array_includes "${env}" VALID_ENVIRONMENTS; then
-  perror "WARNING: forcing 'dev' environment as '${env}' is not a valid env"
-  env='dev'
-fi
-
-if ! standard_deploy_attempt && [ "${force}" != 'true' ]; then
-  perror "You must pass -f (force) to deploy what you're asking to deploy."
-  perror "Please understand the implications."
-
-  exit 0
-fi
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"
@@ -102,5 +27,5 @@ nvm use v18.19.0
 npm install
 
 rm -rf amplify-backup
-amplify pull -y --appId "${AMPLIFY_APP_ID}" --envName "${env}"
+amplify pull -y --appId "${AMPLIFY_APP_ID}" --envName "${branch}"
 amplify publish -y --invalidateCloudFront

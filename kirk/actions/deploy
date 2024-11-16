@@ -27,6 +27,5 @@ docker build \
   --build-arg CONTENTFUL_SPACE_ID="${CONTENTFUL_SPACE_ID}" \
   --build-arg WEBHOOK="${WEBHOOK}" \
   --build-arg branch="${branch}" \
-  --build-arg environment="${branch}" \
   -f "${root_dir}/scripts/Dockerfile" \
   "${root_dir}"
