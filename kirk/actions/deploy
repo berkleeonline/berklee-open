@@ -12,16 +12,13 @@ while getopts b:c:e:ft opt; do
     b)
       branch="${OPTARG}"
     ;;
-    e)
-      environment="${OPTARG}"
-    ;;
     *)
       true
     ;;
   esac
 done
 
-eval "$(getconfig -s berklee-open -e "${environment}")"
+eval "$(getconfig -s berklee-open -e "${branch}")"
 root_dir="$(dirname "${0}")/../../"
 docker build \
   --build-arg AMPLIFY_APP_ID="${AMPLIFY_APP_ID}" \
@@ -30,6 +27,6 @@ docker build \
   --build-arg CONTENTFUL_SPACE_ID="${CONTENTFUL_SPACE_ID}" \
   --build-arg WEBHOOK="${WEBHOOK}" \
   --build-arg branch="${branch}" \
-  --build-arg environment="${environment}" \
+  --build-arg environment="${branch}" \
   -f "${root_dir}/scripts/Dockerfile" \
   "${root_dir}"
