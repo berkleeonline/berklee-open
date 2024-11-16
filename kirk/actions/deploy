@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
+# shellcheck disable=SC2154
 
 # This overrides the default k8s deploy action.
 
 root_dir="$(dirname "${0}")/../../"
-docker build -f "${root_dir}/Dockerfile" "${root_dir}"
+docker build \
+  --build-arg branch="${branch}" \
+  --build-arg environment="${environment}" \
+  -f "${root_dir}/scripts/Dockerfile" \
+  "${root_dir}"
