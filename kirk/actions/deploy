@@ -3,6 +3,20 @@
 
 # This overrides the default k8s deploy action.
 
+while getopts b:c:e:ft opt; do
+  case ${opt} in
+    b)
+      branch="${OPTARG}"
+    ;;
+    e)
+      environment="${OPTARG}"
+    ;;
+    *)
+      true
+    ;;
+  esac
+done
+
 eval "$(getconfig -s berklee-open -e "${environment}")"
 root_dir="$(dirname "${0}")/../../"
 docker build \
