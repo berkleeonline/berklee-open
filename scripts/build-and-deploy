@@ -20,6 +20,10 @@ while getopts ":" opt; do
   esac
 done
 
+if [ "${branch}" != 'dev' ] && [ "${branch}" != 'production' ]; then
+  exit 0
+fi
+
 npm install
 
 rm -rf amplify-backup
