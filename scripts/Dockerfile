@@ -1,4 +1,6 @@
 ARG alpine_version="3.20"
+FROM node:lts-alpine${alpine_version}
+
 ARG branch="dev"
 
 ARG AMPLIFY_APP_ID="d2aaugixocxhg8"
@@ -6,9 +8,6 @@ ARG CONTENTFUL_DELIVERY_TOKEN
 ARG CONTENTFUL_SPACE_ID
 ARG CONTENTFUL_PREVIEW_TOKEN
 ARG WEBHOOK
-
-FROM node:lts-alpine${alpine_version}
-MAINTAINER Joe McDonagh <jmcdonagh@berklee.edu>
 
 RUN apk add --no-cache \
   bash \
