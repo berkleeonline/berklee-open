@@ -1,5 +1,4 @@
-ARG alpine_version="3.20"
-FROM node:lts-alpine${alpine_version}
+FROM node:lts-bookworm
 
 ARG branch="dev"
 
@@ -9,9 +8,10 @@ ARG CONTENTFUL_SPACE_ID
 ARG CONTENTFUL_PREVIEW_TOKEN
 ARG WEBHOOK
 
-RUN apk add --no-cache \
-  bash \
-  wget
+RUN apt-get update \
+  && DEBIAN_FRONTEND=noninteractive apt-get install -f -y --force-yes \
+    bash \
+    wget
 
 RUN npm install -g @aws-amplify/cli
 
