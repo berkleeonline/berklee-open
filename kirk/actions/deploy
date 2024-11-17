@@ -31,9 +31,7 @@ aws_cfg_get='aws configure get --profile berklee-open'
 
 AWS_ACCESS_KEY_ID=$(${aws_cfg_get} aws_access_key_id)
 AWS_SECRET_ACCESS_KEY=$(${aws_cfg_get} aws_secret_access_key)
-AWS_DEFAULT_REGION=$(${aws_cfg_get} region)
-
-[ -z "${AWS_DEFAULT_REGION}" ] && AWS_DEFAULT_REGION='us-east-1'
+AWS_DEFAULT_REGION=$(${aws_cfg_get} region || printf 'us-east-1')
 
 eval "$(getconfig -s berklee-open -e "${branch}")"
 root_dir="$(dirname "${0}")/../../"
