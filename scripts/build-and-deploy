@@ -27,5 +27,5 @@ fi
 npm install
 
 rm -rf amplify-backup
-amplify pull -y --appId "${AMPLIFY_APP_ID}" --envName "${branch}"
-amplify publish -y --invalidateCloudFront
+CI=1 amplify pull --restore -y --appId "${AMPLIFY_APP_ID}" --envName "${branch}"
+CI=1 amplify publish -y --invalidateCloudFront
