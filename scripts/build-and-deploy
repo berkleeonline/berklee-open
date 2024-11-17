@@ -28,6 +28,30 @@ npm install
 
 rm -rf amplify-backup
 
+IFS='|'
+
+AWSCLOUDFORMATIONCONFIG="{\
+\"configLevel\":\"project\",\
+\"useProfile\":false,\
+\"accessKeyId\":\"$AWS_ACCESS_KEY_ID\",\
+\"secretAccessKey\":\"$AWS_SECRET_ACCESS_KEY\",\
+\"region\":\"us-east-1\"\
+}"
+
+AMPLIFY="{\
+\"envName\":\"$branch\",\
+\"defaultEditor\":\"code\"\
+}"
+
+PROVIDERS="{\
+\"awscloudformation\":$AWSCLOUDFORMATIONCONFIG\
+}"
+
+CI=1 amplify init \
+--amplify $AMPLIFY \
+--providers $PROVIDERS \
+--yes
+
 CI=1 \
   amplify \
     pull \
