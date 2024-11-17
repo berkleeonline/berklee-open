@@ -24,6 +24,8 @@ fi
 
 eval "$(getconfig -s berklee-open -e "${branch}")"
 root_dir="$(dirname "${0}")/../../"
+pushd "${root_dir}"
+
 docker build \
   --build-arg AMPLIFY_APP_ID="${AMPLIFY_APP_ID}" \
   --build-arg CONTENTFUL_DELIVERY_TOKEN="${CONTENTFUL_DELIVERY_TOKEN}" \
@@ -31,5 +33,7 @@ docker build \
   --build-arg CONTENTFUL_SPACE_ID="${CONTENTFUL_SPACE_ID}" \
   --build-arg WEBHOOK="${WEBHOOK}" \
   --build-arg branch="${branch}" \
-  -f "${root_dir}/scripts/Dockerfile" \
-  "${root_dir}"
+  -f "./scripts/Dockerfile" \
+  .
+
+popd

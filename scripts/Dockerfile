@@ -8,10 +8,12 @@ ARG CONTENTFUL_SPACE_ID
 ARG CONTENTFUL_PREVIEW_TOKEN
 ARG WEBHOOK
 
-RUN apt-get update \
-  && DEBIAN_FRONTEND=noninteractive apt-get install -f -y --force-yes \
-    bash \
-    wget
+RUN \
+apt-get update \
+  && \
+DEBIAN_FRONTEND=noninteractive apt-get install -y \
+  bash \
+  wget
 
 RUN npm install -g @aws-amplify/cli
 
