@@ -6,7 +6,7 @@ import sass from 'sass';
 // https://astro.build/config
 export default defineConfig({
   integrations: [
-    tailwind(), 
+    tailwind(),
     react(),
   ],
   css: {
