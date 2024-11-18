@@ -19,6 +19,8 @@ DEBIAN_FRONTEND=noninteractive apt-get install -y \
   wget
 
 RUN npm install -g @aws-amplify/cli
+RUN amplify version
+RUN false
 
 COPY . /berklee-open
 WORKDIR /berklee-open

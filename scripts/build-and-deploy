@@ -7,10 +7,6 @@ set -u
 
 declare -gx branch=dev
 
-echo "SHOWING ENV"
-echo "SHOWING ENV SHOWING ENV SHOWING ENV"
-set | grep -i contentful
-echo "DONE DONE DONE"
 # Any option such as -c that isn't processed is here just to satisfy CI/CD
 # stuff which passes some default arguments (like -c for cluster).
 while getopts ":" opt; do
