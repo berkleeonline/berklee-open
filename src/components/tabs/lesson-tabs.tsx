@@ -192,12 +192,27 @@ export const LessonTabs = ({
               <div className="mb-8 pb-8 border-b">
                 <IconHeader headerId="lessonDefinitions" icon={faNotebook} label="Definitions" />
                 <ul className="list-disc list-outside ml-10 pl-4">
-                  {lesson_terms.map((term, index) => (
-                    <li key={index}>
-                      <strong>{term.fields.term_name}</strong>
-                      <span className={`${styles.richContentInnerStyles}`} dangerouslySetInnerHTML={{ __html: documentToHtmlString(term.fields.term_definition) }}></span>
-                    </li>
-                  ))}
+                  {lesson_terms.map((term, index) => {
+                    // Add safety check for term and term.fields
+                    if (!term || !term.fields) {
+                      console.warn(`Term at index ${index} is invalid:`, term);
+                      return null;
+                    }
+                    
+                    return (
+                      <li className="pt-3" key={index}>
+                        <strong>{term.fields.term_name}</strong>
+                        {term.fields.term_definition && (
+                          <span 
+                            className={`${styles.richContentInnerStyles}`} 
+                            dangerouslySetInnerHTML={{ 
+                              __html: documentToHtmlString(term.fields.term_definition) 
+                            }}
+                          />
+                        )}
+                      </li>
+                    );
+                  })}
                 </ul>
               </div>
             )}
