@@ -17,19 +17,19 @@ const AccountHeader = () => {
   const AnonHeader = () => (
     <>  
       <NavbarItem className="border-l pl-4">
-        <Link color="foreground" href="/account#sign-up" className="font-bold">
-          <span>Sign up</span>
+        <Link color="foreground" href="/account#sign-in" className="font-bold">
+          <span>Log in</span>
         </Link>
       </NavbarItem>
       <NavbarItem>
         <Button
-          href="/account#sign-in"
+          href="/account#sign-up"
           color="primary"
           as={Link}
           variant="solid"
           className='font-bold'
         >
-          Log in
+          Sign up
         </Button>
       </NavbarItem>
     </>
@@ -51,7 +51,7 @@ const AccountHeader = () => {
             <DropdownMenu aria-label="Profile Actions" variant="flat">
               <DropdownSection showDivider>
                 <DropdownItem key="profile">
-                  Signed in as <span className="capitalize bold">{user?.username}</span>
+                  Signed in as <span className="bold">{user?.username}</span>
                 </DropdownItem>
               </DropdownSection>
               <DropdownSection>
@@ -67,7 +67,6 @@ const AccountHeader = () => {
             </DropdownMenu>
           </Dropdown>
         </div>
-      
     </>
   );
 

@@ -29,10 +29,12 @@ const styles = StyleSheet.create({
     fontSize: '11pt',
     fontWeight: 300,
     marginBottom: 10,
+    listStyleType: 'disc'
   },
   listItem: {
     fontSize: '11pt',
     fontWeight: 300,
+    marginBottom: 4,
   },
   hr: {
     borderBottomWidth: 1,
@@ -94,7 +96,7 @@ export const Rendering = ({ content }) => {
                         <View style={{ flexDirection: 'row' }}>
                             <View style={{ width: 15 }}>
                             <Text key={listIndex} style={{ textAlign: 'center' }}>
-                                &middot;
+                                &bull;
                             </Text>
                             </View>
                             <View>

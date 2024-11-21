@@ -31,7 +31,7 @@ const ModuleCard: React.FC<ModuleCardProps> = ({
 
   return (
     <a href={`/modules/${id}`} className="no-underline h-full">
-      <Card className="h-full w-full relative pb-8" shadow="0" key={index} isPressable>
+      <Card className="h-full pb-8 w-full relative" shadow="0" key={index} isPressable>
         <CardBody className="overflow-visible p-0">
           <div className="absolute bottom-[-15px] left-0 z-20">
             <IconChip icon={faBooks} label="Module" contentType="module" href="" />

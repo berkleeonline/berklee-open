@@ -14,7 +14,7 @@ const units = await contentfulClient.getEntries<Unit>({
   <div class="flex gap-20">
     <div class="w-full">
       <h1 class="text-4xl font-bold mb-8">Units</h1>
-      <div class="grid grid-cols-3 gap-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3 gap-8">
         {units.items.map((unit) => (
           <UnitCard 
             key={unit.sys.id}

@@ -217,24 +217,10 @@ const resolvedLessonSections = await fetchAndResolveSections(lesson_sections || 
       />
   
     </div>
-    <div class="col-end-12 col-span-5 relative">
-      <SwiperCarousel lessonImages={lesson_image_carousel} client:load />
+    <div class="col-end-12 col-span-5 relative sticky top-24">
       <div class="self-start sticky top-24 col-span-4">
         <div class="border rounded-lg bg-white">
-          <ul class="flex flex-col sticky top-20">
-            <li><a class="p-2 px-4 block font-bold text-sm hover:underline" href="#overview">Overview</a></li>
-            <li><a class="p-2 px-4 block font-bold text-sm hover:underline" href="#lessonStandards">Standards and Competencies</a></li>
-            <li><a class="p-2 px-4 block font-bold text-sm hover:underline" href="#lessonPrerequisites">Prerequisites</a></li>
-            <li><a class="p-2 px-4 block font-bold text-sm hover:underline" href="#learningOutcomes">Learning Outcomes</a></li>
-            <li><a class="p-2 px-4 block font-bold text-sm hover:underline" href="#lessonDefinitions">Definitions</a></li>
-            <li><a class="p-2 px-4 block font-bold text-sm hover:underline" href="#lessonMaterials">Materials</a></li>
-            <li><a class="p-2 px-4 block font-bold text-sm hover:underline" href="#lessonEssentialQuestions">Essential Questions</a></li>
-            <li><a class="p-2 px-4 block font-bold text-sm hover:underline" href="#lessonRepertoire">Repertoire</a></li>
-            <li><a class="p-2 px-4 block font-bold text-sm hover:underline" href="#lessonEvidence">Evidence of Learning</a></li>
-            <li><a class="p-2 px-4 block font-bold text-sm hover:underline" href="#lessonSticking">Sticking Points</a></li>
-            <li><a class="p-2 px-4 block font-bold text-sm hover:underline" href="#lessonAccessible">Accessible Strategies</a></li>
-            <li><a class="p-2 px-4 block font-bold text-sm hover:underline" href="#lessonExtension">Extension Strategies</a></li>
-          </ul>
+          <SwiperCarousel lessonImages={lesson_image_carousel} client:load />
         </div>
       </div>
     </div>

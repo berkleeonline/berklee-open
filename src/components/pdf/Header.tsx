@@ -15,9 +15,13 @@ const styles = StyleSheet.create({
     borderBottomWidth: 4,
     borderBottomColor: '#000',
   },
-  headerSection: {
+  logoSection: {
     flexGrow: 1,
     width: '33.33%'
+  },
+  headerSection: {
+    flexGrow: 1,
+    width: '60%'
   },
   headerSectionRight: {
     alignItems: 'flex-end',
@@ -28,11 +32,11 @@ const styles = StyleSheet.create({
 export const Header: React.FC<HeaderProps> = ({ lessonTitle }) => {
   return (
     <View style={styles.header} fixed>
-      <View style={{...styles.headerSection}}>
+      <View style={{...styles.logoSection}}>
         <Logo />
       </View>
       <View style={{...styles.headerSection, ...styles.headerSectionRight}}>
-        <Text>{lessonTitle}</Text>
+        <Text style={{paddingTop: 2, fontSize: 14}}>{lessonTitle}</Text>
       </View>
     </View>
   );

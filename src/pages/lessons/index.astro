@@ -14,7 +14,7 @@ const lessons = await contentfulClient.getEntries<Lesson>({
   <div class="flex gap-20">
     <div class="w-full">
       <h1 class="text-4xl font-bold mb-8">Lessons</h1>
-      <div class="grid grid-cols-3 gap-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3 gap-8">
         {lessons.items.map((lesson, index) => (
           <LessonCard 
             key={lesson.sys.id}

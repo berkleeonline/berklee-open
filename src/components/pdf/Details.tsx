@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from './FontAwesomeIcon';
 import {
   faCompass,
   faStar,
-  faFile,
+  faFiles,
   faPianoKeyboard,
   faPhotoFilmMusic,
   faDrum,
@@ -14,6 +14,8 @@ import {
   faTrafficCone,
   faMusicMagnifyingGlass,
   faMusic,
+  faImages,
+  faGuitar,
   faSeedling,
   faChalkboard,
   faSquareCheck,
@@ -30,12 +32,15 @@ const styles = StyleSheet.create({
 
 // Materials get an icon assigned manually. Add as needed here.
 const materialIcons = {
-  Handouts: faFile,
+  Handouts: faFiles,
   Keyboard: faPianoKeyboard,
+  Images: faImages,
   'Audio / Video': faPhotoFilmMusic,
   'Unpitched Instrument': faDrum,
+  'Pitched Instrument': faGuitar,
   'Audio Examples' : faMusic,
   Metronome: faTriangleInstrument,
+  // Add more mappings as needed
 };
 
 export const Details = ({

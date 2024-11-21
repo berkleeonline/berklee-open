@@ -137,30 +137,6 @@ const unitImageUrl = getImageUrl(unit_image);
         </div>
       )}
 
-      <!-- {unit_concept && unit_concept.length > 0 && (
-        <div class="mb-16">
-          <IconHeader headerId="conceptsCovered" icon={} label="Concepts Covered" />
-          {unit_concept.map((concept, index) => {
-            if (concept.fields && concept.fields.concept_name) {
-              return (<Chip key={index} variant="flat" className="mb-3 mr-3">{concept.fields.concept_name}</Chip>);
-            }
-          })} 
-        </div>
-      )} -->
-
-      <!-- {unit_prerequisite && unit_prerequisite.content.length > 0 && (
-        <div class="mb-16">
-          <IconHeader headerId="learningPrerequisites" icon={faSquareCheck} label="Prerequisites" />
-          <ul class="list-disc list-outside ml-10 pl-4">
-            {unit_prerequisite.content.map((prerequisite, index) => (
-              prerequisite.nodeType === 'unordered-list' && prerequisite.content.map((item, idx) => (
-                <li class="pb-3" key={idx}>{item.content[0].content[0].value}</li>
-              ))
-            ))}
-          </ul>
-        </div>
-      )} -->
-
       <div class="mt-16 mb-16">
         <h2 id="syllabus" class="text-xl font-bold mb-2">
           Unit Syllabus
@@ -186,12 +162,6 @@ const unitImageUrl = getImageUrl(unit_image);
       <div class="self-start sticky top-24">
         <div class="border rounded-lg bg-white">
           <img src={unitImageUrl} alt="" class="rounded-t-lg w-full">
-          <ul class="flex flex-col sticky top-20">
-            <li><a class="p-2 px-4 block font-bold text-sm hover:underline" href="#overview">Overview</a></li>
-            <li><a class="p-2 px-4 block font-bold text-sm hover:underline" href="#learningOutcomes">Learning Outcomes</a></li>
-            <li><a class="p-2 px-4 block font-bold text-sm hover:underline" href="#essentialQuestions">Essential Questions</a></li>
-            <li><a class="p-2 px-4 block font-bold text-sm hover:underline" href="#conceptsCovered">Unit Syllabus</a></li>
-          </ul>
         </div>
       </div>
     </div>

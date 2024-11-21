@@ -4,7 +4,7 @@ import { Svg, G, Path } from '@react-pdf/renderer';
 export const Logo: React.FC = () => {
     const viewBoxWidth = 195.323;
     const viewBoxHeight = 37.841;
-    const height = 40;
+    const height = 30;
     const width = (viewBoxWidth / viewBoxHeight) * height;
 
     return (

@@ -20,7 +20,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     margin: 0,
     padding: 36,
-    fontFamily: 'Nunito Sans'
+    fontFamily: 'Nunito Sans',
+    lineHeight: 1.5
   },
   section: {
     margin: 0,
@@ -32,7 +33,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginBottom: 20,
     paddingBottom: 10,
-    borderBottomWidth: 4,
+    borderBottomWidth: 2,
     borderBottomColor: '#000',
   },
   headerSection: {
@@ -65,11 +66,13 @@ const styles = StyleSheet.create({
     fontSize: '11pt',
     fontWeight: 300,
     marginBottom: 10,
+    lineHeight: 1.2
   },
   unorderedList: {
     fontSize: '11pt',
     fontWeight: 300,
     marginBottom: 10,
+    lineHeight: 1.2
   },
   heading3: {
     fontSize: '14pt',
@@ -102,6 +105,7 @@ export const Lesson: React.FC<LessonPDFProps> = ({ fields, sections }) => {
 
   const {
     lesson_outline,
+    lesson_summary,
     lesson_materials,
     lesson_essential_questions,
     lesson_repertoire,
@@ -118,13 +122,16 @@ export const Lesson: React.FC<LessonPDFProps> = ({ fields, sections }) => {
         <Header lessonTitle={fields.lesson_title} />
         <View style={{flexGrow: 1}}>
           <View style={{display: 'flex', flexDirection: 'row', gap: 10, marginBottom: 15}}>
-            <View style={{width: '65%'}}>
-              <Text style={{fontSize: 28, lineHeight: 1.14, marginBottom: 10, fontWeight: 700}}>{fields.lesson_title}</Text>
+            <View style={{width: '90%'}}>
+              <Text style={{fontSize: 24, lineHeight: 1.14, marginBottom: 10, fontWeight: 700, hyphenateLimitChars: '6 8 2'}}>{fields.lesson_title}</Text>
               <View style={{display: 'flex', flexDirection: 'row', gap: 10, marginBottom: 10}}>  
                 <IconText icon={faSignalBarsStrong} text={fields.lesson_audience} />
                 <IconText icon={faClock} text={fields.lesson_duration} />
               </View>
-              <View style={{display: 'flex', flexDirection: 'row', gap: 10}}>
+              <View style={{display: 'flex', flexDirection: 'row', marginBottom: 5, gap: 10, width: "100%"}}>
+                <Rendering content={lesson_summary.content} />
+              </View>
+              <View style={{display: 'flex', flexDirection: 'row', marginBottom: 10, gap: 10}}>
                 {fields.lesson_concepts.map(concept => (
                   <View key={concept.fields.concept_name} style={{backgroundColor: '#eff1f3', paddingHorizontal: 10, paddingVertical: 3, borderRadius: 100}}>
                     <Text style={{fontSize: 10, fontWeight: 'black'}}>{concept.fields.concept_name}</Text>
@@ -133,7 +140,7 @@ export const Lesson: React.FC<LessonPDFProps> = ({ fields, sections }) => {
               </View>
             </View>
           </View>
-          <View>
+          <View style={{width: '90%'}}>
             <Details 
                 lesson_outcome={lesson_outcome}
                 lesson_outline={lesson_outline}
@@ -156,9 +163,6 @@ export const Lesson: React.FC<LessonPDFProps> = ({ fields, sections }) => {
             <View style={{flexGrow: 1}}>
               <View>
                 <View fixed>
-                  <View>
-                    <Text style={{fontWeight: 900, fontSize: '19pt', marginBottom: 10}}>Running the Lesson</Text>
-                  </View>
                   <View style={{backgroundColor: '#eff1f3', borderRadius: '100%', flexDirection: 'row', marginBottom: 15}}>
                       <View style={{width: '70%'}}>
                         <Text style={{fontSize: '11pt', fontWeight: 900, padding: 10, paddingLeft: 15, borderRight: '1', borderColor: '#fff'}}>Lesson Breakdown</Text>
