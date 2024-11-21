@@ -11,21 +11,22 @@ import {
   faPhotoFilmMusic,
   faDrum,
   faTriangleInstrument,
-  faTrafficCone,
   faMusicMagnifyingGlass,
   faMusic,
   faImages,
   faGuitar,
   faSeedling,
   faChalkboard,
-  faSquareCheck,
   faQuestionCircle,
-  faCircleDot,
 } from '@fortawesome/pro-light-svg-icons';
 
 const styles = StyleSheet.create({
   h3: {
     fontSize: 14,
+    fontWeight: 900
+  },
+  h4: {
+    fontSize: 12,
     fontWeight: 900
   }
 });
@@ -45,10 +46,7 @@ const materialIcons = {
 
 export const Details = ({
   lesson_outcome,
-  lesson_sticking_points,
   lesson_evidence,
-  lesson_prerequisites,
-  lesson_outline,
   lesson_essential_questions,
   lesson_prep,
   lesson_materials,
@@ -112,16 +110,16 @@ export const Details = ({
           </View>
         </View>
       )}
-      {lesson_repertoire?.content && (
+      {lesson_evidence?.content && (
         <View style={{flexDirection: 'row', marginBottom: 20}}>
           <View style={{width: 20, marginRight: 10}}>
-            <FontAwesomeIcon faIcon={faMusic} />
+            <FontAwesomeIcon faIcon={faMusicMagnifyingGlass} />
           </View>
           <View style={{flexGrow: 1}}>
             <View style={{marginBottom: 5}}>
-              <Text style={styles.h3}>Repertoire</Text>
+              <Text style={styles.h3}>Evidence of Learning</Text>
             </View>
-            <Rendering content={lesson_repertoire.content} />
+            <Rendering content={lesson_evidence.content} />
           </View>
         </View>
       )}

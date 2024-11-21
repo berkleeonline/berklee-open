@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
   },
   heading4: {
     fontSize: '12pt',
-    fontWeight: 400,
+    fontWeight: 500,
     marginBottom: 10,
   },
   orderedList: {
