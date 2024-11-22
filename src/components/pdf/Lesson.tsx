@@ -6,6 +6,12 @@ import { Details } from './Details';
 import { Rendering } from './Rendering';
 import { Header } from './Header';
 import { Footer } from './Footer';
+import { FontAwesomeIcon } from './FontAwesomeIcon';
+
+import {
+  faScroll,
+  faNoteSticky,
+} from '@fortawesome/pro-light-svg-icons';
 
 Font.register({ family: 'Nunito Sans', fonts: [{
     src: 'src/components/pdf/fonts/nunito-sans/NunitoSans_10pt-Regular.ttf'
@@ -155,18 +161,20 @@ export const Lesson: React.FC<LessonPDFProps> = ({ fields, sections }) => {
             </View>
             <View style={{flexGrow: 1}}>
               <View fixed>
-                <View style={{backgroundColor: '#eff1f3', borderRadius: '100%', flexDirection: 'row', marginBottom: 15}}>
-                    <View style={{width: '70%'}}>
-                      <Text style={{fontSize: '11pt', fontWeight: 900, padding: 10, paddingLeft: 15, borderRight: '1', borderColor: '#fff'}}>Lesson Breakdown</Text>
+                <View style={{backgroundColor: '#fbd3d7', borderRadius: '100%', flexDirection: 'row', marginBottom: 15}}>
+                    <View style={{width: '70%', display: "flex", flexDirection: "row", alignItems: "left", paddingHorizontal: 10, borderRight: '1', borderColor: '#f8949d'}}>
+                      <FontAwesomeIcon faIcon={faScroll}  style={{ width: 15, marginRight: 8, marginLeft: 5 }} />
+                      <Text style={{fontSize: '11pt', fontWeight: 900, padding: 8, paddingLeft: 0}}>Lesson Breakdown</Text>
                     </View>
-                    <View style={{width: '25%'}}>
-                      <Text style={{fontSize: '11pt', fontWeight: 900, padding: 10, paddingLeft: 15}}>Notes</Text>
+                    <View style={{ width: '25%', display: "flex", flexDirection: "row", alignItems: "center", paddingHorizontal: 10 }}>
+                      <FontAwesomeIcon faIcon={faNoteSticky} style={{ width: 13, marginRight: 8, marginLeft: 5 }} />
+                      <Text style={{ fontSize: '11pt', fontWeight: 900  }}>Notes</Text>
                     </View>
                 </View>
               </View>
               {instructions.map((instruction, instructionIndex) => {
                 return (
-                  <View style={{flexGrow: 1}}>
+                  <View>
                     <View key={instructionIndex} style={styles.contentContainer}>
                       <View key={instructionIndex}>
                         <Text style={{fontWeight: 700, marginBottom: 15}}>{instruction.fields.instruction_title}</Text>
