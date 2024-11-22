@@ -15,5 +15,10 @@ export default defineConfig({
         implementation: sass,
       },
     },
-  }
+  },
+  vite: {
+    ssr: {
+      noExternal: ['react-list-player'], 
+    },
+  },
 });

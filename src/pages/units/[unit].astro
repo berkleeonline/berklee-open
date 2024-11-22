@@ -113,7 +113,7 @@ const unitImageUrl = getImageUrl(unit_image);
 
 
       {unit_learning_outcomes && unit_learning_outcomes.content.length > 0 && (
-        <div class="mb-16">
+        <div class="mb-8 pb-8 border-b">
           <IconHeader headerId="learningOutcomes" icon={faSeedling} label="Learning Outcomes" />
           <h4 class="text-md font-bold pl-10 mb-2">Upon completion of this Unit, students will be able to:</h4>
           <ul class="list-disc list-outside ml-10 pl-4">
@@ -127,7 +127,7 @@ const unitImageUrl = getImageUrl(unit_image);
       )}
       
       {Unit_essential_questions && Unit_essential_questions.length > 0 && (
-        <div class="mb-16">
+        <div class="mb-8 pb-8 border-b">
           <IconHeader headerId="essentialQuestions" icon={faStar} label="Essential Questions" />
           <ol class="list-decimal list-outside ml-10 pl-4">
             {Unit_essential_questions.map((question, index) => (

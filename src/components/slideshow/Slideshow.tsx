@@ -9,8 +9,8 @@ type SlideshowProps = {
 const Slideshow = ({ content }: SlideshowProps) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [hasNotes, setHasNotes] = useState(false);
-  const slides = content.fields.slides;
-  const slidesBgColor = content.fields.slideshow_background || '#eeeff5'; // Default background color
+  const slides = content?.fields?.slides || [];
+  const slidesBgColor = content?.fields?.slideshow_background || '#eeeff5';
   const totalSlides = slides.length;
 
   const goToNextSlide = () => {
@@ -36,9 +36,14 @@ const Slideshow = ({ content }: SlideshowProps) => {
   };
 
   useEffect(() => {
-    const notesExist: boolean = slides[currentSlide].fields.slide_instructor_notes ? true : false;
-    setHasNotes(notesExist);
-  }, [currentSlide]);
+    if (slides && slides[currentSlide] && slides[currentSlide].fields) {
+      const notesExist = slides[currentSlide].fields.slide_instructor_notes ? true : false;
+      setHasNotes(notesExist);
+    } else {
+      console.warn('Slide or fields do not yet exist');
+      setHasNotes(false);
+    }
+  }, [slides, currentSlide]);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {

@@ -34,10 +34,11 @@ export async function getStaticPaths() {
 
 const {
   module_title,
+  module_learning_outcomes,
   module_description,
   module_units = [],
   module_level = [],
-  Module_essential_questions = [],
+  module_essential_questions = [],
   module_image,
 } = Astro.props.fields;
 
@@ -121,17 +122,16 @@ if (module_units.length > 0) {
       });
     }
 
-    if (unit.fields && unit.fields.unit_concept && Array.isArray(unit.fields.unit_concept)) {
-      const unitConcepts = await Promise.all(unit.fields.unit_concept.map(async (conceptLink) => {
-        try {
-          const conceptEntry = await contentfulClient.getEntry(conceptLink.sys.id);
-          return conceptEntry;
-        } catch (error) {
-          console.error(`Error fetching concept with ID ${conceptLink.sys.id}:`, error);
-          return null;
-        }
-      }));
-      unit.fields.unit_concept = unitConcepts.filter(Boolean); // Replace links with full concept data and remove any null values
+    if (unit.fields?.unit_concept?.length) {
+      const unitConcepts = await Promise.allSettled(
+        unit.fields.unit_concept.map(conceptLink => 
+          contentfulClient.getEntry(conceptLink.sys.id)
+        )
+      );
+      
+      unit.fields.unit_concept = unitConcepts
+        .filter(result => result.status === 'fulfilled')
+        .map(result => (result as PromiseFulfilledResult<any>).value);
     }
   }));
 }
@@ -187,24 +187,20 @@ const simplifiedUnits = module_units.map(unit => ({
         <ShareButton type="module" href="" client:load />
       </div>
       
-      {outcomes && outcomes.length > 0 && (
-        <div class="mb-12">
+      {module_learning_outcomes && (
+        <div class="mb-8 pb-8 border-b">
           <IconHeader headerId="learningOutcomes" icon={faSeedling} label="Learning Outcomes" />
-          <h4 class="text-lg font-bold pl-10">Upon completion of this module, students will be able to:</h4>
-          <ul class="list-disc list-outside ml-10 pl-4">
-            { outcomes.map((outcome) => (
-              <li class="mt-4">{ outcome }</li>
-            ))}
-          </ul>
+          <h4 class="text-md font-bold pl-10 mb-2">Upon completion of this module, students will be able to:</h4>
+          <div class={`${styles.richContentInnerStyles}`} set:html={documentToHtmlString(module_learning_outcomes)}></div>
         </div>
       )}
 
-      {Module_essential_questions && Module_essential_questions.length > 0 && (
-        <div class="mb-12">
+      {module_essential_questions && module_essential_questions.length > 0 && (
+        <div class="mb-8 pb-8 border-b">
           <IconHeader headerId="essentialQuestions" icon={faStar} label="Essential Questions" />
           <ul class="list-disc list-outside ml-10 pl-4">
-            { Module_essential_questions.map((question, index) => (
-              <li class="mt-4" key={index}>{ question.fields?.question || "No question available" }</li>
+            { module_essential_questions.map((question, index) => (
+              <li class="mt-2" key={index}>{ question.fields?.question || "No question available" }</li>
             ))}
           </ul>
         </div>

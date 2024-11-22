@@ -44,7 +44,6 @@ const SyllabusLesson: React.FC<SyllabusLessonProps> = ({ lesson, index }) => {
                   const target = e.target as HTMLImageElement;
                   target.onerror = null;
                   target.src = 'https://placehold.co/135x75';
-                  console.log('Error loading image, using fallback');
                 }}
               />
             </a>

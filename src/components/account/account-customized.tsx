@@ -22,7 +22,7 @@ const AccountCustomized = () => {
     // Subscribe to auth changes with correct event names
     const subscription = Hub.listen('auth', ({ payload }) => {
       const { event } = payload;
-      console.log('Auth event:', event); // Add this for debugging
+      // console.log('Auth event:', event); // Add this for debugging
       
       if (event === 'signedIn' || event === 'signIn') {
         setIsLoading(true);

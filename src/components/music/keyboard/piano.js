@@ -133,7 +133,7 @@ Piano.prototype.run = function () {
       pianoContainer = document.querySelector('.pianoContainer'),
       i, cnt, currKey, evt;
   
-    console.log('Highlighting octave:', newOctave);
+    // console.log('Highlighting octave:', newOctave);
   
     if (shift) {
       for (i = oldOctaveStart; i < oldOctaveEnd + 6; i++) {
@@ -176,7 +176,7 @@ Piano.prototype.run = function () {
       // Scroll the container
       scrollWrapper.scrollLeft = centerPosition;
   
-      console.log('Set scrollLeft to:', scrollWrapper.scrollLeft);
+      // console.log('Set scrollLeft to:', scrollWrapper.scrollLeft);
     } else {
       console.error('Could not find piano container or scroll wrapper');
     }

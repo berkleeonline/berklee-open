@@ -32,6 +32,7 @@ export interface Module {
   contentTypeId: "module",
   fields: {
     module_title: EntryFieldTypes.Text,
+    Module_learning_outcomes: EntryFieldTypes.RichText,
     module_short_description: EntryFieldTypes.Text,
     module_description: EntryFieldTypes.RichText,
     module_level: EntryFieldTypes.Array,

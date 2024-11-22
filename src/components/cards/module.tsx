@@ -24,7 +24,7 @@ const ModuleCard: React.FC<ModuleCardProps> = ({
   unitsCount,
   index 
 }) => {
-  console.log('ModuleCard props:', { id, title, image, shortDescription, level, unitsCount, index });
+  // console.log('ModuleCard props:', { id, title, image, shortDescription, level, unitsCount, index });
   if (level.length > 0) {
     level = calculateLevel(level);
   }
