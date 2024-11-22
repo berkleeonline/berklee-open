@@ -45,7 +45,7 @@ type SlideProps = {
 export const Slide: React.FC<SlideProps> = ({ slide }) => {
     // Check if slides are prepared yet - keeps the build from breaking
     if (!slide || !slide.sys || !slide.sys.contentType || !slide.sys.contentType.sys) {
-        console.warn('No slideshow prepared yet. (Not an error).'); // Log the unprepared slide
+        //console.warn('No slideshow prepared yet. (Not an error).'); // Log the unprepared slide
         return <h3 className="grid gap-4 place-content-center h-48 w-full txt-lg">Presentation not yet prepared for this lesson.</h3>;
     }
   
