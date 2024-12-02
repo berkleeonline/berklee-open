@@ -4,7 +4,7 @@ import ReactPDF from '@react-pdf/renderer';
 import { Lesson } from '../../components/pdf/Lesson';
 
 export const generate = async (pdfProps) => {
-  const outputPath = path.resolve(`./public/lessons/pdfs/${pdfProps.fields.Lesson_id}.pdf`);
+  const outputPath = path.resolve(`./public/downloads/pdfs/${pdfProps.fields.Lesson_id}.pdf`);
 
   // Ensure the directory exists
   const pdfDir = path.dirname(outputPath);
