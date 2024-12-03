@@ -47,17 +47,22 @@ PROVIDERS="{\
 \"awscloudformation\":$AWSCLOUDFORMATIONCONFIG\
 }"
 
-yarn build
+CI=1 amplify init \
+--appId "${AMPLIFY_APP_ID}" \
+--amplify $AMPLIFY \
+--providers $PROVIDERS \
+--yes
 
-# Run amplify start-deployment of the dist directory
-amplify start-deployment --src ./dist
+CI=1 \
+  amplify \
+    pull \
+    --restore \
+    -y \
+    --appId "${AMPLIFY_APP_ID}" \
+    --envName "${branch}"
 
-# Output contents of dist/downloads/pdf directory
-if [ -d "./dist/downloads/pdf" ]; then
-  echo "Contents of dist/downloads/pdf directory:"
-  ls -l ./dist/downloads/pdf
-else
-  echo "Directory dist/downloads/pdf does not exist."
-fi
-
-
+CI=1 \
+  amplify \
+    publish \
+    -y \
+    --invalidateCloudFront
