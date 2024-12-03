@@ -112,9 +112,16 @@ h2.search-term {
 
 /* Amplify Authentication Override Styles */
 
-div[data-amplify-router] {
-  border-color: transparent !important;
+div[data-variation="default"] div[data-amplify-router] {
   border-radius: 8px;
+}
+
+div[data-variation="modal"] div[data-amplify-router] .amplify-tabs__item--active {
+  border-color: #ee243c !important;
+}
+
+div[data-variation="modal"] div[data-amplify-router] {
+  border-radius: 0 0 8px 8px !important;
 }
 
 .amplify-button--primary {
@@ -130,7 +137,7 @@ div[data-amplify-router] {
   }
 }
 
-.amplify-tabs .amplify-tabs__list {
+div[data-variation="default"] .amplify-tabs .amplify-tabs__list {
   display: none !important;
 }
 

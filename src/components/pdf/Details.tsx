@@ -4,7 +4,6 @@ import { Rendering } from './Rendering';
 import { FontAwesomeIcon } from './FontAwesomeIcon'; 
 
 import {
-  faCompass,
   faStar,
   faFiles,
   faPianoKeyboard,
