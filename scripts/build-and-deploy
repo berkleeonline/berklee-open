@@ -47,6 +47,10 @@ PROVIDERS="{\
 \"awscloudformation\":$AWSCLOUDFORMATIONCONFIG\
 }"
 
+echo "================"
+yarn --version
+echo "================"
+
 CI=1 amplify init \
 --appId "${AMPLIFY_APP_ID}" \
 --amplify $AMPLIFY \
