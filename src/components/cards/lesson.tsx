@@ -5,6 +5,8 @@ import { faHeart, faShare, faScroll, faClock, faSignal4 } from '@fortawesome/pro
 import { IconChip } from "../../elements/IconChip";
 import { calculateDuration } from "../../lib/calculateDuration";
 
+import AuthLink from "../AuthLink";
+
 type LessonCardProps = {
   id: string;
   title: string;
@@ -26,8 +28,8 @@ const LessonCard: React.FC<LessonCardProps> = ({
   index 
 }) => {
   return (
-    <a href={`/lessons/${id}`} className="no-underline flex flex-col">
-      <Card className="h-full pb-8 w-full relative" shadow="0" key={index} isPressable>
+    <AuthLink href={`/lessons/${id}`} className="no-underline flex flex-col">
+      <Card className="h-full pb-8 w-full relative" shadow="0" key={index}>
         <CardBody className="overflow-visible p-0 relative">
           <div className="absolute bottom-[-15px] left-0 z-20">
             <IconChip icon={faScroll} label="Lesson" contentType="lesson" href="" />
@@ -66,7 +68,7 @@ const LessonCard: React.FC<LessonCardProps> = ({
           </div>
         </CardFooter>
       </Card>
-    </a>
+    </AuthLink>
   );
 };
 

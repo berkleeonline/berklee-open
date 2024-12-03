@@ -5,6 +5,8 @@ import { faHeart,faShare, faBook, faSignal4, faBooks } from '@fortawesome/pro-li
 import { IconChip } from "../../elements/IconChip";
 import { calculateLevel } from "../../lib/calculateLevel";
 
+import AuthLink from "../AuthLink";
+
 type ModuleCardProps = {
   id: string;
   title: string;
@@ -30,8 +32,8 @@ const ModuleCard: React.FC<ModuleCardProps> = ({
   }
 
   return (
-    <a href={`/modules/${id}`} className="no-underline h-full">
-      <Card className="h-full pb-8 w-full relative" shadow="0" key={index} isPressable>
+    <AuthLink href={`/modules/${id}`} className="no-underline h-full">
+      <Card className="h-full pb-8 w-full relative" shadow="0" key={index}>
         <CardBody className="overflow-visible p-0">
           <div className="absolute bottom-[-15px] left-0 z-20">
             <IconChip icon={faBooks} label="Module" contentType="module" href="" />
@@ -70,7 +72,7 @@ const ModuleCard: React.FC<ModuleCardProps> = ({
           </div>
         </CardFooter>
       </Card>
-    </a>
+    </AuthLink>
   );
 };
 

@@ -4,6 +4,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IconChip } from "../../elements/IconChip";
 import { faHeart, faShare, faBookBlank, faScroll } from '@fortawesome/pro-light-svg-icons';
 
+import AuthLink from "../AuthLink";
+
 type UnitCardProps = {
   id: string;
   title: string;
@@ -22,8 +24,8 @@ const UnitCard: React.FC<UnitCardProps> = ({
 }) => {
   // console.log('UnitCard props:', { id, title, image, shortDescription, level, lessonsCount });
   return (
-    <a href={`/units/${id}`} className="no-underline flex flex-col">
-      <Card className="h-full pb-8 w-full relative" shadow="0" isPressable>
+    <AuthLink href={`/units/${id}`} className="no-underline flex flex-col">
+      <Card className="h-full pb-8 w-full relative" shadow="0">
         <CardBody className="overflow-visible p-0 relative">
           <div className="absolute bottom-[-15px] left-0 z-20">
             <IconChip icon={faBookBlank} label="Unit" contentType="unit" href="" />
@@ -57,7 +59,7 @@ const UnitCard: React.FC<UnitCardProps> = ({
           </div>
         </CardFooter>
       </Card>
-    </a>
+    </AuthLink>
   );
 };
 
