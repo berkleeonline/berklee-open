@@ -6,28 +6,37 @@ import { Authenticator } from '@aws-amplify/ui-react';
 import awsconfig from '../amplifyconfiguration.json';
 Amplify.configure(awsconfig);
 
+let styleLink;
+
+const getStyleLink = () => {
+  if (!styleLink) {
+    styleLink = document.createElement('link');
+    styleLink.id = 'amplify-styles';
+    styleLink.rel = 'stylesheet';
+    // Cache-busting
+    styleLink.href = `https://cdn.jsdelivr.net/npm/@aws-amplify/ui-react@6.7.1/dist/styles.min.css?timestamp=${Date.now()}`;
+  }
+  return styleLink;
+};
+
+// Function to load Amplify styles dynamically
+const loadAmplifyStyles = () => {
+  const existingLink = document.querySelector('link#amplify-styles');
+  if (!existingLink) {
+    document.head.appendChild(getStyleLink());
+  }
+};
+
+// Function to remove Amplify styles
+const removeAmplifyStyles = () => {
+  const existingLink = document.querySelector('link#amplify-styles');
+  if (existingLink) {
+    existingLink.remove();
+  }
+};
+
 const AppContext = (props: any) => {
   const [showAuthModal, setShowAuthModal] = useState(false);
-
-  // Function to load Amplify styles dynamically
-  const loadAmplifyStyles = () => {
-    const existingLink = document.querySelector('#amplify-styles');
-    if (!existingLink) {
-      const link = document.createElement('link');
-      link.id = 'amplify-styles';
-      link.rel = 'stylesheet';
-      link.href = `https://cdn.jsdelivr.net/npm/@aws-amplify/ui-react@6.7.1/dist/styles.min.css?timestamp=${Date.now()}`; // Cache-busting
-      document.head.appendChild(link);
-    }
-  };
-
-  // Function to remove Amplify styles
-  const removeAmplifyStyles = () => {
-    const existingLink = document.querySelector('#amplify-styles');
-    if (existingLink) {
-      existingLink.remove();
-    }
-  };
 
   useEffect(() => {
     const cancelListener = Hub.listen('BerkleeAuth', ({ payload }) => {
