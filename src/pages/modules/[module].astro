@@ -12,6 +12,7 @@ import { ShareButton } from "../../elements/ShareButton";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBooks, faPresentationScreen, faStar, faClock, faSeedling, faSignal4 } from '@fortawesome/pro-light-svg-icons';
 import MainLayout from "../../layouts/authenticated.astro";
+import AuthView from '../../components/AuthView';
 import SyllabusUnitWrapper from '../../components/syllabus/syllabus-unit-wrapper';
 import styles from './_module.module.scss';
 
@@ -166,7 +167,7 @@ const simplifiedUnits = module_units.map(unit => ({
 ---
 
 <MainLayout title={module_title} cssClass="via-white to-slate-white">
-  <div class="grid grid-cols-12 gap-20">
+  <AuthView client:load className="grid grid-cols-12 gap-20">
     <div class="col-span-7">
       <div class="mb-4">
         <IconChip icon={faBooks} label="Module" contentType="module" href="/modules" />
@@ -227,5 +228,5 @@ const simplifiedUnits = module_units.map(unit => ({
         </div>
       </div>
     </div>
-  </div>
+  </AuthView>
 </MainLayout>
