@@ -17,14 +17,22 @@ const AuthView: React.FC<AuthViewProps> = ({
   const { authStatus } = useAuthenticator(context => [context.authStatus]);
 
   useEffect(() => {
-    if (authStatus !== 'authenticated') {
-      Hub.dispatch('BerkleeAuth', {
-        event: 'showModal',
+    if (authStatus !== 'configuring' && authStatus !== 'authenticated') {
+      Hub.dispatch('berklee', {
+        event: 'showAuthModal',
         data: true,
-        message: '',
       });
     }
   }, []);
+
+  useEffect(() => {
+    if (authStatus !== 'configuring' && authStatus !== 'authenticated') {
+      Hub.dispatch('berklee', {
+        event: 'showAuthModal',
+        data: true,
+      });
+    }
+  }, [authStatus]);
 
   return (
     <div className={className} style={style}>

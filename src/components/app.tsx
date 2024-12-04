@@ -39,15 +39,24 @@ const AppContext = (props: any) => {
   const [showAuthModal, setShowAuthModal] = useState(false);
 
   useEffect(() => {
-    const cancelListener = Hub.listen('BerkleeAuth', ({ payload }) => {
+    const listeners = [];
+
+    listeners.push(Hub.listen('auth', ({ payload }) => {
+      const { event } = payload;
+      if (event === 'signedIn') {
+        setShowAuthModal(false);
+      }
+    }));
+
+    listeners.push(Hub.listen('berklee', ({ payload }) => {
       const { event, data } = payload;
-      if (event === 'showModal') {
+      if (event === 'showAuthModal') {
         setShowAuthModal(!!data);
       }
-    });
+    }));
 
     return () => {
-      cancelListener();
+      listeners.forEach((cancelListener) => cancelListener());
     };
   }, []);
 
@@ -61,9 +70,14 @@ const AppContext = (props: any) => {
 
   const handleClose = () => {
     setShowAuthModal(false);
-    Hub.dispatch('BerkleeAuth', {
-      event: 'modalClosed',
+    Hub.dispatch('berklee', {
+      event: 'showAuthModal',
+      data: false,
     });
+    // maybe?
+    //if (window.location.href !== '/') {
+    //  window.location.href = '/';
+    //}
   };
 
   const Wrapper = useCallback(

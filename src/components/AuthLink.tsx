@@ -19,10 +19,9 @@ const AuthLink: React.FC<AuthLinkProps> = ({
   const handleClick = useCallback((e) => {
     if (authStatus !== 'authenticated') {
       e.preventDefault();
-      Hub.dispatch('BerkleeAuth', {
-        event: 'showModal',
+      Hub.dispatch('berklee', {
+        event: 'showAuthModal',
         data: true,
-        message: '',
       });
     }
   }, [authStatus]);
