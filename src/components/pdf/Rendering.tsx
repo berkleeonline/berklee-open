@@ -91,25 +91,21 @@ export const Rendering = ({ content }) => {
                         ))}
                     </View>
                     );
-                case 'unordered-list':
-                    return (
-                    <View key={contentIndex} style={styles.unorderedList}>
-                        {contentItem.content.map((listItem, listIndex) => (
-                        <View style={{ flexDirection: 'row' }}>
-                            <View style={{ width: 15 }}>
-                            <Text key={listIndex} style={{ textAlign: 'center' }}>
-                                &bull;
-                            </Text>
+                    case 'unordered-list':
+                        return (
+                            <View key={contentIndex} style={styles.unorderedList}>
+                                {contentItem.content.map((listItem, listIndex) => (
+                                    <View key={listIndex} style={{ flexDirection: 'row', marginBottom: 3 }} wrap={false}>
+                                        <Text style={{ width: 15, textAlign: 'center' }}>
+                                            &bull;
+                                        </Text>
+                                        <Text style={[styles.listItem, { flexShrink: 1 }]}>
+                                            {`${listItem.content[0].content[0].value}`}
+                                        </Text>
+                                    </View>
+                                ))}
                             </View>
-                            <View>
-                            <Text key={listIndex} style={styles.listItem}>
-                                {`${listItem.content[0].content[0].value}`}
-                            </Text>
-                            </View>
-                        </View>
-                        ))}
-                    </View>
-                    );
+                        );
                 case 'hr':
                     return <View key={contentIndex} style={styles.hr} />;
                 default:
