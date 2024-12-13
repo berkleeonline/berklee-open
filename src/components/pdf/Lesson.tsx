@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
     fontSize: '11pt',
     fontWeight: 300,
     marginBottom: 10,
-    lineHeight: 1.2
+    lineHeight: '1.2rem'
   },
   heading3: {
     fontSize: '14pt',
@@ -129,18 +129,18 @@ export const Lesson: React.FC<LessonPDFProps> = ({ fields, sections }) => {
           <View style={{flexGrow: 1}}>
             <View style={{display: 'flex', flexDirection: 'row', gap: 10, marginBottom: 15}}>
               <View style={{width: '90%'}}>
-                <Text style={{fontSize: 24, lineHeight: 1.14, marginBottom: 10, fontWeight: 700, hyphenateLimitChars: '6 8 2'}}>{fields.lesson_title}</Text>
-                <View style={{display: 'flex', flexDirection: 'row', gap: 10, marginBottom: 10}}>  
+                <Text style={{fontSize: 24, lineHeight: 1.14, marginBottom: 25, fontWeight: 700, hyphenateLimitChars: '6 8 2'}}>{fields.lesson_title}</Text>
+                <View style={{display: 'flex', flexDirection: 'row', gap: 10, marginBottom: 20}}>  
                   <IconText icon={faSignalBarsStrong} text={fields.lesson_audience} />
                   <IconText icon={faClock} text={fields.lesson_duration} />
                 </View>
-                <View style={{display: 'flex', flexDirection: 'row', marginBottom: 5, gap: 10, width: "100%"}}>
+                <View style={{display: 'flex', flexDirection: 'row', marginBottom: 10, gap: 10, width: "100%"}}>
                   <Rendering content={lesson_summary.content} />
                 </View>
                 <View style={{display: 'flex', flexDirection: 'row', marginBottom: 10, gap: 10}}>
                   {fields.lesson_concepts.map(concept => (
-                    <View key={concept.fields.concept_name} style={{backgroundColor: '#eff1f3', paddingHorizontal: 10, paddingVertical: 3, borderRadius: 100}}>
-                      <Text style={{fontSize: 10, fontWeight: 'black'}}>{concept.fields.concept_name}</Text>
+                    <View key={concept.fields.concept_name} style={{backgroundColor: '#eff1f3', alignItems: 'center', paddingHorizontal: 10, paddingVertical: 6, borderRadius: 100}}>
+                      <Text style={{fontSize: 10, lineHeight: '1.7', fontWeight: 'black'}}>{concept.fields.concept_name}</Text>
                     </View>
                   ))}
                 </View>
@@ -161,14 +161,14 @@ export const Lesson: React.FC<LessonPDFProps> = ({ fields, sections }) => {
             </View>
             <View style={{flexGrow: 1}}>
               <View fixed>
-                <View style={{backgroundColor: '#fbd3d7', borderRadius: '100%', flexDirection: 'row', marginBottom: 15}}>
+                <View style={{backgroundColor: '#fbd3d7', borderRadius: '100%', flexDirection: 'row', marginBottom: 15, height: '38'}}>
                     <View style={{width: '70%', display: "flex", flexDirection: "row", alignItems: "left", paddingHorizontal: 10, borderRight: '1', borderColor: '#f8949d'}}>
                       <FontAwesomeIcon faIcon={faScroll}  style={{ width: 15, marginRight: 8, marginLeft: 5 }} />
-                      <Text style={{fontSize: '11pt', fontWeight: 900, padding: 8, paddingLeft: 0}}>Lesson Breakdown</Text>
+                      <Text style={{fontSize: '11pt', lineHeight: '1.5', fontWeight: 900, padding: 8, paddingLeft: 0}}>Lesson Breakdown</Text>
                     </View>
-                    <View style={{ width: '25%', display: "flex", flexDirection: "row", alignItems: "center", paddingHorizontal: 10 }}>
+                    <View style={{ width: '25%', display: "flex", flexDirection: "row", alignItems: "left", paddingHorizontal: 10 }}>
                       <FontAwesomeIcon faIcon={faNoteSticky} style={{ width: 13, marginRight: 8, marginLeft: 5 }} />
-                      <Text style={{ fontSize: '11pt', fontWeight: 900  }}>Notes</Text>
+                      <Text style={{ fontSize: '11pt', lineHeight: '1.5', padding: 8, paddingLeft: 0, fontWeight: 900  }}>Notes</Text>
                     </View>
                 </View>
               </View>

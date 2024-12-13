@@ -9,6 +9,7 @@ import { ShareButton } from "../../elements/ShareButton";
 import MainLayout from "../../layouts/main.astro";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faScroll, faPresentationScreen, faClock, faSignal4, faChalkboardUser, faFilePdf} from '@fortawesome/pro-light-svg-icons';
+import AuthView from '../../components/AuthView';
 import SwiperCarousel from '../../components/carousel/carousel';
 import { LessonTabs } from '../../components/tabs/lesson-tabs';
 import styles from './_lesson.module.scss';
@@ -132,7 +133,7 @@ const resolvedLessonSections = await fetchAndResolveSections(lesson_sections || 
 ---
 <a id="overview"></a>
 <MainLayout title={lesson_title}>
-  <div class="grid grid-cols-12 gap-4 -mr-6" style="background: url(https://assets.online.berklee.edu/berklee-open-placeholder/bop-rounded-blue-2.svg) no-repeat top right; background-size: 55%;">
+  <AuthView client:load className="grid grid-cols-12 gap-4 -mr-6" style={{background: "url(https://assets.online.berklee.edu/berklee-open-placeholder/bop-rounded-blue-2.svg) no-repeat top right", backgroundSize: "55%"}}>
     <div class="absolute top-0 right-0">
       <img src="" class="h-400" />
     </div>
@@ -224,5 +225,5 @@ const resolvedLessonSections = await fetchAndResolveSections(lesson_sections || 
         </div>
       </div>
     </div>
-  </div>
+  </AuthView>
 </MainLayout>
