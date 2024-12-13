@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import algoliasearch from 'algoliasearch/lite';
-import { InstantSearch, SearchBox, Hits, useInstantSearch, useSearchBox } from 'react-instantsearch-hooks-web';
+import { useInstantSearch, useSearchBox } from 'react-instantsearch-core';
+import { InstantSearch, SearchBox, Hits } from 'react-instantsearch';
 
 import ModuleCard from './cards/module';
 import UnitCard from './cards/unit';

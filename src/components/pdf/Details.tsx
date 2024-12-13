@@ -90,13 +90,13 @@ export const Details = ({
               <Text style={styles.h3}>Materials</Text>
             </View>
             {lesson_materials.length > 0 && (
-              <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 20 }}>
+              <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 15, marginBottom: 20 }}>
                 {lesson_materials.map((material, index) => (
-                  <View key={index} style={{ flexDirection: 'row', marginBottom: 5, alignItems: 'center' }}>
+                  <View key={index} style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <View style={{width: 12, marginRight: 10}}>
                       <FontAwesomeIcon faIcon={materialIcons[material] || faQuestionCircle} />
                     </View>
-                    <Text style={{fontSize: 12}}>{material}</Text>
+                    <Text style={{fontSize: 12, lineHeight: '1.3'}}>{material}</Text>
                   </View>
                 ))}
               </View>

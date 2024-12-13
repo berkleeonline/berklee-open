@@ -7,13 +7,14 @@ const styles = StyleSheet.create({
   },
   paragraph: {
     fontSize: '11pt',
+    lineHeight: '1.1rem',
     fontWeight: 300,
     marginBottom: 10,
   },
   heading3: {
     fontSize: '14pt',
     fontWeight: 500,
-    marginBottom: 10,
+    marginBottom: 5,
   },
   heading4: {
     fontSize: '12pt',
@@ -23,18 +24,19 @@ const styles = StyleSheet.create({
   orderedList: {
     fontSize: '11pt',
     fontWeight: 300,
-    marginBottom: 10,
+    marginBottom: 7,
   },
   unorderedList: {
     fontSize: '11pt',
     fontWeight: 300,
-    marginBottom: 10,
+    marginBottom: 7,
     listStyleType: 'disc'
   },
   listItem: {
     fontSize: '11pt',
     fontWeight: 300,
-    marginBottom: 4,
+    marginBottom: 10,
+    lineHeight: '1rem'
   },
   hr: {
     borderBottomWidth: 1,
