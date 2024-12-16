@@ -18,7 +18,6 @@ const searchClient = {
           ...request,
           params: {
             ...request.params,
-            filters: '', // Clear any filters
             distinct: false, // Disable distinct
             hitsPerPage: 1000, // Increase hits per page
           },
@@ -28,7 +27,21 @@ const searchClient = {
     });
 
     // Use the underlying Algolia client to perform the search
-    return algoliasearch('AHDTI74E4C', '8a286c5cd2c0c5f5cbd68e8a8e4eeda2').search(newRequests);
+    return algoliasearch('AHDTI74E4C', '8a286c5cd2c0c5f5cbd68e8a8e4eeda2')
+      .search(newRequests)
+      .then(response => {
+        // Filter out invalid hits from the response
+        return {
+          ...response,
+          results: response.results.map(result => ({
+            ...result,
+            hits: result.hits.filter(hit => {
+              const fields = hit.fields || {};
+              return fields.module_title || fields.unit_title || fields.lesson_title;
+            })
+          }))
+        };
+      });
   },
 };
 
@@ -136,7 +149,7 @@ const CustomSearchBox = ({ initialQuery, setSearchTerm }) => {
         className="w-full md:w-3/4 mx-auto" 
       />
       {query && (
-        <h2 className="text-center mt-4 mb-6">
+        <h2 className="text-center mt-4 mb-6 text-3xl font-semibold">
           Results for "<strong>{capitalizeFirstLetter(query || initialQuery)}</strong>"
         </h2>
       )}
@@ -144,9 +157,37 @@ const CustomSearchBox = ({ initialQuery, setSearchTerm }) => {
   );
 };
 
+const FilterTabs = ({ activeFilter, setActiveFilter }) => {
+  const filters = [
+    { label: 'All', value: '' },
+    { label: 'Modules', value: 'module' },
+    { label: 'Units', value: 'unit' },
+    { label: 'Lessons', value: 'lesson' }
+  ];
+
+  return (
+    <div className="flex justify-center gap-2 mb-8">
+      {filters.map(filter => (
+        <button
+          key={filter.value}
+          onClick={() => setActiveFilter(filter.value)}
+          className={`px-4 py-2 rounded-lg transition-colors ${
+            activeFilter === filter.value
+              ? 'bg-primary text-white'
+              : 'bg-default-100 hover:bg-default-200'
+          }`}
+        >
+          {filter.label}
+        </button>
+      ))}
+    </div>
+  );
+};
+
 const Search = () => {
   const [initialQuery, setInitialQuery] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
+  const [activeFilter, setActiveFilter] = useState('');
 
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
@@ -154,6 +195,14 @@ const Search = () => {
     setInitialQuery(query);
     setSearchTerm(query);
   }, []);
+
+  // Build the filter string based on the active filter
+  const getFilterString = () => {
+    if (!activeFilter) {
+      return "sys.contentType.sys.id:lesson OR sys.contentType.sys.id:unit OR sys.contentType.sys.id:module";
+    }
+    return `sys.contentType.sys.id:${activeFilter}`;
+  };
 
   return (
     <InstantSearch 
@@ -168,10 +217,11 @@ const Search = () => {
     >
        <Configure
         analytics={false}
-        filters="sys.contentType.sys.id:lesson OR sys.contentType.sys.id:unit OR sys.contentType.sys.id:module"
+        filters={getFilterString()}
         hitsPerPage={20}
         />
         <CustomSearchBox initialQuery={initialQuery} setSearchTerm={setSearchTerm} />
+        <FilterTabs activeFilter={activeFilter} setActiveFilter={setActiveFilter} />
         <SearchResults searchTerm={searchTerm} />
     </InstantSearch>
   );
