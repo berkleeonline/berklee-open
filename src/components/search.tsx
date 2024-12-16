@@ -112,6 +112,8 @@ const CustomSearchBox = ({ initialQuery, setSearchTerm }) => {
   );
 };
 
+
+
 const Search = () => {
   const [initialQuery, setInitialQuery] = useState('');
   const [searchTerm, setSearchTerm] = useState(''); // Store the current search term
@@ -124,7 +126,7 @@ const Search = () => {
   }, []);
 
   return (
-    <InstantSearch searchClient={searchClient} indexName="BerkleeOpen">
+    <InstantSearch searchClient={searchClient} indexName="BerkleeOpen" initialUiState={{BerkleeOpen: { query: initialQuery || '',page: 1, },}}>
       <CustomSearchBox initialQuery={initialQuery} setSearchTerm={setSearchTerm} />
       <SearchResults searchTerm={searchTerm} className="mt-24" />
     </InstantSearch>
