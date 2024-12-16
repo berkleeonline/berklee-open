@@ -58,8 +58,17 @@ const Hit = ({ hit }) => {
     return url?.startsWith('//') ? `https:${url}` : url ?? 'https://placehold.co/425x265';
   };
 
+  const cardProps = {
+    className: "transform transition-all duration-300 ease-in-out opacity-0 translate-y-4 animate-in",
+    style: {
+      animationFillMode: 'forwards',
+      animationDelay: '100ms',
+    }
+  };
+
   if (fields.module_title) {
     return (
+      <div {...cardProps}>
       <ModuleCard
         key={hit.objectID}
         id={hit.objectID}
@@ -70,9 +79,11 @@ const Hit = ({ hit }) => {
         unitsCount={fields.module_units?.length || 0}
         index={0}
       />
+      </div>
     );
   } else if (fields.unit_title) {
     return (
+      <div {...cardProps}>
       <UnitCard
         key={hit.objectID}
         id={hit.objectID}
@@ -82,9 +93,11 @@ const Hit = ({ hit }) => {
         level={getEnUSValue(fields.unit_level) || []}
         lessonsCount={fields.unit_lessons?.length || 0}
       />
+      </div>
     );
   } else if (fields.lesson_title) {
     return (
+      <div {...cardProps}>
       <LessonCard
         key={hit.objectID}
         id={hit.objectID}
@@ -95,6 +108,7 @@ const Hit = ({ hit }) => {
         imageUrl={getImageUrl(fields.lesson_image)}
         index={0}
       />
+      </div>
     );
   }
   
@@ -114,11 +128,11 @@ const SearchResults = ({ searchTerm }) => {
   }
 
   return (
-    <div className="ais-Hits">
+    <div className="ais-Hits transition-all duration-300 ease-in-out">
       <Hits 
         hitComponent={Hit} 
         classNames={{
-          list: 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'
+          list: 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 transition-all duration-300'
         }}
       />
     </div>
