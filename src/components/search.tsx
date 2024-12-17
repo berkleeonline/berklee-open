@@ -88,7 +88,7 @@ const Hit = ({ hit }) => {
 const SearchResults = ({ searchTerm }) => {
   const { results } = useInstantSearch();
 
-  if (!results.__isArtificial && results.nbHits === 0) {
+  if (!results.__isArtificial && (!results.hits || results.hits.length === 0 || results.nbHits === 0)) {
     return (
       <div className="text-center">
         <h4 className="text-xl font-semibold">No results found.</h4>
