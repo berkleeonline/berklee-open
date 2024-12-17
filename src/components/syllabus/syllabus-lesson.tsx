@@ -14,7 +14,7 @@ interface SyllabusLessonProps {
       lesson_audience: string;
       lesson_duration: string;
       lesson_concepts: Array<{ fields: { concept_name: string } }>;
-      lesson_image?: any; // Ensure lesson_image is included in the fields
+      lesson_image?: any;
     };
   };
   index: number;

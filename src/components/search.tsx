@@ -51,6 +51,9 @@ const capitalizeFirstLetter = (string) => {
 };
 
 const Hit = ({ hit }) => {
+  // Just log the sys data
+  console.log('Created at:', hit?.sys?.createdAt);
+
   const fields = hit.fields || {};
   const getEnUSValue = (field) => field?.['en-US'];
   const getImageUrl = (imageField) => {

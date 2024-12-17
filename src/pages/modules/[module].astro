@@ -2,7 +2,7 @@
 import { contentfulClient } from "../../lib/contentful";
 import { calculateLevel } from "../../lib/calculateLevel";
 import { calculateDuration } from "../../lib/calculateDuration";
-import { Button } from "@nextui-org/react";
+import { Button, Link } from "@nextui-org/react";
 import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
 import type { Module } from "../../type/content-blocks";
 import { IconChip } from "../../elements/IconChip";
@@ -44,6 +44,9 @@ const {
 } = Astro.props.fields;
 
 const id = Astro.props.sys.id;
+
+// Get the first lesson's ID if available
+const firstUnitId = module_units && module_units.length > 0 ? module_units[0].sys.id : null;
 
 // Helper function to get the URL - need to globalize
 const getImageUrl = (image) => {
@@ -172,16 +175,24 @@ const simplifiedUnits = module_units.map(unit => ({
       <div class="mb-4">
         <IconChip icon={faBooks} label="Module" contentType="module" href="/modules" />
       </div>
-      <h1 class="text-4xl font-bold mb-6">{module_title}</h1>
-      <div class="mb-5" set:html={documentToHtmlString(module_description)}></div>
-      <div class="flex gap-4 mb-6">
+      <h1 class="text-4xl font-bold mb-4">{module_title}</h1>
+      <div class="flex flex-row mobile:flex-column gap-4 mb-6 items-center">
         <div class="flex flex-row items-center font-bold"><FontAwesomeIcon className="w-5 mr-1" icon={faSignal4} />{ level }</div>
         <div class="flex flex-row items-center font-bold"><FontAwesomeIcon className="w-5 mr-2" icon={faClock} /> { lessonTime }</div>
       </div>
+      <div class="mb-5" set:html={documentToHtmlString(module_description)}></div>
 
       <div class={`flex flex-row gap-4 mb-16 items-center ${styles.moduleActions}`}>
-        <Button client:load color="primary" className="font-bold w-36" aria-label="Start Module">
-          <FontAwesomeIcon icon={faPresentationScreen} class="text-sm" />
+        <Button
+          href={firstUnitId ? `/units/${firstUnitId}` : '#'}
+          as={Link}
+          color="primary"
+          variant="solid"
+          className="font-bold w-36"
+          isExternal
+          aria-label="Start Module"
+        >
+          <FontAwesomeIcon icon={faBooks} class="text-sm" />
           Start Module
         </Button>
         <AddToLibraryButton type="module" href="" client:load />
@@ -224,7 +235,7 @@ const simplifiedUnits = module_units.map(unit => ({
     <div class="col-span-5">
       <div class="self-start sticky top-24 col-span-4">
         <div class="border rounded-lg bg-white">
-          <img src={moduleImageUrl} alt="" class="rounded-t-lg object-cover w-full">
+          <img src={moduleImageUrl} alt="" class="rounded-lg object-cover w-full">
         </div>
       </div>
     </div>

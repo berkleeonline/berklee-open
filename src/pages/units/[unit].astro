@@ -74,7 +74,14 @@ const unitImageUrl = getImageUrl(unit_image);
       <div class="mb-4">
         <IconChip icon={faBookBlank} label="Unit" contentType="unit" href="/units" />
       </div>
-      <h1 class="text-4xl font-bold mb-2">{unit_title}</h1>
+      <h1 class="text-4xl font-bold mb-4">{unit_title}</h1>
+      <div class="flex flex-row mobile:flex-column gap-4 mb-6 items-center">
+        <div class="flex flex-row font-bold items-center"><FontAwesomeIcon className="w-5 mr-2" icon={faScroll} />
+          {unit_lessons && unit_lessons.length !== undefined 
+            ? `${unit_lessons.length} ${unit_lessons.length === 1 ? "Lesson" : "Lessons"}` 
+            : "No Lessons"}
+        </div>
+      </div>
       <div class="text-md mb-4" set:html={documentToHtmlString(unit_description)}></div>
       {unit_concept && unit_concept.length > 0 && (
         <div class="mb-4">
@@ -86,15 +93,6 @@ const unitImageUrl = getImageUrl(unit_image);
         </div>
       )}
 
-      <div class="flex gap-6 mb-6 items-center">
-        <div class="flex flex-row font-bold items-center"><FontAwesomeIcon className="w-4 mr-1" icon={faSignal4} />Beginner</div>
-        <div class="flex flex-row font-bold items-center"><FontAwesomeIcon className="w-5 mr-2" icon={faScroll} />
-          {unit_lessons && unit_lessons.length !== undefined 
-            ? `${unit_lessons.length} ${unit_lessons.length === 1 ? "Lesson" : "Lessons"}` 
-            : "No Lessons"}
-        </div>
-      </div>
-
       <div class={`flex flex-row gap-4 mb-16 items-center ${styles.unitActions}`}>
         <Button
           href={firstLessonId ? `/lessons/${firstLessonId}` : '#'}
@@ -105,7 +103,7 @@ const unitImageUrl = getImageUrl(unit_image);
           isExternal
           aria-label="Start Unit"
         >
-          <FontAwesomeIcon icon={faPresentationScreen} class="text-sm" />
+          <FontAwesomeIcon icon={faBookBlank} class="text-sm" />
           Start Unit
         </Button>
         <AddToLibraryButton type="unit" href={`${id}`} client:load />
@@ -162,7 +160,7 @@ const unitImageUrl = getImageUrl(unit_image);
     <div class="col-span-5">
       <div class="self-start sticky top-24">
         <div class="border rounded-lg bg-white">
-          <img src={unitImageUrl} alt="" class="rounded-t-lg w-full">
+          <img src={unitImageUrl} alt="" class="rounded-lg w-full">
         </div>
       </div>
     </div>
