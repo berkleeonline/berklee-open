@@ -86,11 +86,12 @@ export const LessonTabs = ({
 
 
   return (
-    <div className="flex w-full flex-col">
+    <div className="flex w-full flex-col relative tab-container">
       <Tabs
         aria-label="Options"
         variant="underlined"
         classNames={{
+          base: "sticky top-16 bg-white z-10",
           tabList: 'gap-6 w-full relative rounded-none p-0 border-b border-divider',
           cursor: 'w-full bg-[#ee243c]',
           tab: 'max-w-fit px-0 h-12',
