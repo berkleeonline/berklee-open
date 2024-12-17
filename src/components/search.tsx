@@ -77,6 +77,7 @@ const Hit = ({ hit }) => {
         shortDescription={getEnUSValue(fields.module_short_description)}
         level={getEnUSValue(fields.module_level)}
         unitsCount={fields.module_units?.length || 0}
+        concept={getEnUSValue(fields.concept_name)}
         index={0}
       />
       </div>

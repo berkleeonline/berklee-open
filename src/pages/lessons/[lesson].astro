@@ -133,11 +133,19 @@ const resolvedLessonSections = await fetchAndResolveSections(lesson_sections || 
 ---
 <a id="overview"></a>
 <MainLayout title={lesson_title}>
-  <AuthView client:load className="grid grid-cols-12 gap-4 -mr-6" style={{background: "url(https://assets.online.berklee.edu/berklee-open-placeholder/bop-rounded-blue-2.svg) no-repeat top right", backgroundSize: "55%"}}>
+  <AuthView client:load className="grid grid-cols-12 gap-4 custom:-mr-6" 
+    style={{
+      background: "none",
+      "@media (min-width: 991px)": {
+        background: "url(https://assets.online.berklee.edu/berklee-open-placeholder/bop-rounded-blue-2.svg) no-repeat top right",
+        backgroundSize: "55%"
+      }
+    }}
+  >
     <div class="absolute top-0 right-0">
       <img src="" class="h-400" />
     </div>
-    <div class="col-start-1 col-end-6">
+    <div class="col-span-12 custom:col-span-6">
       <div class="mb-4">
         <IconChip icon={faScroll} label="Lesson" contentType="lesson" href="/lessons" />
       </div>
@@ -198,6 +206,11 @@ const resolvedLessonSections = await fetchAndResolveSections(lesson_sections || 
         </div>
       </div>
 
+      <!-- Slideshow - visible only below 991px -->
+      <div class="mb-8 custom:hidden">
+        <SwiperCarousel lessonImages={lesson_image_carousel} client:load />
+      </div>
+
       <LessonTabs 
         lesson_sel={serializeForClient(lesson_sel)}
         lesson_extension={serializeForClient(lesson_extension)}
@@ -218,8 +231,9 @@ const resolvedLessonSections = await fetchAndResolveSections(lesson_sections || 
       />
   
     </div>
-    <div class="col-end-12 col-span-5 relative sticky top-24">
-      <div class="self-start sticky top-24 col-span-4">
+    <!-- Slideshow column - hidden below 991px, visible above -->
+    <div class="hidden custom:block custom:col-end-12 custom:col-span-5 custom:relative custom:sticky custom:top-24">
+      <div class="self-start sticky top-24">
         <div>
           <SwiperCarousel lessonImages={lesson_image_carousel} client:load />
         </div>
