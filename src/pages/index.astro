@@ -68,23 +68,25 @@ const units = await contentfulClient.getEntries<Unit>({
       <FontAwesomeIcon icon={faChevronLeft} />
       </button>
       <div id="lessonsCarousel"
-        class="flex space-x-8 overflow-x-auto mb-48 pb-4 scrollbar-hide h-full"
+        class="flex space-x-8 overflow-x-auto mb-48 pb-4 scrollbar-hide"
         style="scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;">
         {lessons.items.map((lesson, index) => (
-          <div class="flex-none w-[400px] h-full scroll-snap-align: start; grow">
-            <LessonCard 
-              key={lesson.sys.id}
-              id={lesson.sys.id}
-              title={lesson.fields.lesson_title}
-              duration={lesson.fields.lesson_duration}
-              shortDescription={lesson.fields.lesson_short_description}
-              audience={lesson.fields.lesson_audience}
-              imageUrl={lesson.fields.lesson_image?.fields?.file?.url?.startsWith('//') 
-                ? `https:${lesson.fields.lesson_image.fields.file.url}` 
-                : lesson.fields.lesson_image?.fields?.file?.url ?? 'https://placehold.co/425x265'}
-              index={index}
-              client:load
-            />
+          <div class="flex-none w-[400px] scroll-snap-align: start; grow flex">
+            <div class="w-full">
+              <LessonCard 
+                key={lesson.sys.id}
+                id={lesson.sys.id}
+                title={lesson.fields.lesson_title}
+                duration={lesson.fields.lesson_duration}
+                shortDescription={lesson.fields.lesson_short_description}
+                audience={lesson.fields.lesson_audience}
+                imageUrl={lesson.fields.lesson_image?.fields?.file?.url?.startsWith('//') 
+                  ? `https:${lesson.fields.lesson_image.fields.file.url}` 
+                  : lesson.fields.lesson_image?.fields?.file?.url ?? 'https://placehold.co/425x265'}
+                index={index}
+                client:load
+              />
+            </div>
           </div>
         ))}
       </div>
@@ -124,18 +126,20 @@ const units = await contentfulClient.getEntries<Unit>({
         class="flex space-x-8 overflow-x-auto mb-48 pb-4 scrollbar-hide"
         style="scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;">
         {units.items.map((unit, index) => (
-          <div class="flex-none w-[400px] h-full scroll-snap-align: start;">
-            <UnitCard 
-              id={unit.sys.id}
-              title={unit.fields.unit_title}
-              image={unit.fields.unit_image?.fields?.file?.url?.startsWith('//') 
-                ? `https:${unit.fields.unit_image.fields.file.url}` 
-                : unit.fields.unit_image?.fields?.file?.url ?? 'https://placehold.co/425x265'}
-              shortDescription={unit.fields.unit_short_description}
-              level={unit.fields.unit_level || []}
-              lessonsCount={unit.fields.unit_lessons?.length || 0}
-              client:load
-            />
+          <div class="flex-none w-[400px] scroll-snap-align: start; flex">
+            <div class="w-full">
+              <UnitCard 
+                id={unit.sys.id}
+                title={unit.fields.unit_title}
+                image={unit.fields.unit_image?.fields?.file?.url?.startsWith('//') 
+                  ? `https:${unit.fields.unit_image.fields.file.url}` 
+                  : unit.fields.unit_image?.fields?.file?.url ?? 'https://placehold.co/425x265'}
+                shortDescription={unit.fields.unit_short_description}
+                level={unit.fields.unit_level || []}
+                lessonsCount={unit.fields.unit_lessons?.length || 0}
+                client:load
+              />
+            </div>
           </div>
         ))}
       </div>

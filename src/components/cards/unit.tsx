@@ -24,7 +24,7 @@ const UnitCard: React.FC<UnitCardProps> = ({
 }) => {
   // console.log('UnitCard props:', { id, title, image, shortDescription, level, lessonsCount });
   return (
-    <AuthLink href={`/units/${id}`} className="no-underline flex flex-col">
+    <AuthLink href={`/units/${id}`} className="no-underline flex flex-col h-full">
       <Card className="h-full pb-8 w-full relative" shadow="0">
         <CardBody className="overflow-visible p-0 relative">
           <div className="absolute bottom-[-15px] left-0 z-20">

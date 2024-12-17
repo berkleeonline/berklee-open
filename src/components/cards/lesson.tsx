@@ -28,7 +28,7 @@ const LessonCard: React.FC<LessonCardProps> = ({
   index 
 }) => {
   return (
-    <AuthLink href={`/lessons/${id}`} className="no-underline flex flex-col">
+    <AuthLink href={`/lessons/${id}`} className="no-underline flex flex-col h-full">
       <Card className="h-full pb-8 w-full relative" shadow="0" key={index}>
         <CardBody className="overflow-visible p-0 relative">
           <div className="absolute bottom-[-15px] left-0 z-20">
