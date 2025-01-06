@@ -6,7 +6,7 @@ import { Lesson } from '../../components/pdf/Lesson';
 export const generate = async (pdfProps) => {
   const isDev = process.env.NODE_ENV !== 'production';
 
-  const outputPath = path.resolve(`./public/downloads/pdfs/${pdfProps.fields.Lesson_id}.pdf`);
+  const outputPath = path.resolve(`./dist/downloads/pdfs/${pdfProps.fields.Lesson_id}.pdf`);
 
   // Ensure the directory exists
   const pdfDir = path.dirname(outputPath);
