@@ -67,4 +67,6 @@ CI=1 \
     -y \
     --invalidateCloudFront
 
-find .
+printf "HEY LOOK AT ME LOOKATME LOOK AT ME MY CURRENT WD IS %s\n" "$(pwd)"
+printf "NOW I WILL SHOW YOU ALL THE PDFS\n"
+find . -type f -iname '*.pdf'
