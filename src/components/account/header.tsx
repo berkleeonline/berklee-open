@@ -1,12 +1,10 @@
 import { useAuthenticator } from '@aws-amplify/ui-react';
-import type { WithAuthenticatorProps } from '@aws-amplify/ui-react';
-import {NavbarItem, Dropdown, DropdownTrigger, DropdownSection, DropdownMenu, DropdownItem, Avatar, User} from "@nextui-org/react";
-import { Button, Link } from "@nextui-org/react";
+import { Button, Link, NavbarItem, Dropdown, DropdownTrigger, DropdownSection, DropdownMenu, DropdownItem, Avatar } from "@nextui-org/react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRightFromBracket, faGauge } from '@fortawesome/pro-light-svg-icons';
 
 const AccountHeader = () => {
-  const { authStatus, user, signOut, toSignUp, toSignIn } = useAuthenticator(context => [
+  const { authStatus, user, signOut } = useAuthenticator(context => [
     context.authStatus,
     context.user,
     context.signOut,
@@ -61,7 +59,7 @@ const AccountHeader = () => {
               </DropdownSection>
               <DropdownSection>
                 <DropdownItem key="logout" startContent={<FontAwesomeIcon icon={faRightFromBracket} />}>
-                  <Link color="foreground" onClick={signOut} className="font-bold">Log Out</Link>
+                  <Link color="foreground" onPress={signOut} className="font-bold">Log Out</Link>
                 </DropdownItem>
               </DropdownSection>
             </DropdownMenu>

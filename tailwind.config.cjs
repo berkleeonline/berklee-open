@@ -47,7 +47,11 @@ module.exports = {
             success: {
               foreground: "#FFFFFF",
               DEFAULT: "#16ac96",
-            }
+            },
+            black: {
+              foreground: "#FFFFFF",
+              DEFAULT: "#000000",
+            },
             // ... rest of the colors
           },
         },

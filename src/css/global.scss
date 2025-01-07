@@ -184,15 +184,34 @@ form[data-amplify-authenticator-forgotpassword] .amplify-heading--3 {
   }
 }
 
+/* Dashboard Styles */
+
+.empty-cards-list {
+  display: grid;
+  grid-gap: 48px;
+  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+}
+.card-placeholder.card-instruct {
+  border: 2px dashed #e7e7e9;
+}
+.card-placeholder.empty-card-item {
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.03) 0%, rgba(0, 0, 0, 0) 100%);
+
+  &:before {
+    content: '';
+    display: block;
+    padding-top: calc(100%* calc(3 / 4));
+  }
+}
 /* Responsive adjustments */
 @media (min-width: 768px) {
   .ais-Hits-list {
-      grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
 @media (min-width: 1024px) {
   .ais-Hits-list {
-      grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, 1fr);
   }
 }

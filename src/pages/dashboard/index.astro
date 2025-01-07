@@ -1,11 +1,66 @@
 ---
 import MainLayout from "../../layouts/main.astro";
-// Import any other components you need
+import { Avatar, Button, Link } from "@nextui-org/react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHeart } from '@fortawesome/pro-light-svg-icons';
+import UserInfo from "../../components/account/user-info";
 ---
 
 <MainLayout title="Berklee Open: Dashboard">
+  <div class="container mx-auto px-4 flex items-start justify-center mb-16">
+    <div class="flex items-start">
+      <Avatar
+        isBordered
+        as="button"
+        className="transition-transform mr-4 w-16 h-16"
+        src="/images/berklee_open_avatar.svg"
+      />
+      <div>
+        <h1 class="text-3xl font-bold mb-4 text-left">[First Name Last Name]</h1>
+        <Button 
+            href={`/account`} 
+            as={Link}
+            radius="full"
+            isExternal 
+            className="font-bold w-41 hover:bg-slate-100 mb-2" 
+            variant="bordered" 
+            aria-label="Edit Account Settings"
+          >
+          Edit Account Settings
+        </Button>
+      </div>
+    </div>
+  </div>
   <div class="container mx-auto px-4">
-    <h1 class="text-4xl font-bold mb-4">Dashboard</h1>
-    <p class="font-bold">Saved module, unit, and lessons, and favorites, settings, and more coming soon.</p>
+    <ul class="empty-cards-list">
+      <li class="card-placeholder card-instruct rounded-large text-center p-6">
+        <div class="upload-upsell-container">
+          <div class="upload-upsell-icon">
+            <div class="triangle-up light"></div>
+            <div class="triangle-up dark"></div>
+          </div>
+          <FontAwesomeIcon icon={faHeart} className="h-8 mb-6 mt-4 mx-* border rounded-full p-4 border-slate-400" />
+          <h2 class="text-1xl font-bold mb-2 leading-5 mb-8">Favoriting <a href="/modules" class="underline">modules</a>, <a href="/units" class="underline">units</a>, or <a href="/lessons" class="underline">lessons</a> will build your collection of Berklee Open resources here.</h2>
+          <Button 
+              href={`/search`} 
+              as={Link}
+              isExternal 
+              className="font-bold background-slate-400 w-41 mb-2" 
+              variant="solid"
+              color="primary"
+              aria-label="Browse all Resources"
+            >
+            Browse All Resources
+          </Button>
+        </div>
+      </li>
+      <li class="card-placeholder empty-card-item rounded-large"></li>
+      <li class="card-placeholder empty-card-item rounded-large"></li>
+      <li class="card-placeholder empty-card-item rounded-large"></li>
+      <li class="card-placeholder empty-card-item rounded-large"></li>
+      <li class="card-placeholder empty-card-item rounded-large"></li>
+      <li class="card-placeholder empty-card-item rounded-large"></li>
+      <li class="card-placeholder empty-card-item rounded-large"></li>
+    </ul>
   </div>
 </MainLayout>

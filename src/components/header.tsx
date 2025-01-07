@@ -11,15 +11,10 @@ const Header = (props) => {
   const [searchQuery, setSearchQuery] = useState('');
 
   const menuItems = [
-    "Profile",
+    "Modules",
+    "Units",
+    "Lessons",
     "Dashboard",
-    "Activity",
-    "Analytics",
-    "System",
-    "Deployments",
-    "My Settings",
-    "Team Settings",
-    "Help & Feedback",
     "Log Out",
   ];
 
@@ -84,9 +79,7 @@ const Header = (props) => {
           {menuItems.map((item, index) => (
             <NavbarMenuItem key={`${item}-${index}`}>
               <Link
-                color={
-                  index === 2 ? "primary" : index === menuItems.length - 1 ? "danger" : "foreground"
-                }
+                color="foreground"
                 className="w-full"
                 href="#"
                 size="lg"
@@ -102,4 +95,3 @@ const Header = (props) => {
 };
 
 export default Header;
-
