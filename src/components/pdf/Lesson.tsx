@@ -129,7 +129,7 @@ export const Lesson: React.FC<LessonPDFProps> = ({ fields, sections }) => {
           <View style={{flexGrow: 1}}>
             <View style={{display: 'flex', flexDirection: 'row', gap: 10, marginBottom: 15}}>
               <View style={{width: '90%'}}>
-                <Text style={{fontSize: 24, lineHeight: 1.14, marginBottom: 25, fontWeight: 700, hyphenateLimitChars: '6 8 2'}}>{fields.lesson_title}</Text>
+                <Text style={{fontSize: 24, lineHeight: 1.14, marginBottom: 25, fontWeight: 700, hyphenateLimitChars: '6 8 2'}}>{fields.lesson_title}ddd</Text>
                 <View style={{display: 'flex', flexDirection: 'row', gap: 10, marginBottom: 20}}>  
                   <IconText icon={faSignalBarsStrong} text={fields.lesson_audience} />
                   <IconText icon={faClock} text={fields.lesson_duration} />
@@ -137,7 +137,7 @@ export const Lesson: React.FC<LessonPDFProps> = ({ fields, sections }) => {
                 <View style={{display: 'flex', flexDirection: 'row', marginBottom: 10, gap: 10, width: "100%"}}>
                   <Rendering content={lesson_summary.content} />
                 </View>
-                <View style={{display: 'flex', flexDirection: 'row', marginBottom: 10, gap: 10}}>
+                <View style={{display: 'flex', flexDirection: 'row', marginTop: 10, marginBottom: 10, gap: 10}}>
                 {fields.lesson_concepts.map(concept => (
                   <View 
                     key={concept.fields.concept_name} 
