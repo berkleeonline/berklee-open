@@ -4,29 +4,30 @@ import ReactPDF from '@react-pdf/renderer';
 import { Lesson } from '../../components/pdf/Lesson';
 
 export const generate = async (pdfProps) => {
-  const isDev = process.env.NODE_ENV !== 'production';
+  //const isDev = process.env.NODE_ENV !== 'production';
 
-  const outputPath = path.resolve(`./dist/downloads/pdfs/${pdfProps.fields.Lesson_id}.pdf`);
+  const outputPath = path.resolve(`./tmp/pdf/${pdfProps.fields.Lesson_id}.pdf`);
 
   // Ensure the directory exists
   const pdfDir = path.dirname(outputPath);
   if (!fs.existsSync(pdfDir)) {
     fs.mkdirSync(pdfDir, { recursive: true });
-    console.log(`Created directory: ${pdfDir}`);
+    //console.log(`Created directory: ${pdfDir}`);
   }
 
   // Delete existing file if it exists
   if (fs.existsSync(outputPath)) {
     fs.unlinkSync(outputPath);
-    console.log(`Deleted existing file: ${outputPath}`);
+    //console.log(`Deleted existing file: ${outputPath}`);
   }
 
   // Generate the PDF
   try {
-    console.log(`Generating PDF: ${outputPath}`);
+    //console.log(`Generating PDF: ${pdfProps.fields.Lesson_id}.pdf`);
     await ReactPDF.render(<Lesson {...pdfProps} />, outputPath);
     console.log(`PDF successfully generated: ${outputPath}`);
+    return outputPath;
   } catch (error) {
-    console.error(`Error generating PDF: ${error.message}`);
+    console.error(`Error generating PDF at ${outputPath}: ${error.message}`);
   }
 };
