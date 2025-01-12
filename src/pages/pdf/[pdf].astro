@@ -71,8 +71,8 @@ const { pdf: lessonId } = Astro.params;
 const pdfProps = await fetchLessonData(lessonId);
 
 // Generate the PDF with props
-const outputPath = await generate(pdfProps);
-const data = outputPath ? Buffer.from(fs.readFileSync(outputPath)).toString('base64') : null;
+const dataRaw = await generate(pdfProps, lessonId);
+const data = dataRaw ? dataRaw.toString('base64') : null;
 const dataUrl = data ? `data:application/pdf;base64,${data}` : null;
 ---
 
