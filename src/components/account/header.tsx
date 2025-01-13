@@ -3,7 +3,7 @@ import { Button, Link, NavbarItem, Dropdown, DropdownTrigger, DropdownSection, D
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRightFromBracket, faGauge } from '@fortawesome/pro-light-svg-icons';
 
-const AccountHeader = () => {
+const AccountHeader = ({ isDashboard = false }) => {
   const { authStatus, user, signOut } = useAuthenticator(context => [
     context.authStatus,
     context.user,
@@ -25,7 +25,7 @@ const AccountHeader = () => {
           color="primary"
           as={Link}
           variant="solid"
-          className='font-bold'
+          className="font-bold"
         >
           Sign up
         </Button>
@@ -33,38 +33,64 @@ const AccountHeader = () => {
     </>
   );
 
+  const DashProfileHeader = () => (
+    <>  
+      <div className="flex items-start">
+        <Avatar
+          isBordered
+          as="button"
+          className="transition-transform mr-4 w-20 h-20"
+          src="/images/berklee_open_avatar.svg"
+        />
+        <div>
+          <h1 className="text-3xl font-bold mb-4 text-left">{user?.username}</h1>
+          <Button 
+            href="/account" 
+            as={Link}
+            radius="full"
+            isExternal 
+            className="font-bold w-41 hover:bg-slate-100 mb-2" 
+            variant="bordered" 
+            aria-label="Edit Account Settings"
+          >
+            Edit Account Settings
+          </Button>
+        </div>
+      </div>
+    </>
+  );
+
   const AuthHeader = () => (
     <>
-      
-        <div className="flex items-center gap-4">
-          <Dropdown placement="bottom-end">
-            <DropdownTrigger>
-              <Avatar
-                isBordered
-                as="button"
-                className="transition-transform"
-                src="/images/berklee_open_avatar.svg"
-              />
-            </DropdownTrigger>
-            <DropdownMenu aria-label="Profile Actions" variant="flat">
-              <DropdownSection showDivider>
-                <DropdownItem key="profile">
-                  Signed in as <span className="bold">{user?.username}</span>
-                </DropdownItem>
-              </DropdownSection>
-              <DropdownSection>
-                <DropdownItem key="settings" startContent={<FontAwesomeIcon icon={faGauge} />}>
+      <div className="flex items-center gap-4">
+        <Dropdown placement="bottom-end">
+          <DropdownTrigger>
+            <Avatar
+              isBordered
+              as="button"
+              className="transition-transform"
+              src="/images/berklee_open_avatar.svg"
+            />
+          </DropdownTrigger>
+          <DropdownMenu aria-label="Profile Actions" variant="flat">
+            <DropdownSection showDivider>
+              <DropdownItem key="profile">
+                Signed in as <span className="bold">{user?.username}</span>
+              </DropdownItem>
+            </DropdownSection>
+            <DropdownSection>
+              <DropdownItem key="settings" startContent={<FontAwesomeIcon icon={faGauge} />}>
                 <Link href="/dashboard" color="foreground" className="font-bold">Dashboard</Link>
-                </DropdownItem>
-              </DropdownSection>
-              <DropdownSection>
-                <DropdownItem key="logout" startContent={<FontAwesomeIcon icon={faRightFromBracket} />}>
-                  <Link color="foreground" onPress={signOut} className="font-bold">Log Out</Link>
-                </DropdownItem>
-              </DropdownSection>
-            </DropdownMenu>
-          </Dropdown>
-        </div>
+              </DropdownItem>
+            </DropdownSection>
+            <DropdownSection>
+              <DropdownItem key="logout" startContent={<FontAwesomeIcon icon={faRightFromBracket} />}>
+                <Link color="foreground" onPress={signOut} className="font-bold">Log Out</Link>
+              </DropdownItem>
+            </DropdownSection>
+          </DropdownMenu>
+        </Dropdown>
+      </div>
     </>
   );
 
@@ -74,15 +100,22 @@ const AccountHeader = () => {
     </>
   );
 
-  if (authStatus === 'authenticated' && typeof user !== 'undefined') {
-    return <AuthHeader />;
-  }
-
-  if (authStatus === 'configuring' || authStatus === 'authenticated') {
+  // Handle loading states
+  if (authStatus === 'configuring' || (authStatus === 'authenticated' && typeof user === 'undefined')) {
     return <Loading />;
   }
 
+  // Handle authenticated user
+  if (authStatus === 'authenticated' && typeof user !== 'undefined') {
+    return isDashboard ? <DashProfileHeader /> : <AuthHeader />;
+  }
+
+  // Default to anon header
   return <AnonHeader />;
 };
 
 export default AccountHeader;
+
+// Usage:
+// Regular header: <AccountHeader />
+// Dashboard header: <AccountHeader isDashboard={true} />

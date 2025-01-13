@@ -125,6 +125,21 @@ h2.search-term {
 
 /* Amplify Authentication Override Styles */
 
+[data-amplify-authenticator][data-variation=modal] fieldset::before, {
+  display: block;
+  text-align: left;
+  padding: 1rem 0rem;
+  color: #4B5563; /* or whatever color matches your theme */
+}
+
+[data-amplify-authenticator][data-variation=modal] form[data-amplify-authenticator-signup] fieldset::before {
+  content: "Sign up for free to get access to all Berklee Open resources.";
+}
+
+[data-amplify-authenticator][data-variation=modal] form[data-amplify-authenticator-signin] fieldset::before {
+  content: "Sign in with your email and password to access all resources.";
+}
+
 div[data-variation="default"] div[data-amplify-router] {
   border-radius: 8px;
 }
@@ -171,9 +186,8 @@ div[data-variation="default"] .amplify-tabs .amplify-tabs__list {
 
 form[data-amplify-authenticator-forgotpassword] .amplify-heading--3 {
   padding-bottom: 1.75rem !important;
-
-
 }
+
 .amplify-button--link.amplify-button--small {
   color: #ee243c !important;
   font-weight: 500 !important;
@@ -195,7 +209,7 @@ form[data-amplify-authenticator-forgotpassword] .amplify-heading--3 {
   border: 2px dashed #e7e7e9;
 }
 .card-placeholder.empty-card-item {
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0.03) 0%, rgba(0, 0, 0, 0) 100%);
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.08) 0%, rgba(0, 0, 0, 0) 100%);
 
   &:before {
     content: '';

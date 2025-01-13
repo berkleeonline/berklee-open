@@ -62,13 +62,18 @@ const AccountCustomized = () => {
          SignIn: {
            Header() {
              return (
-               <Heading
-                 textAlign="center"
-                 paddingTop="2rem"
-                 level={3}
-               >
-                 Sign In
-               </Heading>
+              <View>
+                <Heading
+                  textAlign="center"
+                  paddingTop="2rem"
+                  level={3}
+                >
+                  Sign In
+                </Heading>
+                <Text paddingLeft={35} paddingTop={35} paddingRight={35} color={tokens.colors.neutral[80]}>
+                  Sign in with your username and password to access all resources.
+                </Text>
+              </View>
              );
            },
            Footer() {
@@ -90,6 +95,7 @@ const AccountCustomized = () => {
          SignUp: {
            Header() {
              return (
+              <>
                <Heading
                  textAlign="center"
                  paddingTop="2rem"
@@ -97,6 +103,10 @@ const AccountCustomized = () => {
                >
                  Sign Up
                </Heading>
+               <Text paddingLeft={35} paddingTop={35} paddingRight={35} color={tokens.colors.neutral[80]}>
+                Sign up for free to access all Berklee Open resources.
+                </Text>
+              </>
              );
            },
            Footer() {
