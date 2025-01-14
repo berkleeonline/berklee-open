@@ -1,0 +1,34 @@
+---
+import App from "../components/app";
+import AuthHandler from "../components/account/account-auth-handler";
+
+interface Props {
+  title: string;
+  cssClass?: string;
+  showHeader?: boolean;
+}
+
+const {
+  title,
+  cssClass,
+  showHeader = false,
+} = Astro.props;
+
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <link href="/favicon.svg" rel="shortcut icon" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex, nofollow" />
+  </head>
+  <body>
+    <App client:load>
+      <AuthHandler client:load />
+      <main>
+        <slot />
+      </main>
+    </App>
+  </body>
+</html>

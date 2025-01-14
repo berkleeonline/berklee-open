@@ -1,0 +1,231 @@
+html {
+  scroll-behavior: smooth;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.5);
+  }
+  70% {
+    box-shadow: 0 0 20px 10px rgba(255, 0, 0, 0.5);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 0, 0, 0);
+  }
+}
+
+/* Search styles - TODO - move these to their own search file with search */
+
+#searchbox {
+    margin-bottom: 20px;
+}
+
+h1.search-header {
+  font-size: 2.35rem;
+  font-weight: 700;
+  margin-top: 3rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  width: 100%;
+}
+
+h2.search-term {
+  font-size: 1.75rem;
+  font-weight: 500;
+}
+
+.ais-SearchBox-form {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-bottom: 5rem;
+  position: relative;
+  width: 100%;
+}
+
+/* have to look into why there is a submit and a double reset button - hiding for now */
+
+.ais-SearchBox-reset {
+  display: none;
+}
+
+.ais-SearchBox-submit svg {
+  fill: #777;
+  height: 20px;
+  width: 20px;
+  position: absolute;
+  left: 20px;
+  top: 19px;
+}
+
+.ais-SearchBox {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.ais-SearchBox-input {
+  background: #ecebee;
+  border: double 2px transparent;
+  border-radius: 80px;
+  background-image: linear-gradient(white, white), radial-gradient(circle at top left, #9D84B4,#12A5D5);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  font-size: 1rem;
+  padding: 1rem 1.5rem 1rem 3.5rem;
+  position: relative;
+  width: 100%;
+}
+
+@media(max-width: 991px) {
+  .ais-SearchBox-form {
+    width: 100%;
+  }
+}
+
+.ais-Hits {
+  /* Remove any default margin/padding */
+  margin: 5rem 0 0 0;
+  padding: 0;
+}
+
+.ais-Hits-list {
+/* Create the grid layout */
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 2rem;
+  padding: 0;
+  list-style-type: none;
+}
+
+.ais-Hits-item {
+/* Remove default list item styles */
+  margin: 0;
+  padding: 0;
+
+  div.transform, a { height: 100%; }
+}
+
+@keyframes animate-in {
+  from {
+    opacity: 0;
+    transform: translateY(1rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-in {
+  animation: animate-in 0.3s ease-out;
+}
+
+/* Amplify Authentication Override Styles */
+
+[data-amplify-authenticator][data-variation=modal] fieldset::before, {
+  display: block;
+  text-align: left;
+  padding: 1rem 0rem;
+  color: #4B5563; /* or whatever color matches your theme */
+}
+
+[data-amplify-authenticator][data-variation=modal] form[data-amplify-authenticator-signup] fieldset::before {
+  content: "Sign up for free to get access to all Berklee Open resources.";
+}
+
+[data-amplify-authenticator][data-variation=modal] form[data-amplify-authenticator-signin] fieldset::before {
+  content: "Sign in with your email and password to access all resources.";
+}
+
+div[data-variation="default"] div[data-amplify-router] {
+  border-radius: 8px;
+}
+
+div[data-variation="modal"] div[data-amplify-router] .amplify-tabs__item--active {
+  border-color: #ee243c !important;
+}
+
+div[data-variation="modal"] div[data-amplify-router] {
+  border-radius: 0 0 8px 8px !important;
+}
+
+.amplify-button--primary {
+  background-color: #0E1416 !important;
+  color: #FFF !important;
+  border-radius: 8px !important;
+  padding-top: 1rem !important;
+  padding-bottom: 1rem !important;
+  margin-top: 1rem !important;
+
+  &:hover {
+    background-color: #777 !important;
+  }
+}
+
+div[data-variation="default"] .amplify-tabs .amplify-tabs__list {
+  display: none !important;
+}
+
+.amplify-tabs__item--active {
+  color: #ee243c !important;
+  border-color: #ee243c !important;
+}
+
+.amplify-heading--3 {
+  font-size: 1.5rem !important;
+  font-weight: 700 !important;
+  text-align: center !important;
+}
+
+.amplify-heading--4 {
+  text-align: center !important;
+}
+
+form[data-amplify-authenticator-forgotpassword] .amplify-heading--3 {
+  padding-bottom: 1.75rem !important;
+}
+
+.amplify-button--link.amplify-button--small {
+  color: #ee243c !important;
+  font-weight: 500 !important;
+  padding-top: 1rem;
+
+  &:hover {
+    background: none;;
+  }
+}
+
+/* Dashboard Styles */
+
+.empty-cards-list {
+  display: grid;
+  grid-gap: 48px;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+}
+.card-placeholder.card-instruct {
+  border: 2px dashed #e7e7e9;
+}
+.card-placeholder.empty-card-item {
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.08) 0%, rgba(0, 0, 0, 0) 100%);
+
+  &:before {
+    content: '';
+    display: block;
+    padding-top: calc(100%* calc(3 / 4));
+  }
+}
+/* Responsive adjustments */
+@media (min-width: 768px) {
+  .ais-Hits-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .ais-Hits-list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

@@ -1,0 +1,68 @@
+#!/bin/bash
+# shellcheck disable=SC1090,SC1091
+
+set -x
+set -e
+set -u
+
+declare -gx branch=dev
+
+# Any option such as -c that isn't processed is here just to satisfy CI/CD
+# stuff which passes some default arguments (like -c for cluster).
+while getopts ":" opt; do
+  case ${opt} in
+    b)
+      branch="${OPTARG}"
+    ;;
+    *)
+      true
+    ;;
+  esac
+done
+
+if [ "${branch}" != 'dev' ] && [ "${branch}" != 'production' ]; then
+  exit 0
+fi
+
+yarn install
+
+rm -rf amplify-backup
+
+IFS='|'
+
+AWSCLOUDFORMATIONCONFIG="{\
+\"configLevel\":\"project\",\
+\"useProfile\":false,\
+\"accessKeyId\":\"$AWS_ACCESS_KEY_ID\",\
+\"secretAccessKey\":\"$AWS_SECRET_ACCESS_KEY\",\
+\"region\":\"us-east-1\"\
+}"
+
+AMPLIFY="{\
+\"envName\":\"$branch\",\
+\"defaultEditor\":\"code\"\
+}"
+
+PROVIDERS="{\
+\"awscloudformation\":$AWSCLOUDFORMATIONCONFIG\
+}"
+
+CI=1 amplify init \
+--appId "${AMPLIFY_APP_ID}" \
+--amplify $AMPLIFY \
+--providers $PROVIDERS \
+--yes
+
+CI=1 \
+  amplify \
+    pull \
+    --restore \
+    -y \
+    --appId "${AMPLIFY_APP_ID}" \
+    --envName "${branch}"
+
+CI=1 \
+  amplify \
+    publish \
+    -y \
+    --invalidateCloudFront

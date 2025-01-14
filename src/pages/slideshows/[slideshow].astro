@@ -1,0 +1,64 @@
+---
+import { contentfulClient } from "../../lib/contentful";
+import Slideshow from "../../components/slideshow/Slideshow";
+
+export async function getStaticPaths() {
+  const lessons = await contentfulClient.getEntries({
+    content_type: "lesson",
+  });
+
+  let lessonsToPublish = [];
+
+  lessons.items.map((lesson) => {
+    lessonsToPublish.push({
+      params: { slideshow: lesson?.sys.id },
+      props: lesson,
+    });
+  });
+
+  return lessonsToPublish;
+}
+
+const lessonSections = Astro.props.fields.lesson_sections || [];
+---
+
+<div>
+  {await Promise.all(
+    lessonSections.map(async (section, index) => {
+      let lessonEntry = null;
+
+      // Safely retrieve interactiveContent ID
+      const interactiveContentId = section?.fields?.interactiveContent?.sys?.id;
+      if (interactiveContentId) {
+        try {
+          lessonEntry = await contentfulClient.getEntry(interactiveContentId);
+        } catch (error) {
+          console.error(`Error fetching interactiveContent for section ${index}:`, error);
+          return null;
+        }
+      }
+
+      // Process slides
+      const slides = lessonEntry?.fields?.slides?.filter((slide) => slide?.fields) || [];
+      for (const slide of slides) {
+        const flashCardsId = slide?.fields?.flashCards?.sys?.id;
+        if (flashCardsId) {
+          try {
+            const cards = await contentfulClient.getEntry(flashCardsId);
+            slide.fields.flashCards = cards.fields.flashCards;
+          } catch (error) {
+            console.error(`Error fetching flashCards for slide:`, error);
+          }
+        }
+      }
+
+      // Check if lessonEntry is a slideshow
+      if (lessonEntry?.sys?.contentType?.sys?.id === "slideshow") {
+        return <Slideshow content={lessonEntry} client:load />;
+      } else {
+        console.warn('Lesson entry is not a slideshow or is undefined:', lessonEntry);
+        return null;
+      }
+    })
+  )}
+</div>

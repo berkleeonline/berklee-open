@@ -10,6 +10,17 @@
       "StackName": "amplify-berkleeopen-dev-3d898",
       "StackId": "arn:aws:cloudformation:us-east-1:399735942051:stack/amplify-berkleeopen-dev-3d898/3e11ec10-f2ad-11ee-bd67-1261b950bfb5",
       "AmplifyAppId": "d2aaugixocxhg8"
+    },
+    "categories": {
+      "auth": {
+        "berkleeopen799eb504": {}
+      },
+      "hosting": {
+        "amplifyhosting": {
+          "appId": "d2aaugixocxhg8",
+          "type": "manual"
+        }
+      }
     }
   },
   "production": {
