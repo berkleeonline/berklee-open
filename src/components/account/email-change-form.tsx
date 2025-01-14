@@ -168,12 +168,12 @@ const EmailChangeFormContent = () => {
           </div>
         )}
 
-        <div className="flex gap-4">
+        <div className="block gap-4">
           <Button
             type="submit"
             color="primary"
             isLoading={isLoading}
-            className="font-bold"
+            className="block amplify-button w-full"
           >
             Update Email
           </Button>

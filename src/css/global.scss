@@ -152,13 +152,24 @@ div[data-variation="modal"] div[data-amplify-router] {
   border-radius: 0 0 8px 8px !important;
 }
 
-.amplify-button--primary {
+.amplify-button.amplify-button--disabled[type="submit"] {
+  background-color: #777 !important;
+  color: #FFF;
+  padding-top: 1rem !important;
+  padding-bottom: 1rem !important;
+  margin-top: 1rem !important;
+  border-radius: 8px;
+}
+
+.amplify-button--primary,
+.amplify-button[type="submit"]:not(.amplify-button--disabled) {
   background-color: #0E1416 !important;
   color: #FFF !important;
   border-radius: 8px !important;
   padding-top: 1rem !important;
   padding-bottom: 1rem !important;
   margin-top: 1rem !important;
+  width: 100% !important;
 
   &:hover {
     background-color: #777 !important;

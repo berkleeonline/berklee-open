@@ -2,21 +2,17 @@
 import { AccountSettings } from '@aws-amplify/ui-react';
 import MainLayout from "../../../layouts/main.astro";
 import AccountSettingsWrapper from "../../../components/account/account-settings-wrapper";
-
+import PasswordChangeForm from "../../../components/account/password-change-form";
 import '@aws-amplify/ui-react/styles.css';
-
-const handleSuccess = () => {
-  alert('Password changed successfully');
-};
 
 ---
 
-<MainLayout title={`Berklee Open: Change Password`} showHeader={true}>
+<MainLayout title={`Berklee Open: Update Password`} showHeader={true}>
   <AccountSettingsWrapper client:load currentPage="/account/password">
     <div class="flex gap-20">
       <div class="w-full account">
         <h2 class="text-2xl font-bold mb-6">Update Password</h2>
-        <AccountSettings.ChangePassword onSuccess={handleSuccess} client:load />
+        <PasswordChangeForm client:load />
       </div>
     </div>
   </AccountSettingsWrapper>
