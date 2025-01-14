@@ -1,12 +1,12 @@
 import { Authenticator } from '@aws-amplify/ui-react';
 import AccountHeader from './header';
 
-const DashboardHeader = () => {
+const ProfileHeader = ({ isAccountPage = false }) => {
   return (
     <Authenticator.Provider>
-      <AccountHeader isDashboard={true} />
+      <AccountHeader isDashboard={true} isAccountPage={isAccountPage} />
     </Authenticator.Provider>
   );
 };
 
-export default DashboardHeader;
+export default ProfileHeader;

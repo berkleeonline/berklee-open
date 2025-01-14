@@ -3,7 +3,7 @@ import { Button, Link, NavbarItem, Dropdown, DropdownTrigger, DropdownSection, D
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRightFromBracket, faGauge } from '@fortawesome/pro-light-svg-icons';
 
-const AccountHeader = ({ isDashboard = false }) => {
+const AccountHeader = ({ isDashboard = false, isAccountPage = false }) => {
   const { authStatus, user, signOut } = useAuthenticator(context => [
     context.authStatus,
     context.user,
@@ -45,15 +45,15 @@ const AccountHeader = ({ isDashboard = false }) => {
         <div>
           <h1 className="text-3xl font-bold mb-4 text-left">{user?.username}</h1>
           <Button 
-            href="/account" 
+            href={isAccountPage ? "/dashboard" : "/account/email"}
             as={Link}
             radius="full"
             isExternal 
             className="font-bold w-41 hover:bg-slate-100 mb-2" 
             variant="bordered" 
-            aria-label="Edit Account Settings"
+            aria-label={isAccountPage ? "Back to Dashboard" : "Edit Account Settings"}
           >
-            Edit Account Settings
+            {isAccountPage ? "Dashboard" : "Edit Account Settings"}
           </Button>
         </div>
       </div>

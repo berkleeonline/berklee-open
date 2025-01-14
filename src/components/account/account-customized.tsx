@@ -1,4 +1,4 @@
-import { Authenticator, useTheme, useAuthenticator, Heading, View, Text, Button } from '@aws-amplify/ui-react';
+import { Authenticator, useTheme, useAuthenticator, Heading, View, Text } from '@aws-amplify/ui-react';
 import { Link } from "@nextui-org/react";
 import { useEffect, useState } from 'react';
 import { getCurrentUser } from 'aws-amplify/auth'; 

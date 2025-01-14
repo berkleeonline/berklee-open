@@ -1,0 +1,25 @@
+---
+import { AccountSettings } from '@aws-amplify/ui-react';
+import MainLayout from "../../../layouts/main.astro";
+import AccountSettingsWrapper from "../../../components/account/account-settings-wrapper";
+import '@aws-amplify/ui-react/styles.css';
+---
+
+<MainLayout title={`Berklee Open: Delete User`} showHeader={true}>
+  <AccountSettingsWrapper client:load currentPage="/account/delete">
+    <div class="flex gap-20">
+      <div class="w-full">
+        <h1 class="text-2xl font-bold mb-8">Goodbye for now, but the music lives on. 🎶</h1>
+        <p class="mb-4">You’ll always be part of the Berklee Open family.</p><p class="mb-12">If you ever feel like rejoining the ensemble, just tune in and Berklee Open will be here with open arms, ready to help you hit the right notes again.</p>
+        <AccountSettings.DeleteUser client:load
+          displayText={{
+          deleteAccountText: 'Delete the account',
+          cancelButtonText: 'Cancel',
+          confirmDeleteButtonText: 'I understand, delete my account',
+          warningText: 'Your account and associated data will be deleted. This action cannot be undone.'
+        }}
+      />
+      </div>
+    </div>
+  </AccountSettingsWrapper>
+</MainLayout>

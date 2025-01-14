@@ -1,8 +1,8 @@
 ---
-import { AccountSettings, Authenticator } from '@aws-amplify/ui-react';
-import { Link } from "@nextui-org/react";
+import { AccountSettings } from '@aws-amplify/ui-react';
 import MainLayout from "../../../layouts/main.astro";
 import AccountSettingsWrapper from "../../../components/account/account-settings-wrapper";
+
 import '@aws-amplify/ui-react/styles.css';
 
 const handleSuccess = () => {
@@ -12,16 +12,11 @@ const handleSuccess = () => {
 ---
 
 <MainLayout title={`Berklee Open: Change Password`} showHeader={true}>
-  <AccountSettingsWrapper client:load currentPage="/account/email">
+  <AccountSettingsWrapper client:load currentPage="/account/password">
     <div class="flex gap-20">
-      <div class="w-full">
-        <Link href="/account">
-          &lt; Back to Account
-        </Link>
-        <h1 class="text-4xl font-bold mb-8">Change Password</h1>
-        <Authenticator client:load>
-          <AccountSettings.ChangePassword onSuccess={handleSuccess} client:load />
-        </Authenticator>
+      <div class="w-full account">
+        <h2 class="text-2xl font-bold mb-6">Update Password</h2>
+        <AccountSettings.ChangePassword onSuccess={handleSuccess} client:load />
       </div>
     </div>
   </AccountSettingsWrapper>

@@ -129,7 +129,7 @@ export const Lesson: React.FC<LessonPDFProps> = ({ fields, sections }) => {
           <View style={{flexGrow: 1}}>
             <View style={{display: 'flex', flexDirection: 'row', gap: 10, marginBottom: 15}}>
               <View style={{width: '90%'}}>
-                <Text style={{fontSize: 24, lineHeight: 1.14, marginBottom: 25, fontWeight: 700, hyphenateLimitChars: '6 8 2'}}>{fields.lesson_title}ddd</Text>
+                <Text style={{fontSize: 24, lineHeight: 1.14, marginBottom: 25, fontWeight: 700, hyphenateLimitChars: '6 8 2'}}>{fields.lesson_title}</Text>
                 <View style={{display: 'flex', flexDirection: 'row', gap: 10, marginBottom: 20}}>  
                   <IconText icon={faSignalBarsStrong} text={fields.lesson_audience} />
                   <IconText icon={faClock} text={fields.lesson_duration} />
@@ -144,7 +144,7 @@ export const Lesson: React.FC<LessonPDFProps> = ({ fields, sections }) => {
                     style={{
                       backgroundColor: '#eff1f3', 
                       alignItems: 'center',
-                      justifyContent: 'center',  // Add this for vertical centering
+                      justifyContent: 'center',
                       minHeight: 24,  // Add explicit minHeight
                       paddingHorizontal: 10, 
                       paddingVertical: 6, 
@@ -153,7 +153,7 @@ export const Lesson: React.FC<LessonPDFProps> = ({ fields, sections }) => {
                   >
                     <Text style={{
                       fontSize: 10, 
-                      lineHeight: 1.2,  // Adjust lineHeight to be more consistent
+                      lineHeight: 1.2,
                       fontWeight: 'black'
                     }}>
                       {concept.fields.concept_name}
@@ -190,7 +190,7 @@ export const Lesson: React.FC<LessonPDFProps> = ({ fields, sections }) => {
                   width: '70%',
                   display: "flex",
                   flexDirection: "row",
-                  alignItems: "center",  // Changed from "left"
+                  alignItems: "center",
                   paddingHorizontal: 10,
                   borderRight: '1',
                   borderColor: '#f8949d'
@@ -199,7 +199,7 @@ export const Lesson: React.FC<LessonPDFProps> = ({ fields, sections }) => {
                     faIcon={faScroll} 
                     style={{ 
                       width: 15, 
-                      height: 15,  // Add explicit height
+                      height: 15,
                       marginRight: 8, 
                       marginLeft: 5 
                     }} 
@@ -216,14 +216,14 @@ export const Lesson: React.FC<LessonPDFProps> = ({ fields, sections }) => {
                   width: '25%',
                   display: "flex",
                   flexDirection: "row",
-                  alignItems: "center",  // Changed from "left"
+                  alignItems: "center",
                   paddingHorizontal: 10
                 }}>
                   <FontAwesomeIcon 
                     faIcon={faNoteSticky} 
                     style={{ 
                       width: 13,
-                      height: 13,  // Add explicit height
+                      height: 13,
                       marginRight: 8, 
                       marginLeft: 5 
                     }} 
@@ -236,7 +236,7 @@ export const Lesson: React.FC<LessonPDFProps> = ({ fields, sections }) => {
                     fontWeight: 900
                   }}>Notes</Text>
                 </View>
-              </View>
+            </View>
             </View>
               {instructions.map((instruction, instructionIndex) => {
                 return (

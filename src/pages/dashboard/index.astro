@@ -4,13 +4,13 @@ import { Authenticator } from '@aws-amplify/ui-react';
 import { Avatar, Button, Link } from "@nextui-org/react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart } from '@fortawesome/pro-light-svg-icons';
-import DashboardHeader from "../../components/account/dashboard-header";
+import ProfileHeader from "../../components/account/profile-header";
 ---
 
 <Authenticator.Provider>
   <MainLayout title="Berklee Open: Dashboard">
     <div class="container mx-auto px-4 flex items-start justify-center mb-16">
-      <DashboardHeader client:load />
+      <ProfileHeader isDashboard={true} isAccountPage={false} client:load />
     </div>
     <div class="container mx-auto px-4">
       <ul class="empty-cards-list">
