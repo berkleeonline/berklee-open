@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useAuthenticator, Authenticator } from '@aws-amplify/ui-react';
-import { updateUserAttributes, confirmUserAttribute, getCurrentUser, fetchUserAttributes } from 'aws-amplify/auth';
+import { updateUserAttributes, confirmUserAttribute, fetchUserAttributes } from 'aws-amplify/auth';
 import { Button } from "@nextui-org/react";
 
 const EmailChangeFormContent = () => {
@@ -13,7 +13,7 @@ const EmailChangeFormContent = () => {
   const [showVerificationForm, setShowVerificationForm] = useState(false);
   const { user } = useAuthenticator();
 
-  // Add useEffect to fetch user attributes when component mounts
+  // Fetch user attributes when component mounts
   useEffect(() => {
     const fetchEmail = async () => {
       try {
