@@ -137,7 +137,7 @@ export const Lesson: React.FC<LessonPDFProps> = ({ fields, sections }) => {
                 <View style={{display: 'flex', flexDirection: 'row', marginBottom: 10, gap: 10, width: "100%"}}>
                   <Rendering content={lesson_summary.content} />
                 </View>
-                <View style={{display: 'flex', flexDirection: 'row', marginTop: 10, marginBottom: 10, gap: 10}}>
+                <View style={{display: 'flex', flexDirection: 'row', marginTop: 16, marginBottom: 16, gap: 10}}>
                 {fields.lesson_concepts.map(concept => (
                   <View 
                     key={concept.fields.concept_name} 
@@ -176,67 +176,67 @@ export const Lesson: React.FC<LessonPDFProps> = ({ fields, sections }) => {
                   lesson_prerequisites={lesson_prerequisites}
                 />
             </View>
-            <View style={{flexGrow: 1}}>
-            <View fixed>
-              <View style={{
-                backgroundColor: '#fbd3d7',
-                borderRadius: '100%',
-                flexDirection: 'row',
-                marginBottom: 24,
-                minHeight: 36,  // Add explicit height
-                alignItems: 'center'  // Ensure vertical centering
-              }}>
+            <View break style={{flexGrow: 1}}>
+              <View fixed>
                 <View style={{
-                  width: '70%',
-                  display: "flex",
-                  flexDirection: "row",
-                  alignItems: "center",
-                  paddingHorizontal: 10,
-                  borderRight: '1',
-                  borderColor: '#f8949d'
+                  backgroundColor: '#fbd3d7',
+                  borderRadius: '100%',
+                  flexDirection: 'row',
+                  marginBottom: 24,
+                  minHeight: 36,  // Add explicit height
+                  alignItems: 'center'  // Ensure vertical centering
                 }}>
-                  <FontAwesomeIcon 
-                    faIcon={faScroll} 
-                    style={{ 
-                      width: 15, 
-                      height: 15,
-                      marginRight: 8, 
-                      marginLeft: 5 
-                    }} 
-                  />
-                  <Text style={{
-                    fontSize: '11pt',
-                    lineHeight: 1.5,
-                    fontWeight: 900,
-                    padding: 8,
-                    paddingLeft: 0
-                  }}>Lesson Breakdown</Text>
-                </View>
-                <View style={{
-                  width: '25%',
-                  display: "flex",
-                  flexDirection: "row",
-                  alignItems: "center",
-                  paddingHorizontal: 10
-                }}>
-                  <FontAwesomeIcon 
-                    faIcon={faNoteSticky} 
-                    style={{ 
-                      width: 13,
-                      height: 13,
-                      marginRight: 8, 
-                      marginLeft: 5 
-                    }} 
-                  />
-                  <Text style={{
-                    fontSize: '11pt',
-                    lineHeight: 1.5,
-                    padding: 8,
-                    paddingLeft: 0,
-                    fontWeight: 900
-                  }}>Notes</Text>
-                </View>
-            </View>
+                  <View style={{
+                    width: '70%',
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    paddingHorizontal: 10,
+                    borderRight: '1',
+                    borderColor: '#f8949d'
+                  }}>
+                    <FontAwesomeIcon 
+                      faIcon={faScroll} 
+                      style={{ 
+                        width: 15, 
+                        height: 15,
+                        marginRight: 8, 
+                        marginLeft: 5 
+                      }} 
+                    />
+                    <Text style={{
+                      fontSize: '11pt',
+                      lineHeight: 1.5,
+                      fontWeight: 900,
+                      padding: 8,
+                      paddingLeft: 0
+                    }}>Lesson Breakdown</Text>
+                  </View>
+                  <View style={{
+                    width: '25%',
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    paddingHorizontal: 10
+                  }}>
+                    <FontAwesomeIcon 
+                      faIcon={faNoteSticky} 
+                      style={{ 
+                        width: 13,
+                        height: 13,
+                        marginRight: 8, 
+                        marginLeft: 5 
+                      }} 
+                    />
+                    <Text style={{
+                      fontSize: '11pt',
+                      lineHeight: 1.5,
+                      padding: 8,
+                      paddingLeft: 0,
+                      fontWeight: 900
+                    }}>Notes</Text>
+                  </View>
+              </View>
             </View>
               {instructions.map((instruction, instructionIndex) => {
                 return (
