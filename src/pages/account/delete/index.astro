@@ -2,15 +2,17 @@
 import { AccountSettings } from '@aws-amplify/ui-react';
 import MainLayout from "../../../layouts/main.astro";
 import AccountSettingsWrapper from "../../../components/account/account-settings-wrapper";
+import AuthView from '../../../components/AuthView';
 import '@aws-amplify/ui-react/styles.css';
 ---
 
-<MainLayout title={`Berklee Open: Delete User`} showHeader={true}>
+<AuthView client:load>
+<MainLayout title={`Berklee Open: Delete User`} showHeader={true} cssClass="account">
   <AccountSettingsWrapper client:load currentPage="/account/delete">
     <div class="flex gap-20">
       <div class="w-full">
-        <h1 class="text-2xl font-bold mb-8">Goodbye for now, but the music lives on. 🎶</h1>
-        <p class="mb-4">You’ll always be part of the Berklee Open family.</p><p class="mb-12">If you ever feel like rejoining the ensemble, just tune in and Berklee Open will be here with open arms, ready to help you hit the right notes again.</p>
+        <h1 class="text-2xl font-bold mb-8">Goodbye for now. 🎶</h1>
+        <p class="mb-4">You’ll always be part of the Berklee Open family.</p><p class="mb-12">If you ever feel like rejoining, just tune in and Berklee Open will be here, ready to help you and your students hit the right notes.</p>
         <AccountSettings.DeleteUser client:load
           displayText={{
           deleteAccountText: 'Delete the account',
@@ -23,3 +25,4 @@ import '@aws-amplify/ui-react/styles.css';
     </div>
   </AccountSettingsWrapper>
 </MainLayout>
+</AuthView>

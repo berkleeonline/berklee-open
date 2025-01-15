@@ -9,20 +9,31 @@ import '../fontAwesome'; // Font Awesome...obviously.
 import AuthHandler from "../components/account/account-auth-handler";
 
 
-let header: HeaderProps | undefined = undefined;
+// Define default values or handle optional properties
+const { title = 'Berklee Open', cssClass } = Astro.props;
 
-const { title, cssClass } = Astro.props;
+const header: HeaderProps = {
+  title,
+  logo: {
+    src: '/path-to-your-logo.svg', // Add your actual logo path
+    alt: 'Berklee Open Logo',
+    width: 0, // Add actual dimensions
+    height: 0
+  },
+  uid: 'header' // Or generate/pass a unique ID if needed
+};
 
 ---
 <html lang="en" transition:animate="none">
   <head>
     <meta charset="utf-8">
+    <title>{title} | Berklee Open</title>
     <ViewTransitions />
     <link href="/favicon.svg" rel="shortcut icon" type="image/x-icon">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="noindex, nofollow" />
   </head>
-  <body>
+  <body class={cssClass + " authenticated"}>
     <App client:load>
       <AuthHandler client:load />
       <Header text={title} client:load />

@@ -123,7 +123,7 @@ export const Lesson: React.FC<LessonPDFProps> = ({ fields, sections }) => {
   } = fields;
 
   return (
-    <Document>
+    <Document title={fields.lesson_title}>
       <Page size="LETTER" style={styles.page} wrap>
         <Header lessonTitle={fields.lesson_title} />
           <View style={{flexGrow: 1}}>

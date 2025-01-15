@@ -1,7 +1,7 @@
 import { useAuthenticator } from '@aws-amplify/ui-react';
 import { Button, Link, NavbarItem, Dropdown, DropdownTrigger, DropdownSection, DropdownMenu, DropdownItem, Avatar } from "@nextui-org/react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faRightFromBracket, faGauge } from '@fortawesome/pro-light-svg-icons';
+import { faRightFromBracket, faGauge, faGear } from '@fortawesome/pro-light-svg-icons';
 
 const AccountHeader = ({ isDashboard = false, isAccountPage = false }) => {
   const { authStatus, user, signOut } = useAuthenticator(context => [
@@ -78,9 +78,12 @@ const AccountHeader = ({ isDashboard = false, isAccountPage = false }) => {
                 Signed in as <span className="bold">{user?.username}</span>
               </DropdownItem>
             </DropdownSection>
-            <DropdownSection>
+            <DropdownSection showDivider>
               <DropdownItem key="settings" startContent={<FontAwesomeIcon icon={faGauge} />}>
                 <Link href="/dashboard" color="foreground" className="font-bold">Dashboard</Link>
+              </DropdownItem>
+              <DropdownItem key="settings" startContent={<FontAwesomeIcon icon={faGear} />}>
+                <Link href="/account/email" color="foreground" className="font-bold">Account Settings</Link>
               </DropdownItem>
             </DropdownSection>
             <DropdownSection>

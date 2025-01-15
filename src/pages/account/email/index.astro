@@ -1,19 +1,21 @@
 ---
-import { AccountSettings } from '@aws-amplify/ui-react';
 import MainLayout from "../../../layouts/main.astro";
 import AccountSettingsWrapper from "../../../components/account/account-settings-wrapper";
 import EmailChangeForm from "../../../components/account/email-change-form";
+import AuthView from '../../../components/AuthView';
 import '@aws-amplify/ui-react/styles.css';
 
 ---
-
-<MainLayout title={`Berklee Open: Edit Email`} showHeader={true}>
+<AuthView client:load>
+<MainLayout title={`Berklee Open: Edit Email`} showHeader={true} cssClass="account">
   <AccountSettingsWrapper client:load currentPage="/account/email">
     <div class="flex gap-20">
       <div class="w-full">
-        <h2 class="text-2xl font-bold mb-6">Edit Email</h2>
+        <h1 class="text-2xl font-bold mb-6">Edit Email</h1>
           <EmailChangeForm client:load />
       </div>
     </div>
   </AccountSettingsWrapper>
 </MainLayout>
+</AuthView>
+

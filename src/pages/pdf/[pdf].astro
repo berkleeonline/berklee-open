@@ -76,7 +76,7 @@ const data = dataRaw ? dataRaw.toString('base64') : null;
 const dataUrl = data ? `data:application/pdf;base64,${data}` : null;
 ---
 
-<PdfLayout title={pdfProps.fields.lesson_title}>
+<PdfLayout cssClass="pdf-page">
   <AuthView client:load>
     {dataUrl ? (
       <iframe src={dataUrl} style="height: 100vh; width: 100vw;" />

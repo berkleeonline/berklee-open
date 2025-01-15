@@ -228,6 +228,16 @@ form[data-amplify-authenticator-forgotpassword] .amplify-heading--3 {
     padding-top: calc(100%* calc(3 / 4));
   }
 }
+
+/* hide the close button on the modal on specific pages */
+body.account,
+body.dashboard,
+body.pdf-page {
+  .crazy-close {
+    display: none;
+  }
+}
+
 /* Responsive adjustments */
 @media (min-width: 768px) {
   .ais-Hits-list {
