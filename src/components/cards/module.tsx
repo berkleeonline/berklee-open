@@ -3,6 +3,7 @@ import { Card, CardBody, CardFooter, Image } from "@nextui-org/react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart,faShare, faBook, faSignal4, faBooks } from '@fortawesome/pro-light-svg-icons';
 import { IconChip } from "../../elements/IconChip";
+import { getImageUrl } from '../../utils/getImageUrl';
 import { calculateLevel } from "../../lib/calculateLevel";
 
 import AuthLink from "../AuthLink";
@@ -30,6 +31,16 @@ const ModuleCard: React.FC<ModuleCardProps> = ({
   if (level.length > 0) {
     level = calculateLevel(level);
   }
+  // Create a Contentful-like structure if image is a string
+  const imageObj = typeof image === 'string' ? {
+    fields: {
+      file: {
+        url: image
+      }
+    }
+  } : image;
+
+  const { url: moduleImageUrl, placeholderStyle } = getImageUrl(imageObj, index);
 
   return (
     <AuthLink href={`/modules/${id}`} className="no-underline h-full">
@@ -38,13 +49,17 @@ const ModuleCard: React.FC<ModuleCardProps> = ({
           <div className="absolute bottom-[-15px] left-0 z-20">
             <IconChip icon={faBooks} label="Module" contentType="module" href="" />
           </div>
-          <Image
-            radius="lg"
-            width="100%"
-            alt={title}
-            className="w-full object-cover h-[265px] opacity-100"
-            src={image}
-          />
+          {moduleImageUrl ? (
+              <Image src={moduleImageUrl} alt={title} className="rounded-lg mr-8 object-cover" />
+            ) : (
+              <div 
+                className="rounded-lg mr-8 object-cover w-full" 
+                style={{
+                  ...placeholderStyle,
+                  height: 265
+                }} 
+              />
+            )}
         </CardBody>
         <CardFooter className="text-small flex-col h-full">
           <div className="flex w-full mb-2 justify-between">

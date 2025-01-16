@@ -250,3 +250,13 @@ body.pdf-page {
     grid-template-columns: repeat(3, 1fr);
   }
 }
+
+/* temporary gradient styles for the cards to have visual interest */
+.lesson-image-placeholder {
+  height: 265px !important;
+}
+
+.syllabus-unit-placeholder {
+  width: 100%;
+  height: 87px !important;
+}

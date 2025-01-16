@@ -6,7 +6,7 @@
 	import ModuleCard from "../../components/cards/module"
 
 	const modules = await contentfulClient.getEntries<Module>({
-  		content_type: "module",
+  	content_type: "module",
 	});
 ---
 
@@ -22,7 +22,7 @@
             title={module.fields.module_title}
             image={module.fields.module_image?.fields?.file?.url?.startsWith('//') 
               ? `https:${module.fields.module_image.fields.file.url}` 
-              : module.fields.module_image?.fields?.file?.url ?? 'https://placehold.co/425x265'}
+              : module.fields.module_image?.fields?.file?.url}
             shortDescription={module.fields.module_short_description}
             level={module.fields.module_level}
             unitsCount={module.fields.module_units.length}

@@ -54,7 +54,7 @@ const getImageUrl = (image) => {
     const url = image.fields.file.url;
     return url.startsWith('//') ? `https:${url}` : url;
   }
-  return 'https://placehold.co/425x265';
+  return 'https://picsum.photos/425/265';
 };
 
 // Get the URL

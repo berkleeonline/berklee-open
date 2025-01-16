@@ -25,7 +25,7 @@ const lessons = await contentfulClient.getEntries<Lesson>({
             audience={lesson.fields.lesson_audience}
             imageUrl={lesson.fields.lesson_image?.fields?.file?.url?.startsWith('//') 
               ? `https:${lesson.fields.lesson_image.fields.file.url}` 
-              : lesson.fields.lesson_image?.fields?.file?.url ?? 'https://placehold.co/425x265'}
+              : lesson.fields.lesson_image?.fields?.file?.url}
             index={index}
             client:load
           />

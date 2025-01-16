@@ -80,9 +80,7 @@ const units = await contentfulClient.getEntries<Unit>({
                 duration={lesson.fields.lesson_duration}
                 shortDescription={lesson.fields.lesson_short_description}
                 audience={lesson.fields.lesson_audience}
-                imageUrl={lesson.fields.lesson_image?.fields?.file?.url?.startsWith('//') 
-                  ? `https:${lesson.fields.lesson_image.fields.file.url}` 
-                  : lesson.fields.lesson_image?.fields?.file?.url ?? 'https://placehold.co/425x265'}
+                imageUrl={lesson.fields.lesson_image}
                 index={index}
                 client:load
               />
@@ -131,9 +129,7 @@ const units = await contentfulClient.getEntries<Unit>({
               <UnitCard 
                 id={unit.sys.id}
                 title={unit.fields.unit_title}
-                image={unit.fields.unit_image?.fields?.file?.url?.startsWith('//') 
-                  ? `https:${unit.fields.unit_image.fields.file.url}` 
-                  : unit.fields.unit_image?.fields?.file?.url ?? 'https://placehold.co/425x265'}
+                image={unit.fields.unit_image}
                 shortDescription={unit.fields.unit_short_description}
                 level={unit.fields.unit_level || []}
                 lessonsCount={unit.fields.unit_lessons?.length || 0}

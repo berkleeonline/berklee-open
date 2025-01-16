@@ -5,6 +5,7 @@ import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button } from "@
 import { InstantSearch, SearchBox, Hits, Configure } from 'react-instantsearch';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/pro-light-svg-icons';
+import { getImageUrl } from '../utils/getImageUrl';
 
 
 import ModuleCard from './cards/module';
@@ -21,11 +22,7 @@ const Hit = ({ hit }) => {
   console.log('Created at:', hit?.sys?.createdAt);
 
   const fields = hit.fields || {};
-  const getEnUSValue = (field) => field?.['en-US'];
-  const getImageUrl = (imageField) => {
-    const url = imageField?.fields?.file?.url;
-    return url?.startsWith('//') ? `https:${url}` : url ?? 'https://placehold.co/425x265';
-  };
+  const getEnUSValue = (field: any) => field?.['en-US'];
 
   const cardProps = {
     className: "transform transition-all duration-300 ease-in-out opacity-0 translate-y-4 animate-in",
@@ -42,7 +39,7 @@ const Hit = ({ hit }) => {
         key={hit.objectID}
         id={hit.objectID}
         title={getEnUSValue(fields.module_title)}
-        image={getImageUrl(fields.module_image)}
+        image={fields.module_image}
         shortDescription={getEnUSValue(fields.module_short_description)}
         level={getEnUSValue(fields.module_level)}
         unitsCount={fields.module_units?.length || 0}
@@ -58,7 +55,7 @@ const Hit = ({ hit }) => {
         key={hit.objectID}
         id={hit.objectID}
         title={getEnUSValue(fields.unit_title)}
-        image={getImageUrl(fields.unit_image)}
+        image={fields.unit_image} 
         shortDescription={getEnUSValue(fields.unit_short_description)}
         level={getEnUSValue(fields.unit_level) || []}
         lessonsCount={fields.unit_lessons?.length || 0}
@@ -75,7 +72,7 @@ const Hit = ({ hit }) => {
         duration={getEnUSValue(fields.lesson_duration)}
         shortDescription={getEnUSValue(fields.lesson_short_description)}
         audience={getEnUSValue(fields.lesson_audience)}
-        imageUrl={getImageUrl(fields.lesson_image)}
+        imageUrl={fields.lesson_image}
         index={0}
       />
       </div>

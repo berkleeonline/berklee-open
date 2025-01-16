@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { Chip, Button } from "@nextui-org/react";
+import { Chip, Button, Image } from "@nextui-org/react";
 import { IconChip } from "../../elements/IconChip";
 import SyllabusLesson from './syllabus-lesson';
 import { faBookBlank, faChevronDown, faChevronUp } from '@fortawesome/pro-light-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { getImageUrl } from '../../utils/getImageUrl';
 
 interface SyllabusUnitProps {
   unit: {
@@ -35,28 +36,27 @@ const SyllabusUnit: React.FC<SyllabusUnitProps> = ({ unit, index }) => {
   }
 
   const { unit_title, unit_short_description, unit_concept, unit_lessons, unit_image } = unit.fields;
-
   const hasLessons = unit_lessons && unit_lessons.length > 0;
-
-  // Helper function to get image URL
-  const getImageUrl = (image: any): string => {
-    if (!image || !image.fields || !image.fields.file || !image.fields.file.url) {
-      return 'https://placehold.co/175x90';
-    }
-    const url = image.fields.file.url;
-    return url.startsWith('//') ? `https:${url}` : url;
-  };
-
-  const unitImageUrl = getImageUrl(unit_image);
+  const { url: unitImageUrl, placeholderStyle } = getImageUrl(unit_image, index);
 
   return (
     <li className="pb-20 relative">
-      
       <div className="flex md:flex-row gap-3">
         <div className="min-w-[160px] flex-shrink-0 mr-4 relative" style={{ flexBasis: '160px' }}>
-          <div className="absolute top-[-15px] -right-[5px]"><IconChip icon={faBookBlank} label="Unit" contentType="unit" href="/units" /></div>
+          <div className="absolute top-[-17px] left-0 z-50"><IconChip icon={faBookBlank} label="Unit" contentType="unit" href="/units" /></div>
           <a href={`/units/${unit.sys.id}`} className="no-underline hover:text-blue-800">
-            <img src={unitImageUrl} alt={unit_title} className="rounded-lg mr-8 object-cover" style={{ width: 175, objectFit: 'cover' }} />
+            {unitImageUrl ? (
+              <Image src={unitImageUrl} alt={unit_title} className="rounded-lg mr-8 object-cover" />
+            ) : (
+              <div 
+                className="rounded-lg mr-8" 
+                style={{
+                  ...placeholderStyle,
+                  width: 160,
+                  height: 102
+                }} 
+              />
+            )}
           </a>
         </div>
         <div className="flex flex-col gap-1 size-full">
@@ -65,7 +65,7 @@ const SyllabusUnit: React.FC<SyllabusUnitProps> = ({ unit, index }) => {
               <div className="text-md font-bold">{unit_title}</div>
               <div className="text-base mr-8">{unit_short_description}</div>
             </a>
-            <Button isIconOnly onClick={handleToggle} className="p-2" radius="full" variant="bordered" color="default" aria-label="Expand unit row to view lessons that make up the unit.">
+            <Button isIconOnly onPress={handleToggle} className="p-2 hover:bg-slate-100" radius="full" variant="bordered" color="default" aria-label="Expand unit row to view lessons that make up the unit.">
               <FontAwesomeIcon icon={!collapsed ? faChevronUp : faChevronDown} />
             </Button>
           </div>

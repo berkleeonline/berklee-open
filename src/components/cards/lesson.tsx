@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart, faShare, faScroll, faClock, faSignal4 } from '@fortawesome/pro-light-svg-icons';
 import { IconChip } from "../../elements/IconChip";
 import { calculateDuration } from "../../lib/calculateDuration";
+import { getImageUrl } from '../../utils/getImageUrl';
 
 import AuthLink from "../AuthLink";
 
@@ -27,6 +28,18 @@ const LessonCard: React.FC<LessonCardProps> = ({
   imageUrl, 
   index 
 }) => {
+ 
+  // Create a Contentful-like structure if image is a string
+  const imageObj = typeof imageUrl === 'string' ? {
+    fields: {
+      file: {
+        url: imageUrl
+      }
+    }
+  } : imageUrl;
+
+  const { url: lessonImageUrl, placeholderStyle } = getImageUrl(imageObj, index);
+
   return (
     <AuthLink href={`/lessons/${id}`} className="no-underline flex flex-col h-full">
       <Card className="h-full pb-8 w-full relative" shadow="0" key={index}>
@@ -34,13 +47,17 @@ const LessonCard: React.FC<LessonCardProps> = ({
           <div className="absolute bottom-[-15px] left-0 z-20">
             <IconChip icon={faScroll} label="Lesson" contentType="lesson" href="" />
           </div>
-          <Image
-            radius="lg"
-            width="100%"
-            alt={title}
-            className="w-full object-cover h-[265px] opacity-100"
-            src={imageUrl}
-          />
+            {lessonImageUrl ? (
+              <Image src={lessonImageUrl} alt={title} className="rounded-lg mr-8 object-cover" />
+            ) : (
+              <div 
+                className="rounded-lg mr-8 object-cover w-full" 
+                style={{
+                  ...placeholderStyle,
+                  height: 265
+                }} 
+              />
+            )}
         </CardBody>
         <CardFooter className="h-full text-small flex-col">
           <div className="flex w-full mb-2 justify-between">

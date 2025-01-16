@@ -3,6 +3,7 @@ import { Card, CardBody, CardFooter, Image } from "@nextui-org/react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IconChip } from "../../elements/IconChip";
 import { faHeart, faShare, faBookBlank, faScroll } from '@fortawesome/pro-light-svg-icons';
+import { getImageUrl } from '../../utils/getImageUrl';
 
 import AuthLink from "../AuthLink";
 
@@ -13,6 +14,7 @@ type UnitCardProps = {
   shortDescription: string;
   level: string[];
   lessonsCount: number;
+  index: number;
 };
 
 const UnitCard: React.FC<UnitCardProps> = ({ 
@@ -20,9 +22,20 @@ const UnitCard: React.FC<UnitCardProps> = ({
   title,
   image,
   shortDescription,
-  lessonsCount
+  lessonsCount,
+  index
 }) => {
   // console.log('UnitCard props:', { id, title, image, shortDescription, level, lessonsCount });
+  // Create a Contentful-like structure if image is a string
+  const imageObj = typeof image === 'string' ? {
+    fields: {
+      file: {
+        url: image
+      }
+    }
+  } : image;
+
+  const { url: unitImageUrl, placeholderStyle } = getImageUrl(imageObj, index);
   return (
     <AuthLink href={`/units/${id}`} className="no-underline flex flex-col h-full">
       <Card className="h-full pb-8 w-full relative" shadow="0">
@@ -30,13 +43,17 @@ const UnitCard: React.FC<UnitCardProps> = ({
           <div className="absolute bottom-[-15px] left-0 z-20">
             <IconChip icon={faBookBlank} label="Unit" contentType="unit" href="" />
           </div>
-          <Image
-            radius="lg"
-            width="100%"
-            alt={title}
-            className="w-full object-cover h-[265px] opacity-100"
-            src={image}
-          />
+          {unitImageUrl ? (
+              <Image src={unitImageUrl} alt={title} className="rounded-lg mr-8 object-cover" />
+            ) : (
+              <div 
+                className="rounded-lg mr-8 object-cover w-full" 
+                style={{
+                  ...placeholderStyle,
+                  height: 265
+                }} 
+              />
+            )}
         </CardBody>
         <CardFooter className="h-full text-small flex-col">
           <div className="flex w-full mb-2 justify-between">
