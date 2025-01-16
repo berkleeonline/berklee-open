@@ -25,7 +25,7 @@ const AccountSettingsLayout = ({ children, currentPage }) => {
                 className={`block p-4 text-black-300 ${
                   currentPage === item.href
                     ? "font-semibold bg-slate-100 p-4 rounded-lg text-black-700"
-                    : "hover:bg-gray-50"
+                    : "hover:bg-gray-50 rounded-lg"
                 } ${item.className || ""}`}
               >
                 {item.label}
