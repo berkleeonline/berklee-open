@@ -20,7 +20,7 @@ interface InviteCode {
     { code: 'bo-debbie-2025', name: 'Debbie' },
     { code: 'bo-cecil-2025', name: 'Cecil' },
     { code: 'bo-rhoda-2025', name: 'Rhoda' },
-    { code: 'bo-peter-2025', name: 'Andy' },
+    { code: 'bo-peter-2025', name: 'Peter' },
     { code: 'bo-andy-2025', name: 'Andy' },
     { code: 'bo-elizabeth-2025', name: 'Elizabeth' },
     { code: 'bo-maria-2025', name: 'Maria' },
