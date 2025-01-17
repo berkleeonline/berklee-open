@@ -25,5 +25,6 @@ interface InviteCode {
     { code: 'bo-elizabeth-2025', name: 'Elizabeth' },
     { code: 'bo-maria-2025', name: 'Maria' },
     { code: 'bo-betsie-2025', name: 'Betsie' },
+    { code: 'bo-jim-2025', name: 'Jim' },
     { code: 'bo-preview-2025', name: 'esteemed Advisory Member' }
   ];
