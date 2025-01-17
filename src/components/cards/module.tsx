@@ -56,7 +56,7 @@ const ModuleCard: React.FC<ModuleCardProps> = ({
                 className="rounded-lg mr-8 object-cover w-full" 
                 style={{
                   ...placeholderStyle,
-                  height: 265
+                  aspectRatio: '475/258'
                 }} 
               />
             )}

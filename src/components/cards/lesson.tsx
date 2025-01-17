@@ -54,7 +54,7 @@ const LessonCard: React.FC<LessonCardProps> = ({
                 className="rounded-lg mr-8 object-cover w-full" 
                 style={{
                   ...placeholderStyle,
-                  height: 265
+                  aspectRatio: '475/301'
                 }} 
               />
             )}

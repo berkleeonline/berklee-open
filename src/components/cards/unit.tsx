@@ -50,7 +50,7 @@ const UnitCard: React.FC<UnitCardProps> = ({
                 className="rounded-lg mr-8 object-cover w-full" 
                 style={{
                   ...placeholderStyle,
-                  height: 265
+                  aspectRatio: '475/258'
                 }} 
               />
             )}
