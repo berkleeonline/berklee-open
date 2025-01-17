@@ -10,6 +10,8 @@ interface InviteCode {
     { code: 'bo-mark-2025', name: 'Mark' },
     { code: 'bo-emelia-2025', name: 'Emelia' },
     { code: 'bo-joe-2025', name: 'Joe' },
+    { code: 'bo-brian-2025', name: 'Brian' },
+    { code: 'bo-julie-2025', name: 'Julie' },
     { code: 'bo-steve-2025', name: 'Steve' },
     { code: 'bo-maggie-2025', name: 'Maggie' },
     { code: 'bo-carlyn-2025', name: 'Carlyn' },
