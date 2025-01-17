@@ -2,22 +2,31 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Input, Button } from "@nextui-org/react";
 import { inviteCodes } from '../utils/inviteCodes';
+import { checkPasswordGate, setPasswordGate, clearPasswordGate } from '../utils/inviteAuth';
 import Logo from "./logo";
 
 const PasswordGate = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null); // Changed to null initially
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [welcomeName, setWelcomeName] = useState('');
 
   useEffect(() => {
-    const hasAccess = sessionStorage.getItem('hasAccess');
-    const storedName = sessionStorage.getItem('visitorName');
-    if (hasAccess === 'true') {
-      setIsAuthenticated(true);
-      setWelcomeName(storedName || '');
-    }
+    const { isAuthenticated, visitorName } = checkPasswordGate();
+    setIsAuthenticated(isAuthenticated);
+    setWelcomeName(visitorName || '');
   }, []);
+
+  const clearPasswordAccess = () => {
+    clearPasswordGate();
+    setIsAuthenticated(false);
+    setWelcomeName('');
+  };
+
+  // Don't render anything while checking authentication
+  if (isAuthenticated === null) {
+    return null;
+  }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -25,21 +34,13 @@ const PasswordGate = ({ children }) => {
     const matchedInvite = inviteCodes.find(invite => invite.code === password);
 
     if (matchedInvite) {
+      setPasswordGate(matchedInvite.name);
       setIsAuthenticated(true);
       setWelcomeName(matchedInvite.name);
-      sessionStorage.setItem('hasAccess', 'true');
-      sessionStorage.setItem('visitorName', matchedInvite.name);
       setError('');
     } else {
       setError('Invalid invite code');
     }
-  };
-
-  const clearPasswordAccess = () => {
-    sessionStorage.removeItem('hasAccess');
-    sessionStorage.removeItem('visitorName');
-    setIsAuthenticated(false);
-    setWelcomeName('');
   };
   
 

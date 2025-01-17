@@ -48,7 +48,6 @@ const AccountHeader = ({ isDashboard = false, isAccountPage = false }) => {
             href={isAccountPage ? "/dashboard" : "/account/email"}
             as={Link}
             radius="full"
-            isExternal 
             className="font-bold w-41 hover:bg-slate-100 mb-2" 
             variant="bordered" 
             aria-label={isAccountPage ? "Back to Dashboard" : "Edit Account Settings"}
