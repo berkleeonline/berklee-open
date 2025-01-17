@@ -4,6 +4,7 @@ import { Hub } from 'aws-amplify/utils';
 import { Authenticator } from '@aws-amplify/ui-react';
 
 import awsconfig from '../amplifyconfiguration.json';
+import PasswordGate from './password-gate';
 Amplify.configure(awsconfig);
 
 let styleLink;
@@ -82,6 +83,7 @@ const AppContext = (props: any) => {
 
   const Wrapper = useCallback(
     ({ children }) => (
+      <PasswordGate>
       <>
         {children}
         {showAuthModal && (
@@ -103,6 +105,7 @@ const AppContext = (props: any) => {
           </div>
         )}
       </>
+      </PasswordGate>
     ),
     [showAuthModal]
   );
