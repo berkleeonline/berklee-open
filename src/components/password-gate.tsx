@@ -48,16 +48,22 @@ const PasswordGate = ({ children }) => {
     return (
       <>
         {welcomeName && (
-          <div className="bg-primary/10 py-2 px-4 text-center relative">
-            Welcome to your exclusive preview, {welcomeName}!
-            <button 
-                onClick={clearPasswordAccess}
-                className="font-bold pl-2"
-                aria-label="Clear access"
-                >
-                <span class="bg-white px-5 py-1 rounded-full hover:bg-red">End Session</span>
-            </button>
-          </div>
+        <div className="bg-primary/10 py-2 px-4 text-center relative">
+          {welcomeName === 'global' ? (
+            'Welcome to your exclusive Berklee Online preview!'
+          ) : (
+            `Welcome to your exclusive preview, ${welcomeName}!`
+          )}
+          <button 
+            onClick={clearPasswordAccess}
+            className="font-bold pl-2"
+            aria-label="Clear access"
+          >
+            <span className="bg-white px-5 py-1 rounded-full hover:bg-red">
+              End Session
+            </span>
+          </button>
+        </div>
         )}
         {children}
       </>
