@@ -69,7 +69,7 @@ const PasswordGate = ({ children }) => {
       <Card className="p-8 w-full max-w-md">
         <h1 className="text-2xl font-bold mb-6 text-center">Exclusive Preview Access</h1>
         <p className="text-center mb-6 text-gray-600">
-          Please enter your personal invite code to access the preview.
+          Please enter your personal invite<br/>code to access the preview.
         </p>
         <form onSubmit={handleSubmit}>
           <Input
