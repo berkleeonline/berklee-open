@@ -1,5 +1,5 @@
 import { useAuthenticator } from '@aws-amplify/ui-react';
-import { Button, Link, NavbarItem, Dropdown, DropdownTrigger, DropdownSection, DropdownMenu, DropdownItem, Avatar } from "@nextui-org/react";
+import { Button, Link, NavbarItem, Dropdown, DropdownTrigger, DropdownSection, DropdownMenu, DropdownItem, Avatar } from "@heroui/react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faRightFromBracket, faGauge, faGear } from '@fortawesome/pro-light-svg-icons';
 

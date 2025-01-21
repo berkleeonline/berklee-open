@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import { Hub } from 'aws-amplify/utils';
 import { Authenticator, useAuthenticator } from '@aws-amplify/ui-react';
-import { Link } from "@nextui-org/react";
+import { Link } from "@heroui/react";
 
 type AuthLinkProps = {
   href: string;

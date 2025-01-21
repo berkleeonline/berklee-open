@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useAuthenticator, Authenticator } from '@aws-amplify/ui-react';
 import { updateUserAttributes } from 'aws-amplify/auth';
-import { Button } from "@nextui-org/react";
+import { Button } from "@heroui/react";
 
 // Inner component with auth context
 const UsernameChangeFormContent = () => {

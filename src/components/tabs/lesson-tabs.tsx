@@ -1,5 +1,5 @@
 import React from 'react';
-import { Tabs, Tab } from '@nextui-org/react';
+import { Tabs, Tab } from "@heroui/react";
 import { IconHeader } from '../../elements/IconHeader';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { documentToHtmlString } from '@contentful/rich-text-html-renderer';

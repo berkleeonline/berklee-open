@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Navbar, NavbarContent, NavbarItem, Button } from "@nextui-org/react";
+import { Navbar, NavbarContent, NavbarItem, Button } from "@heroui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Keyboard } from "../music/keyboard/keyboard";
 import { Metronome } from "../metronome";

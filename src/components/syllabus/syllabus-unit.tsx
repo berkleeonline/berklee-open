@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Chip, Button, Image } from "@nextui-org/react";
+import { Chip, Button, Image } from "@heroui/react";
 import { IconChip } from "../../elements/IconChip";
 import SyllabusLesson from './syllabus-lesson';
 import { faBookBlank, faChevronDown, faChevronUp } from '@fortawesome/pro-light-svg-icons';

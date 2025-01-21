@@ -1,5 +1,5 @@
 import React from 'react';
-import { Chip, Image } from "@nextui-org/react";
+import { Chip, Image } from "@heroui/react";
 import { IconChip } from "../../elements/IconChip";
 import { faScroll } from '@fortawesome/pro-light-svg-icons';
 import { getImageUrl } from '../../utils/getImageUrl';

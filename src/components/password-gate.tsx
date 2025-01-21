@@ -1,6 +1,6 @@
 // components/PasswordGate.tsx
 import React, { useState, useEffect } from 'react';
-import { Card, Input, Button } from "@nextui-org/react";
+import { Card, Input, Button } from "@heroui/react";
 import { inviteCodes } from '../utils/inviteCodes';
 import { checkPasswordGate, setPasswordGate, clearPasswordGate } from '../utils/inviteAuth';
 import Logo from "./logo";

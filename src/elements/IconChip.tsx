@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Chip } from '@nextui-org/chip';
+import { Chip } from "@heroui/chip";
 import styles from './IconChip.module.scss'; // Import the CSS module
 
 interface IconChipProps {

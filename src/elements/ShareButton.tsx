@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Popover, PopoverTrigger, PopoverContent } from "@nextui-org/react";
+import { Button, Popover, PopoverTrigger, PopoverContent } from "@heroui/react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShare, faCheck, faCopy } from '@fortawesome/pro-light-svg-icons';
 
@@ -111,7 +111,7 @@ export const ShareButton: FC<ShareButtonProps> = ({ headerId, type, hrefId, ...p
           aria-label="Share"
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
-          onClick={handleClick}
+          onPress={handleClick}
         >
           <FontAwesomeIcon icon={faShare} />
         </Button>

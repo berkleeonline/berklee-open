@@ -1,5 +1,5 @@
 import { Authenticator, useTheme, useAuthenticator, Heading, View, Text } from '@aws-amplify/ui-react';
-import { Link } from "@nextui-org/react";
+import { Link } from "@heroui/react";
 import { useEffect, useState } from 'react';
 import { getCurrentUser } from 'aws-amplify/auth'; 
 import { Hub } from 'aws-amplify/utils'; 

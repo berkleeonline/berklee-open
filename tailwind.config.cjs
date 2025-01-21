@@ -1,11 +1,11 @@
 /** @type {import('tailwindcss').Config} */
-const { nextui } = require("@nextui-org/react");
+const { heroui } = require("@heroui/react");
 const defaultTheme = require('tailwindcss/defaultTheme');
 
 module.exports = {
   content: [
     './src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}',
-    "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}",
+    "./node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}",
     "./node_modules/react-list-player/**/*.{js,ts,jsx,tsx}"
   ],
   theme: {
@@ -20,7 +20,7 @@ module.exports = {
   },
   plugins: [
     require('@tailwindcss/aspect-ratio'),
-    nextui({
+    heroui({
       layout: {
         disabledOpacity: "0.3", // opacity-[0.3]
         radius: {

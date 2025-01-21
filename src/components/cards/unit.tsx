@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, CardBody, CardFooter, Image } from "@nextui-org/react";
+import { Card, CardBody, CardFooter, Image } from "@heroui/react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IconChip } from "../../elements/IconChip";
 import { AddToLibraryButton } from "../../elements/AddToLibraryButton";

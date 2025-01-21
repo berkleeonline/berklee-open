@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useAuthenticator, Authenticator } from '@aws-amplify/ui-react';
 import { updateUserAttributes, confirmUserAttribute, fetchUserAttributes } from 'aws-amplify/auth';
-import { Button } from "@nextui-org/react";
+import { Button } from "@heroui/react";
 
 const EmailChangeFormContent = () => {
   const [newEmail, setNewEmail] = useState('');
