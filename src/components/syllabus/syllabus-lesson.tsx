@@ -38,7 +38,7 @@ const SyllabusLesson: React.FC<SyllabusLessonProps> = ({ lesson, index }) => {
             <div className="absolute top-[-17px] left-0 z-50"><IconChip icon={faScroll} label="Lesson" contentType="lesson" href="/lessons" /></div>
             <a href={`/lessons/${lesson.sys.id}`} className="no-underline hover:text-blue-800">
               {lessonImageUrl ? (
-                <Image 
+                <img 
                   src={lessonImageUrl} 
                   alt={lesson_title} 
                   className="rounded-lg mr-4 object-cover"

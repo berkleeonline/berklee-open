@@ -46,7 +46,7 @@ const SyllabusUnit: React.FC<SyllabusUnitProps> = ({ unit, index }) => {
           <div className="absolute top-[-17px] left-0 z-50"><IconChip icon={faBookBlank} label="Unit" contentType="unit" href="/units" /></div>
           <a href={`/units/${unit.sys.id}`} className="no-underline hover:text-blue-800">
             {unitImageUrl ? (
-              <Image src={unitImageUrl} alt={unit_title} className="rounded-lg mr-8 object-cover" />
+              <img src={unitImageUrl} alt={unit_title} className="rounded-lg mr-8 object-cover" />
             ) : (
               <div 
                 className="rounded-lg mr-8" 

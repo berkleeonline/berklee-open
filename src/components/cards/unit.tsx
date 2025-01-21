@@ -46,7 +46,7 @@ const UnitCard: React.FC<UnitCardProps> = ({
             <IconChip icon={faBookBlank} label="Unit" contentType="unit" href="" />
           </div>
           {unitImageUrl ? (
-              <Image src={unitImageUrl} alt={title} className="rounded-lg mr-8 object-cover" />
+              <Image src={unitImageUrl} alt={title} className="rounded-lg mr-8 object-cover" client:load />
             ) : (
               <div 
                 className="rounded-lg mr-8 object-cover w-full" 

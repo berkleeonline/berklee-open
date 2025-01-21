@@ -44,13 +44,13 @@ const LessonCard: React.FC<LessonCardProps> = ({
 
   return (
     <AuthLink href={`/lessons/${id}`} className="no-underline flex flex-col h-full">
-      <Card className="h-full pb-8 w-full relative" shadow="0" key={index}>
+      <Card className="h-full pb-8 w-full relative" key={index}>
         <CardBody className="overflow-visible p-0 relative">
           <div className="absolute bottom-[-15px] left-0 z-20">
             <IconChip icon={faScroll} label="Lesson" contentType="lesson" href="" />
           </div>
             {lessonImageUrl ? (
-              <Image src={lessonImageUrl} alt={title} className="rounded-lg mr-8 object-cover" />
+              <Image src={lessonImageUrl} alt={title} className="rounded-lg mr-8 object-cover"  client:load />
             ) : (
               <div 
                 className="rounded-lg mr-8 object-cover w-full" 

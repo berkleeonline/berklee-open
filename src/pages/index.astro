@@ -133,6 +133,7 @@ const units = await contentfulClient.getEntries<Unit>({
                 shortDescription={unit.fields.unit_short_description}
                 level={unit.fields.unit_level || []}
                 lessonsCount={unit.fields.unit_lessons?.length || 0}
+                index={index}
                 client:load
               />
             </div>
