@@ -1,7 +1,3 @@
-// placeholder gradients until we understand the visual design / photography
-// stragey for cards and respective pages
-// utils/gradients.ts
-// utils/gradients.ts
 const brandColors = {
   pink: '#fae6eb',    // Light pink
   blue: '#e6f4fb',    // Light blue
@@ -9,16 +5,18 @@ const brandColors = {
   gray: '#f5f5f7'     // Light gray
 };
 
-export const generatePastelColor = () => {
-  // Get random brand color (excluding gray)
-  const colors = [brandColors.pink, brandColors.blue, brandColors.purple];
-  return colors[Math.floor(Math.random() * colors.length)];
+const colorArray = [brandColors.pink, brandColors.blue, brandColors.purple];
+
+export const generatePastelColor = (index: number) => {
+  // Use modulo to cycle through colors deterministically
+  return colorArray[index % colorArray.length];
 };
 
 export const generateGradientPlaceholder = (index: number) => {
-  const color = generatePastelColor();
+  const color = generatePastelColor(index);
   
-  return `radial-gradient(circle at center,
-    ${color} 0%,
-    ${brandColors.gray} 90%)`;
+  // Ensure color is a string, fallback to a default
+  const safeColor = typeof color === 'string' ? color : brandColors.blue;
+  
+  return `radial-gradient(circle at center, ${safeColor} 0%, ${brandColors.gray} 90%)`;
 };
