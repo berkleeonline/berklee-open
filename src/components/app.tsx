@@ -82,8 +82,8 @@ const AppContext = (props: any) => {
   };
 
   const Wrapper = useCallback(
-    ({ children }) => (
-      <PasswordGate>
+    ({ children, skipPasswordGate }) => (
+      <PasswordGate skip={skipPasswordGate}>
       <>
         {children}
         {showAuthModal && (
@@ -110,7 +110,7 @@ const AppContext = (props: any) => {
     [showAuthModal]
   );
 
-  return <Wrapper>{props.children}</Wrapper>;
+  return <Wrapper skipPasswordGate={props.skipPasswordGate}>{props.children}</Wrapper>;
 };
 
 export default AppContext;

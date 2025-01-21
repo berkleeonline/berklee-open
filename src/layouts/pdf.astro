@@ -24,7 +24,7 @@ const {
     <meta name="robots" content="noindex, nofollow" />
   </head>
   <body class={cssClass}>
-    <App client:load>
+    <App client:load skipPasswordGate={true}>
       <AuthHandler client:load />
       <main>
         <slot />

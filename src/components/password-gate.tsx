@@ -5,17 +5,23 @@ import { inviteCodes } from '../utils/inviteCodes';
 import { checkPasswordGate, setPasswordGate, clearPasswordGate } from '../utils/inviteAuth';
 import Logo from "./logo";
 
-const PasswordGate = ({ children }) => {
+const PasswordGate = ({ children, skip = false }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null); // Changed to null initially
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [welcomeName, setWelcomeName] = useState('');
 
   useEffect(() => {
+    // If skip is true, don't check authentication
+    if (skip) {
+      setIsAuthenticated(true);
+      return;
+    }
+    
     const { isAuthenticated, visitorName } = checkPasswordGate();
     setIsAuthenticated(isAuthenticated);
     setWelcomeName(visitorName || '');
-  }, []);
+  }, [skip]);
 
   const clearPasswordAccess = () => {
     clearPasswordGate();
@@ -26,6 +32,11 @@ const PasswordGate = ({ children }) => {
   // Don't render anything while checking authentication
   if (isAuthenticated === null) {
     return null;
+  }
+
+  // If skip is true, render children directly
+  if (skip) {
+    return <>{children}</>;
   }
 
   const handleSubmit = (e: React.FormEvent) => {
