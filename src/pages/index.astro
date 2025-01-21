@@ -62,7 +62,7 @@ const units = await contentfulClient.getEntries<Unit>({
     <div class="relative"> <!-- Adjust 600px as needed -->
       <button 
         id="lessonsLeftArrow"
-        class="absolute -left-8 top-1/2 transform -translate-y-1/2 bg-white hover:bg-slate-200 bg-opacity-95 p-2 rounded-full w-[60px] h-[60px] border border-slate-300 shadow-lg z-50 hidden"
+        class="absolute -left-8 top-1/2 transform -translate-y-1/2 bg-white hover:bg-slate-200 bg-opacity-95 p-2 rounded-full w-[60px] h-[60px] border border-slate-300 shadow-lg z-[10000] hidden"
         aria-label="Scroll Left"
       >
       <FontAwesomeIcon icon={faChevronLeft} />
@@ -90,7 +90,7 @@ const units = await contentfulClient.getEntries<Unit>({
       </div>
       <button 
         id="lessonsRightArrow"
-        class="absolute -right-8 top-1/2 transform -translate-y-1/2 bg-white hover:bg-slate-200 bg-opacity-95 p-2 rounded-full w-[60px] h-[60px] border border-slate-300 shadow-lg z-50 hidden"
+        class="absolute -right-8 top-1/2 transform -translate-y-1/2 bg-white hover:bg-slate-200 bg-opacity-95 p-2 rounded-full w-[60px] h-[60px] border border-slate-300 shadow-lg z-100 hidden"
         aria-label="Scroll right"
       >
         <FontAwesomeIcon icon={faChevronRight} />
@@ -169,7 +169,7 @@ const units = await contentfulClient.getEntries<Unit>({
     </div>
     <div class="col-span-8">
       <h3 class="text-3xl font-bold mb-4">Digital Resources</h3>
-      <p class="text-large">Organized, interactive multimedia slideshows make classroom prep easy and efficient.</p>
+      <p class="text-large">Organized, interactive lesson plans and engaging multimedia slideshows make classroom prep easy and efficient.</p>
     </div>
   </div>
 
@@ -207,7 +207,7 @@ const units = await contentfulClient.getEntries<Unit>({
 
 <div style="width: 100vw; margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw);" class="bg-gradient-to-r from-purple-300 to-pink-500 grid grid-cols-1 h-400 items-center h-500 pt-24 pb-24 -mr-16 -ml-16">
   <h1 class="text-5xl font-bold mb-16 text-center">Sign Up for Early Access</h1>
-  <p class="text-lg text-center max-w-3xl mx-auto mb-16">Berkele Open is currently in development and access is available via invite. We're
+  <p class="text-lg text-center max-w-3xl mx-auto mb-16">Berklee Open is currently in development and access is available via invite. We're
     excited to share our free music education resources with you once ready. In the meantime, 
     please sign up for Early Access and we will reach out with more information soon.
   </p>

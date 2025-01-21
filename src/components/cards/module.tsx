@@ -4,6 +4,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart,faShare, faBook, faSignal4, faBooks } from '@fortawesome/pro-light-svg-icons';
 import { IconChip } from "../../elements/IconChip";
 import { getImageUrl } from '../../utils/getImageUrl';
+import { AddToLibraryButton } from "../../elements/AddToLibraryButton";
+import { ShareButton } from "../../elements/ShareButton";
 import { calculateLevel } from "../../lib/calculateLevel";
 
 import AuthLink from "../AuthLink";
@@ -64,12 +66,12 @@ const ModuleCard: React.FC<ModuleCardProps> = ({
         <CardFooter className="text-small flex-col h-full">
           <div className="flex w-full mb-2 justify-between">
             <h3 className="font-bold text-lg text-left mt-4">{title}</h3>
-            <div className="flex flex-row gap-2">
-              <div className="p-2 flex text-default-500 text-left border rounded-full w-[30px] h-[30px] items-center justify-center text-center">
-                <FontAwesomeIcon icon={faHeart} />
+            <div className="flex flex-row gap-4 justify-center align-center">
+              <div className="p-2 flex text-default-500 text-left rounded-full w-[30px] h-[30px] items-center justify-center text-center">
+                <AddToLibraryButton type="modules" hrefId={`${id}`} client:load />
               </div>
-              <div className="p-2 flex text-default-500 text-left border rounded-full w-[30px] h-[30px] items-center justify-center text-center">
-                <FontAwesomeIcon icon={faShare} />
+              <div className="flex text-default-500 text-left rounded-full w-[30px] h-[30px] items-center justify-center text-center">
+                <ShareButton type="modules" hrefId={`${id}`} client:load />
               </div>
             </div>
           </div>

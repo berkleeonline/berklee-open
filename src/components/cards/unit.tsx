@@ -2,6 +2,8 @@ import React from 'react';
 import { Card, CardBody, CardFooter, Image } from "@nextui-org/react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { IconChip } from "../../elements/IconChip";
+import { AddToLibraryButton } from "../../elements/AddToLibraryButton";
+import { ShareButton } from "../../elements/ShareButton";
 import { faHeart, faShare, faBookBlank, faScroll } from '@fortawesome/pro-light-svg-icons';
 import { getImageUrl } from '../../utils/getImageUrl';
 
@@ -58,12 +60,12 @@ const UnitCard: React.FC<UnitCardProps> = ({
         <CardFooter className="h-full text-small flex-col">
           <div className="flex w-full mb-2 justify-between">
             <h3 className="font-bold text-lg text-left mt-4">{title}</h3>
-            <div className="flex flex-row gap-2">
-              <div className="p-2 flex text-default-500 text-left border rounded-full w-[30px] h-[30px] items-center justify-center text-center">
-                <FontAwesomeIcon icon={faHeart} />
+            <div className="flex flex-row gap-4">
+              <div className="p-2 flex text-default-500 text-left rounded-full w-[30px] h-[30px] items-center justify-center text-center">
+                <AddToLibraryButton type="units" hrefId={`${id}`} client:load />
               </div>
-              <div className="p-2 flex text-default-500 text-left border rounded-full w-[30px] h-[30px] items-center justify-center text-center">
-                <FontAwesomeIcon icon={faShare} />
+              <div className="p-2 flex text-default-500 text-left rounded-full w-[30px] h-[30px] items-center justify-center text-center">
+                <ShareButton type="units" hrefId={`${id}`} client:load />
               </div>
             </div>
           </div>

@@ -196,7 +196,7 @@ const simplifiedUnits = module_units.map(unit => ({
           Start Module
         </Button>
         <AddToLibraryButton type="module" href="" client:load />
-        <ShareButton type="module" href="" client:load />
+        <ShareButton type="modules" hrefId={`${id}`} client:load />
       </div>
       
       {module_learning_outcomes && (
