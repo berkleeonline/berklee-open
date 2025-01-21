@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import SyllabusUnit from './syllabus-unit';
-import { Button } from "@nextui-org/react";
+import { Button } from "@heroui/react";
 
 const SyllabusUnitWrapper = ({ module_units }) => {
   const [showAll, setShowAll] = useState(false);

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Tooltip } from "@nextui-org/react";
+import { Button, Tooltip } from "@heroui/react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart } from '@fortawesome/pro-light-svg-icons';
 
@@ -10,14 +10,14 @@ interface AddToLibraryButtonProps {
   [key: string]: any; // To accept any additional props
 }
 
-export const AddToLibraryButton: FC<AddToLibraryButtonProps> = ({ headerId, type, hrefId, ...props }) => {
+export const AddToLibraryButton: FC<AddToLibraryButtonProps> = ({ headerId, type, hrefId  }) => {
   return (
-    <>
+    <div className="bg-white rounded-full">
       <Tooltip client:load  placement="bottom" content={`Add to library`} color="default">
         <Button client:load isIconOnly className="p-2" radius="full" variant="bordered" color="default" aria-label="Save to Library">
           <FontAwesomeIcon icon={faHeart} />
         </Button>
      </Tooltip>
-    </>
+    </div>
   );
 };

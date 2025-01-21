@@ -1,5 +1,5 @@
 // components/account/AccountSettingsLayout.jsx
-import { Link } from "@nextui-org/react";
+import { Link } from "@heroui/react";
 import ProfileHeader from './profile-header';
 
 const AccountSettingsLayout = ({ children, currentPage }) => {

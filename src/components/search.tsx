@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import algoliasearch from 'algoliasearch/lite';
 import { useInstantSearch, useSearchBox } from 'react-instantsearch-core';
-import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button } from "@nextui-org/react";
+import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button } from "@heroui/react";
 import { InstantSearch, SearchBox, Hits, Configure } from 'react-instantsearch';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/pro-light-svg-icons';
