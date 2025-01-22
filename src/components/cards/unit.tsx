@@ -39,8 +39,8 @@ const UnitCard: React.FC<UnitCardProps> = ({
 
   const { url: unitImageUrl, placeholderStyle } = getImageUrl(imageObj, index);
   return (
-    <div className="relative">
-      <AuthLink href={`/units/${id}`} className="no-underline flex flex-col h-full">
+    <div className="relative flex h-full">
+      <AuthLink href={`/units/${id}`} className="no-underline flex flex-col min-h-[445px]">
         <Card className="h-full pb-8 w-full relative">
           <CardBody className="overflow-visible p-0 relative">
             <div className="absolute bottom-[-15px] left-0 z-20">

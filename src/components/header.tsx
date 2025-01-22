@@ -26,8 +26,9 @@ const Header = (props) => {
   };
 
   return (
-    <Authenticator.Provider>
+    
       <Navbar onMenuOpenChange={setIsMenuOpen} maxWidth="2xl">
+        <Authenticator.Provider>
         <NavbarContent justify="start" className="justify-items-start">
           <NavbarMenuToggle
             aria-label={isMenuOpen ? "Close menu" : "Open menu"}
@@ -89,8 +90,8 @@ const Header = (props) => {
             </NavbarMenuItem>
           ))}
         </NavbarMenu>
+        </Authenticator.Provider>
       </Navbar>
-    </Authenticator.Provider>
   );
 };
 

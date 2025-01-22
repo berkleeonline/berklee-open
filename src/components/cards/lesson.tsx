@@ -43,8 +43,8 @@ const LessonCard: React.FC<LessonCardProps> = ({
   const { url: lessonImageUrl, placeholderStyle } = getImageUrl(imageObj, index);
 
   return (
-    <div className="relative">
-      <AuthLink href={`/lessons/${id}`} className="no-underline flex flex-col h-full">
+    <div className="relative flex h-full">
+      <AuthLink href={`/lessons/${id}`} className="no-underline flex flex-col min-h-[460px]">
         <Card className="h-full pb-8 w-full relative" key={index}>
           <CardBody className="overflow-visible p-0 relative">
             <div className="absolute bottom-[-15px] left-0 z-20">

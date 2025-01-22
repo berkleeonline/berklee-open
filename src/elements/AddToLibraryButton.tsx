@@ -12,7 +12,7 @@ interface AddToLibraryButtonProps {
 
 export const AddToLibraryButton: FC<AddToLibraryButtonProps> = ({ headerId, type, hrefId  }) => {
   return (
-    <div className="bg-white rounded-full">
+    <div className="bg-white rounded-full shadow-xl">
       <Tooltip client:load  placement="bottom" content={`Add to library`} color="default">
         <Button client:load isIconOnly className="p-2" radius="full" variant="bordered" color="default" aria-label="Save to Library">
           <FontAwesomeIcon icon={faHeart} />

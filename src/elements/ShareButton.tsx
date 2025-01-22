@@ -64,7 +64,7 @@ export const ShareButton: React.FC<ShareButtonProps> = ({ headerId, type, hrefId
         <PopoverTrigger>
           <Button
             isIconOnly
-            className="p-2"
+            className="p-2 shadow-xl"
             radius="full"
             variant="bordered"
             color="default"

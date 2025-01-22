@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, CardBody, CardFooter, Image } from "@heroui/react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHeart,faShare, faBook, faSignal4, faBooks } from '@fortawesome/pro-light-svg-icons';
+import { faBook, faSignal4, faBooks } from '@fortawesome/pro-light-svg-icons';
 import { IconChip } from "../../elements/IconChip";
 import { getImageUrl } from '../../utils/getImageUrl';
 import { AddToLibraryButton } from "../../elements/AddToLibraryButton";
