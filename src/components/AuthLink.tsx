@@ -13,25 +13,26 @@ const AuthLink: React.FC<AuthLinkProps> = ({
   href,
   className,
   children,
-}) => {
+ }) => {
   const { authStatus } = useAuthenticator(context => [context.authStatus]);
-
+  
   const handleClick = useCallback((e) => {
     if (authStatus !== 'authenticated') {
       e.preventDefault();
+      sessionStorage.setItem('redirectPath', href);
       Hub.dispatch('berklee', {
         event: 'showAuthModal',
         data: true,
       });
     }
-  }, [authStatus]);
-
+  }, [authStatus, href]);
+ 
   return (
     <Link href={href} className={className} onClick={handleClick}>
-      { children }
+      {children}
     </Link>
   );
-};
+ };
 
 const AuthLinkWrapper: React.FC<AuthLinkProps> = ({
   href,

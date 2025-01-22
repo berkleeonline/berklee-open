@@ -2,6 +2,7 @@
 import '@fontsource-variable/nunito-sans'; // Supports weights 200-900
 import App from "../components/app";
 import Header from "../components/header";
+import Footer from "../components/footer";
 import { ViewTransitions } from 'astro:transitions';
 import type { HeaderProps } from "../type/layout";
 import '../css/global.scss';
@@ -11,18 +12,7 @@ import AuthHandler from "../components/account/account-auth-handler";
 
 // Define default values or handle optional properties
 const { title = 'Berklee Open', cssClass } = Astro.props;
-
-const header: HeaderProps = {
-  title,
-  logo: {
-    src: '/path-to-your-logo.svg', // Add your actual logo path
-    alt: 'Berklee Open Logo',
-    width: 0, // Add actual dimensions
-    height: 0
-  },
-  uid: 'header' // Or generate/pass a unique ID if needed
-};
-
+const showFooter = Astro.props.showFooter ?? true;
 ---
 <html lang="en" transition:animate="none">
   <head>
@@ -37,10 +27,11 @@ const header: HeaderProps = {
       <AuthHandler client:load />
       <Header text={title} client:load />
       <main class={cssClass}>
-        <div class="px-6 mx-auto w-full pt-16 max-w-[1536px]" transition:animate="slide">
+        <div class="px-6 mx-auto w-full pt-16 pb-16 max-w-[1536px]" transition:animate="slide">
           <slot />
         </div>
       </main>
+      {showFooter && <Footer />}
     </App>
   </body>
 </html>

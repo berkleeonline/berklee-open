@@ -11,22 +11,24 @@ const AccountCustomized = () => {
   useEffect(() => {
     // Check current auth state
     getCurrentUser()
-      .then((user) => {
-        // If user is already signed in, redirect
-        window.location.href = "/dashboard";
-      })
-      .catch(() => {
-        // User is not signed in, stay on page
-      });
+    .then((user) => {
+      const redirectTo = sessionStorage.getItem('redirectPath') || '/dashboard';
+      window.location.href = redirectTo;
+      sessionStorage.removeItem('redirectPath');
+    })
+    .catch(() => {
+      // User is not signed in, stay on page
+    });
   
     // Subscribe to auth changes with correct event names
     const subscription = Hub.listen('auth', ({ payload }) => {
       const { event } = payload;
-      // console.log('Auth event:', event); // Add this for debugging
       
       if (event === 'signedIn' || event === 'signIn') {
         setIsLoading(true);
-        window.location.href = "/dashboard";
+        const redirectTo = sessionStorage.getItem('redirectPath') || '/dashboard';
+        window.location.href = redirectTo;
+        sessionStorage.removeItem('redirectPath'); // Clean up after use
       }
     });
   

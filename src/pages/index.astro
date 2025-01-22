@@ -9,7 +9,7 @@ import LessonCard from "../components/cards/lesson";
 import MainLayout from '../layouts/main.astro';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight } from '@fortawesome/pro-light-svg-icons';
-import AuthLink from "../components/AuthLink";
+import AuthConditionalDisplayWrapper from '../components/AuthConditionalDisplayWrapper';
 
 const lessons = await contentfulClient.getEntries<Lesson>({
   content_type: "lesson",
@@ -31,11 +31,23 @@ const units = await contentfulClient.getEntries<Unit>({
       <div class="flex flex-col justify-center">
         <h1 class="text-6xl font-bold mb-4">Music Education Resources for Your Classroom</h1>
         <p class="text-large mb-6">Berklee Open supports educators and students in the classroom through access to engaging and relevant music lessons.</p>
-        <div class="flex space-x-4">
-          <AuthLink href="/account#sign-up" className="no-underline">
+        <div class="flex">
+          <AuthConditionalDisplayWrapper showWhenAuth={false} client:load>
             <Button color="primary" variant="solid" className="font-bold mr-4" client:load>Sign Up for Early Access</Button>
-          </AuthLink>
-          <Button color="primary" variant="bordered" className="font-bold" client:load>Learn More</Button>
+          </AuthConditionalDisplayWrapper>
+          <Link 
+            href="#meet" 
+            className="font-bold"
+          >
+            <Button 
+              color="primary" 
+              variant="bordered" 
+              className="font-bold"
+              client:load
+            >
+              Learn More
+            </Button>
+          </Link>
         </div>
       </div>
       <!-- Right side -->
@@ -152,7 +164,7 @@ const units = await contentfulClient.getEntries<Unit>({
       </button>
     </div>
   </div>
-
+  <div id="meet"></div>
   <div class="mb-36 grid grid-cols-12 gap-16">
     <div class="col-span-5">
       <h2 class="text-4xl font-bold mb-8">Meet Berklee Open</h2>
@@ -204,11 +216,11 @@ const units = await contentfulClient.getEntries<Unit>({
       <p class="text-large mb-6">Berklee Open is dedicated to creating a new era of arts education. One that prioritizes accessibility, inclusivity, and belonging. At our core, we endeavor to make the world-renowned experience of Berklee accessible to all K-12 educators and students through relevant online resources that support inspiring, engaging classroom experiences and teaching methods, empowering personal growth through the transformative power of music and the arts.</p>
     </div>
     <div class="relative" style="height:850px;">
-      <img src="//assets.online.berklee.edu/berklee-open-placeholder/collage-bottom-hero.jpg" alt="Berklee Open Home Page Hero" class="absolute -right-5 w-full h-full object-cover" />
+      <img src="//assets.online.berklee.edu/berklee-open-placeholder/collage-bottom-hero.jpg" alt="Berklee Open Home Page Hero" class="absolute -right-6 w-full h-full object-cover" />
     </div>
   </div>
 </div>
-
+<AuthConditionalDisplayWrapper showWhenAuth={false} client:load>
 <div style="width: 100vw; margin-left: calc(50% - 50vw); margin-right: calc(50% - 50vw);" class="bg-gradient-to-r from-purple-300 to-pink-500 grid grid-cols-1 h-400 items-center h-500 pt-24 pb-24 -mr-16 -ml-16">
   <h2 class="text-5xl font-bold mb-16 text-center">Sign Up for Early Access</h2>
   <p class="text-lg text-center max-w-3xl mx-auto mb-16">Berklee Open is currently in development and access is available via invite. We're
@@ -219,6 +231,7 @@ const units = await contentfulClient.getEntries<Unit>({
     <Button color="default" variant="solid" className="font-bold bg-black text-white" client:load>Sign Up for Early Access</Button>
   </div>
 </div>
+</AuthConditionalDisplayWrapper>
 
 </MainLayout>
 

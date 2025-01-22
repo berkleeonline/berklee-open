@@ -238,6 +238,13 @@ body.pdf-page {
   }
 }
 
+body.authentication.main {
+  footer {
+    border: none;
+    display: none;
+  }
+}
+
 /* Responsive adjustments */
 @media (min-width: 768px) {
   .ais-Hits-list {
