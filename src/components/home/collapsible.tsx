@@ -13,8 +13,8 @@ export default function HomeCollapsible() {
           <p className="font-normal">Berklee Open's Music Education resources are:</p> 
           <ul className="font-normal list-disc list-outside ml-4 mt-2 mb-4">
             <li>based on educator best practices,</li> 
-            <li>are standards-aligned, and</li> 
-            <li>are designed to support student learning in the classroom.</li>
+            <li>standards-aligned, and</li> 
+            <li>designed to support student learning in the classroom.</li>
           </ul>
       </AccordionItem>
 

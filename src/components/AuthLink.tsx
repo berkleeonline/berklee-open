@@ -28,7 +28,7 @@ const AuthLink: React.FC<AuthLinkProps> = ({
   }, [authStatus, href]);
  
   return (
-    <Link href={href} className={className} onClick={handleClick}>
+    <Link href={href} className={className} onPress={handleClick}>
       {children}
     </Link>
   );
