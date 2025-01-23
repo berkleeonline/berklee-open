@@ -38,7 +38,7 @@ const AccountCustomized = () => {
   }, []);
 
  if (isLoading) {
-   return <div>Redirecting to dashboard...</div>;
+   return <div>Redirecting to dashboard.</div>;
  }
 
  return (
