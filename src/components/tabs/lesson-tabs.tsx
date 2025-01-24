@@ -280,20 +280,35 @@ export const LessonTabs = ({
                 {lesson_sections.map((section, sectionIndex) => (
                   <div key={sectionIndex} className="mb-6">
                     <div className="mb-7">
-                      {section.fields.interactiveContent && Array.isArray(section.fields.interactiveContent) 
-                        ? section.fields.interactiveContent.map((instruction, idx) => (
-                            <div key={idx} className="pb-6 mb-6 border-b-1 border-slate-300">
-                              <IconHeader headerId="lessonEvidence" icon={faFileCircleInfo} label={instruction.fields.instruction_title} />
-                              <div className={`mb-7 ${styles.instructionInnerStyles}`}>
-                                {instruction.fields.slide_ref && instruction.fields.slide_ref.length > 0 && (
-                                  <div className="text-sm">
-                                    {renderSlideReferences(instruction.fields.slide_ref)}
-                                  </div>
-                                )}
-                                <div className="mb-3" dangerouslySetInnerHTML={{ __html: documentToHtmlString(instruction.fields.instruction_content) }}></div>
+                    {section.fields.interactiveContent && Array.isArray(section.fields.interactiveContent) 
+                        ? section.fields.interactiveContent.map((instruction, idx) => {
+                            // Skip if instruction or fields are missing
+                            if (!instruction?.fields?.instruction_title) return null;
+                            
+                            return (
+                              <div key={idx} className="pb-6 mb-6 border-b-1 border-slate-300">
+                                <IconHeader 
+                                  headerId="lessonEvidence" 
+                                  icon={faFileCircleInfo} 
+                                  label={instruction.fields.instruction_title} 
+                                />
+                                <div className={`mb-7 ${styles.instructionInnerStyles}`}>
+                                  {instruction.fields.slide_ref?.length > 0 && (
+                                    <div className="text-sm">
+                                      {renderSlideReferences(instruction.fields.slide_ref)}
+                                    </div>
+                                  )}
+                                  {instruction.fields.instruction_content && (
+                                    <div className="mb-3" 
+                                      dangerouslySetInnerHTML={{ 
+                                        __html: documentToHtmlString(instruction.fields.instruction_content) 
+                                      }}
+                                    />
+                                  )}
+                                </div>
                               </div>
-                            </div>
-                          ))
+                            );
+                          })
                         : <p>No interactive content available for this section</p>
                       }
                     </div>

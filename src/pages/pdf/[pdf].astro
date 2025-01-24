@@ -15,27 +15,23 @@ const fetchEntryById = async (id) => {
 
 // Fetch and resolve lesson sections and instructions
 const fetchAndResolveSections = async (sections) => {
+  if (!sections || !Array.isArray(sections)) return [];
+  
   const resolvedSections = await Promise.all(
     sections.map(async (section) => {
-      let interactiveContent = [];
-      let instructions = [];
-
-      if (section.fields?.interactiveContent?.sys?.id) {
-        const interactiveContentEntry = await fetchEntryById(section.fields.interactiveContent.sys.id);
-        interactiveContent = interactiveContentEntry.fields?.slides || [];
-
-        // Fetch instructions if available
-        instructions = interactiveContentEntry.fields?.instructions || [];
+      try {
+        if (section?.fields?.interactiveContent?.sys?.id) {
+          const content = await fetchEntryById(section.fields.interactiveContent.sys.id);
+          return {
+            ...section,
+            fields: { ...section.fields, interactiveContent: content?.fields?.instructions || [] }
+          };
+        }
+      } catch (error) {
+        console.warn(`Failed to fetch content: ${error.message}`);
+        return { ...section, fields: { ...section.fields, interactiveContent: [] }};
       }
-
-      return {
-        ...section,
-        fields: {
-          ...section.fields,
-          interactiveContent,
-          instructions, // Include instructions in the resolved section
-        },
-      };
+      return section;
     })
   );
   return resolvedSections;

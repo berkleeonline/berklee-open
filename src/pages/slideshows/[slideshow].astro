@@ -25,40 +25,34 @@ const lessonSections = Astro.props.fields.lesson_sections || [];
 <div>
   {await Promise.all(
     lessonSections.map(async (section, index) => {
-      let lessonEntry = null;
+      try {
+        if (section?.fields?.interactiveContent?.sys?.id) {
+          const lessonEntry = await contentfulClient.getEntry(section.fields.interactiveContent.sys.id);
+          
+          if (lessonEntry?.fields?.slides) {
+            const slides = lessonEntry.fields.slides.filter(slide => slide?.fields);
+            
+            await Promise.all(slides.map(async slide => {
+              if (slide?.fields?.flashCards?.sys?.id) {
+                try {
+                  const cards = await contentfulClient.getEntry(slide.fields.flashCards.sys.id);
+                  slide.fields.flashCards = cards.fields.flashCards;
+                } catch (error) {
+                  console.warn(`Error fetching flashCards: ${error.message}`);
+                  slide.fields.flashCards = [];
+                }
+              }
+            }));
 
-      // Safely retrieve interactiveContent ID
-      const interactiveContentId = section?.fields?.interactiveContent?.sys?.id;
-      if (interactiveContentId) {
-        try {
-          lessonEntry = await contentfulClient.getEntry(interactiveContentId);
-        } catch (error) {
-          console.error(`Error fetching interactiveContent for section ${index}:`, error);
-          return null;
-        }
-      }
-
-      // Process slides
-      const slides = lessonEntry?.fields?.slides?.filter((slide) => slide?.fields) || [];
-      for (const slide of slides) {
-        const flashCardsId = slide?.fields?.flashCards?.sys?.id;
-        if (flashCardsId) {
-          try {
-            const cards = await contentfulClient.getEntry(flashCardsId);
-            slide.fields.flashCards = cards.fields.flashCards;
-          } catch (error) {
-            console.error(`Error fetching flashCards for slide:`, error);
+            if (lessonEntry?.sys?.contentType?.sys?.id === "slideshow") {
+              return <Slideshow content={lessonEntry} client:load />;
+            }
           }
         }
+      } catch (error) {
+        console.warn(`Error in section ${index}: ${error.message}`);
       }
-
-      // Check if lessonEntry is a slideshow
-      if (lessonEntry?.sys?.contentType?.sys?.id === "slideshow") {
-        return <Slideshow content={lessonEntry} client:load />;
-      } else {
-        console.warn('Lesson entry is not a slideshow or is undefined:', lessonEntry);
-        return null;
-      }
+      return null;
     })
   )}
 </div>

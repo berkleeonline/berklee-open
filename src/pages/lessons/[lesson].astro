@@ -41,14 +41,25 @@ export async function getStaticPaths() {
 const fetchAndResolveSections = async (sections) => {
   const resolvedSections = await Promise.all(
     sections.map(async (section) => {
-      if (section.fields?.interactiveContent?.sys?.id) {
-        // Fetch the interactive content entry by its ID
-        const interactiveContent = await fetchEntryById(section.fields.interactiveContent.sys.id);
+      try {
+        if (section.fields?.interactiveContent?.sys?.id) {
+          const interactiveContent = await fetchEntryById(section.fields.interactiveContent.sys.id);
+          return {
+            ...section,
+            fields: {
+              ...section.fields,
+              interactiveContent: interactiveContent.fields?.instructions || [],
+            },
+          };
+        }
+      } catch (error) {
+        console.warn(`Failed to fetch interactive content: ${error.message}`);
+        // Return section without interactive content on error
         return {
           ...section,
           fields: {
             ...section.fields,
-            interactiveContent: interactiveContent.fields?.instructions || [], // Instructions array
+            interactiveContent: [],
           },
         };
       }
@@ -57,7 +68,7 @@ const fetchAndResolveSections = async (sections) => {
         ...section,
         fields: {
           ...section.fields,
-          interactiveContent: [], // Default to empty array
+          interactiveContent: [],
         },
       };
     })
