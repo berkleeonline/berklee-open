@@ -5,6 +5,8 @@
 
 function ackbar() {
   set +e
+  trap - ERR EXIT
+
   status='Successful'
   [ "${1}" != 0 ] && status='Failed'
 
