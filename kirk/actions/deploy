@@ -13,6 +13,8 @@ function ackbar() {
       -u "${target}" \
       -m "${status} ${BRANCH^} Deployment: ${BUILD_URL:-URL_UNAVAILBLE}"
   done
+
+  exit "${1}"
 }
 
 declare -gxa ALERT_TARGETS
