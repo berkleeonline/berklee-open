@@ -3,14 +3,33 @@
 
 # This overrides the default k8s deploy action.
 
+function ackbar() {
+  set +e
+  status='Successful'
+  [ "${1}" != 0 ] && status='Failed'
+
+  for target in "${ALERT_TARGETS[@]}"; do
+    /usr/local/bin/slackme \
+      -u "${target}" \
+      -m "${status} ${BRANCH^} Deployment: ${BUILD_URL:-URL_UNAVAILBLE}"
+  done
+}
+
+declare -gxa ALERT_TARGETS
+ALERT_TARGETS+=('#berklee_open_deploy')
+
+trap 'ackbar $?' ERR EXIT
+
 set -x
 set -e
 set -u
 
+declare -gx BRANCH
+
 while getopts b:c:e:ft opt; do
   case ${opt} in
     b)
-      branch="${OPTARG}"
+      BRANCH="${OPTARG}"
     ;;
     *)
       true
@@ -18,7 +37,15 @@ while getopts b:c:e:ft opt; do
   esac
 done
 
-if [ "${branch}" != 'dev' ] && [ "${branch}" != 'production' ]; then
+[ "${BRANCH}" == 'production' ] && ALERT_TARGETS+=('#berklee_open_team')
+
+for target in "${ALERT_TARGETS[@]}"; do
+  /usr/local/bin/slackme \
+    -u "${target}" \
+    -m "Starting ${BRANCH^} Deployment: ${BUILD_URL:-URL_UNAVAILBLE}"
+done
+
+if [ "${BRANCH}" != 'dev' ] && [ "${BRANCH}" != 'production' ]; then
   exit 0
 fi
 
@@ -33,7 +60,7 @@ AWS_ACCESS_KEY_ID=$(${aws_cfg_get} aws_access_key_id)
 AWS_SECRET_ACCESS_KEY=$(${aws_cfg_get} aws_secret_access_key)
 AWS_DEFAULT_REGION=$(${aws_cfg_get} region || printf 'us-east-1')
 
-eval "$(getconfig -s berklee-open -e "${branch}")"
+eval "$(getconfig -s berklee-open -e "${BRANCH}")"
 root_dir="$(dirname "${0}")/../../"
 pushd "${root_dir}"
 
@@ -46,7 +73,7 @@ docker build \
   --build-arg CONTENTFUL_PREVIEW_TOKEN="${CONTENTFUL_PREVIEW_TOKEN}" \
   --build-arg CONTENTFUL_SPACE_ID="${CONTENTFUL_SPACE_ID}" \
   --build-arg WEBHOOK="${WEBHOOK}" \
-  --build-arg branch="${branch}" \
+  --build-arg BRANCH="${BRANCH}" \
   -f "./scripts/Dockerfile" \
   .
 
