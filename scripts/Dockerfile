@@ -23,10 +23,6 @@ RUN npm install -g @aws-amplify/cli
 COPY . /berklee-open
 WORKDIR /berklee-open
 
-# Force the build and deploy script to always run even if Docker thinks
-# it is cached, that way even if there is only a content change and no
-# code change, it gets deployed just the same.
-ARG CACHEBUST=$(date +%s)
 RUN bash -x -c " \
   export AMPLIFY_APP_ID='${AMPLIFY_APP_ID}'; \
   export AWS_ACCESS_KEY_ID='${AWS_ACCESS_KEY_ID}' \
