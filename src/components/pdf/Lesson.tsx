@@ -107,7 +107,7 @@ interface LessonPDFProps {
 // Update the component to accept props
 // Update the component to accept props
 export const Lesson: React.FC<LessonPDFProps> = ({ fields, sections }) => {
-  const instructions = sections[0]?.fields?.instructions || [];
+  const instructions = sections?.[0]?.fields?.instructions || []
 
   const {
     lesson_outline,
@@ -238,24 +238,26 @@ export const Lesson: React.FC<LessonPDFProps> = ({ fields, sections }) => {
                   </View>
               </View>
             </View>
-            {(instructions || []).map((instruction, instructionIndex) => (
-              instruction?.fields?.instruction_title ? (
-                <View key={instructionIndex}>
-                  <View style={styles.contentContainer}>
-                    <View>
-                      <Text style={{fontWeight: 700, marginBottom: 15}}>
-                        {instruction.fields.instruction_title}
-                      </Text>
-                    </View>
-                    <View>
-                      {instruction?.fields?.instruction_content?.content && (
-                        <Rendering content={instruction.fields.instruction_content.content} />
-                      )}
+            {instructions && Array.isArray(instructions) && instructions.map((instruction, instructionIndex) => {
+                if (!instruction?.fields?.instruction_title) return null;
+                
+                return (
+                  <View key={`instruction-${instructionIndex}`}>
+                    <View style={styles.contentContainer}>
+                      <View>
+                        <Text style={{fontWeight: 700, marginBottom: 15}}>
+                          {instruction.fields.instruction_title}
+                        </Text>
+                      </View>
+                      <View>
+                        {instruction?.fields?.instruction_content?.content && (
+                          <Rendering content={instruction.fields.instruction_content.content} />
+                        )}
+                      </View>
                     </View>
                   </View>
-                </View>
-              ) : null
-            ))}
+                );
+              })}
             </View>
           </View>
         <Footer />

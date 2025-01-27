@@ -9,44 +9,80 @@ import { contentfulClient } from '../../lib/contentful';
 
 // API function to fetch entry by ID
 const fetchEntryById = async (id) => {
-  const entry = await contentfulClient.getEntry(id);
-  return entry;
+  try {
+    const entry = await contentfulClient.getEntry(id);
+    return entry;
+  } catch (error) {
+    console.warn(`Failed to fetch entry ${id}: ${error.message}`);
+    return null;
+  }
 };
 
 // Fetch and resolve lesson sections and instructions
 const fetchAndResolveSections = async (sections) => {
   if (!sections || !Array.isArray(sections)) return [];
-  
+
   const resolvedSections = await Promise.all(
     sections.map(async (section) => {
       try {
+        let interactiveContent = [];
+        let instructions = [];
+
+        // Only try to fetch if we have a valid ID
         if (section?.fields?.interactiveContent?.sys?.id) {
-          const content = await fetchEntryById(section.fields.interactiveContent.sys.id);
-          return {
-            ...section,
-            fields: { ...section.fields, interactiveContent: content?.fields?.instructions || [] }
-          };
+          const interactiveContentEntry = await fetchEntryById(section.fields.interactiveContent.sys.id);
+          
+          if (interactiveContentEntry) {
+            interactiveContent = interactiveContentEntry.fields?.slides || [];
+            instructions = interactiveContentEntry.fields?.instructions || [];
+          }
         }
+
+        return {
+          ...section,
+          fields: {
+            ...section.fields,
+            interactiveContent,
+            instructions,
+          },
+        };
       } catch (error) {
-        console.warn(`Failed to fetch content: ${error.message}`);
-        return { ...section, fields: { ...section.fields, interactiveContent: [] }};
+        console.warn(`Failed to resolve section: ${error.message}`);
+        // Return the original section with empty arrays if resolution fails
+        return {
+          ...section,
+          fields: {
+            ...section.fields,
+            interactiveContent: [],
+            instructions: []
+          }
+        };
       }
-      return section;
     })
   );
-  return resolvedSections;
+
+  return resolvedSections.filter(Boolean); // Remove any null sections
 };
 
 // Fetch the lesson data
 const fetchLessonData = async (lessonId) => {
-  const lessonEntry = await contentfulClient.getEntry(lessonId);
-  const lessonFields = lessonEntry.fields;
+  try {
+    const lessonEntry = await contentfulClient.getEntry(lessonId);
+    const lessonFields = lessonEntry.fields;
 
-  const resolvedSections = await fetchAndResolveSections(lessonFields.lesson_sections || []);
-  return {
-    fields: lessonFields,
-    sections: resolvedSections,
-  };
+    const resolvedSections = await fetchAndResolveSections(lessonFields.lesson_sections || []);
+    return {
+      fields: lessonFields,
+      sections: resolvedSections,
+    };
+  } catch (error) {
+    console.error(`Failed to fetch lesson data for ${lessonId}: ${error.message}`);
+    // Return a minimal valid structure
+    return {
+      fields: {},
+      sections: []
+    };
+  }
 };
 
 // Define getStaticPaths for dynamic routes

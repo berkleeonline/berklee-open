@@ -216,12 +216,10 @@ const resolvedLessonSections = await fetchAndResolveSections(lesson_sections || 
           <ShareButton type="lessons" hrefId={`${id}`} client:load />
         </div>
       </div>
-
       <!-- Slideshow - visible only below 991px -->
       <div class="mb-8 mobile:hidden">
         <SwiperCarousel lessonImages={lesson_image_carousel} client:load />
       </div>
-
       <LessonTabs 
         lesson_sel={serializeForClient(lesson_sel)}
         lesson_extension={serializeForClient(lesson_extension)}
@@ -240,7 +238,6 @@ const resolvedLessonSections = await fetchAndResolveSections(lesson_sections || 
         lesson_sections={serializeForClient(resolvedLessonSections)}
         client:visible
       />
-  
     </div>
     <!-- Slideshow column - hidden below 991px, visible above -->
     <div class="hidden mobile:block mobile:col-start-8 mobile:col-span-5 mobile:relative mobile:sticky mobile:top-24">

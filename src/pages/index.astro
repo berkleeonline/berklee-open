@@ -74,22 +74,26 @@ const units = await contentfulClient.getEntries<Unit>({
         </Button>
       </div>
     </div>
-    <div class="relative"> <!-- Adjust 600px as needed -->
+    <div class="relative overflow-hidden">
       <button 
         id="lessonsLeftArrow"
-        class="absolute -left-8 top-1/2 transform -translate-y-1/2 bg-white hover:bg-slate-200 bg-opacity-95 p-2 rounded-full w-[60px] h-[60px] border border-slate-300 shadow-lg z-[10000] hidden"
+        class="absolute -left-8 top-1/2 transform -translate-y-1/2 bg-white hover:bg-slate-200 bg-opacity-95 p-2 rounded-full w-[60px] h-[60px] border border-slate-300 shadow-lg z-50"
         aria-label="Scroll Left"
       >
-      <FontAwesomeIcon icon={faChevronLeft} />
+        <FontAwesomeIcon icon={faChevronLeft} />
       </button>
+
       <div id="lessonsCarousel"
         class="flex space-x-8 overflow-x-auto mb-48 pb-4 scrollbar-hide"
         style="scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;">
         {lessons.items.map((lesson, index) => (
-          <div class="flex-none w-[400px] scroll-snap-align-start grow flex h-full">
+          <div 
+            key={lesson.sys.id}
+            class="flex-none w-[400px] grow flex h-full"
+            style="scroll-snap-align: start;"
+          >
             <div class="w-full h-full">
               <LessonCard 
-                key={lesson.sys.id}
                 id={lesson.sys.id}
                 title={lesson.fields.lesson_title}
                 duration={lesson.fields.lesson_duration}
@@ -103,9 +107,10 @@ const units = await contentfulClient.getEntries<Unit>({
           </div>
         ))}
       </div>
+
       <button 
         id="lessonsRightArrow"
-        class="absolute -right-8 top-1/2 transform -translate-y-1/2 bg-white hover:bg-slate-200 bg-opacity-95 p-2 rounded-full w-[60px] h-[60px] border border-slate-300 shadow-lg z-100 hidden"
+        class="absolute -right-8 top-1/2 transform -translate-y-1/2 bg-white hover:bg-slate-200 bg-opacity-95 p-2 rounded-full w-[60px] h-[60px] border border-slate-300 shadow-lg z-50"
         aria-label="Scroll right"
       >
         <FontAwesomeIcon icon={faChevronRight} />
@@ -139,7 +144,7 @@ const units = await contentfulClient.getEntries<Unit>({
         class="flex space-x-8 overflow-x-auto mb-48 pb-4 scrollbar-hide"
         style="scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;">
         {units.items.map((unit, index) => (
-          <div class="flex-none w-[400px] scroll-snap-align-start flex">
+          <div class="flex-none w-[400px] scroll-snap-align:start flex">
             <div class="w-full">
               <UnitCard 
                 id={unit.sys.id}
@@ -236,54 +241,82 @@ const units = await contentfulClient.getEntries<Unit>({
 </MainLayout>
 
 <script>
-  function setupCarousel(carouselId, leftArrowId, rightArrowId) {
-    const carousel = document.getElementById(carouselId);
-    const leftArrow = document.getElementById(leftArrowId);
-    const rightArrow = document.getElementById(rightArrowId);
+  document.addEventListener('DOMContentLoaded', function() {
+    function setupCarousel(carouselId, leftArrowId, rightArrowId) {
+      const carousel = document.getElementById(carouselId);
+      const leftArrow = document.getElementById(leftArrowId);
+      const rightArrow = document.getElementById(rightArrowId);
 
-    function checkArrows() {
-      if (carousel) {
-        if (leftArrow) {
-          leftArrow.classList.toggle('hidden', carousel.scrollLeft <= 0);
+      // Debug logging
+      console.log('Carousel:', carousel);
+      console.log('Left Arrow:', leftArrow);
+      console.log('Right Arrow:', rightArrow);
+
+      function checkArrows() {
+        if (!carousel || !leftArrow || !rightArrow) {
+          console.log('Missing elements');
+          return;
         }
-        if (rightArrow) {
-          rightArrow.classList.toggle('hidden', 
-            carousel.scrollLeft >= carousel.scrollWidth - carousel.clientWidth
-          );
-        }
+
+        console.log('Scroll Position:', carousel.scrollLeft);
+        console.log('Scroll Width:', carousel.scrollWidth);
+        console.log('Client Width:', carousel.clientWidth);
+
+        const isAtStart = carousel.scrollLeft <= 1;
+        const isAtEnd = Math.abs(
+          carousel.scrollLeft - (carousel.scrollWidth - carousel.clientWidth)
+        ) <= 1;
+
+        // Remove 'hidden' class initially
+        leftArrow.classList.remove('hidden');
+        rightArrow.classList.remove('hidden');
+
+        // Then toggle based on position
+        if (isAtStart) leftArrow.classList.add('hidden');
+        if (isAtEnd) rightArrow.classList.add('hidden');
+
+        // Debug logging
+        console.log('Is at start:', isAtStart);
+        console.log('Is at end:', isAtEnd);
       }
-    }
 
-    function scroll(direction) {
-      if (carousel) {
+      function scroll(direction) {
+        if (!carousel) return;
+        
         const scrollAmount = carousel.clientWidth;
         carousel.scrollBy({
           left: direction === 'left' ? -scrollAmount : scrollAmount,
           behavior: 'smooth'
         });
       }
+
+      if (carousel) {
+        // Remove scrollbar-hide class temporarily for debugging
+        carousel.classList.remove('scrollbar-hide');
+        
+        carousel.addEventListener('scroll', checkArrows);
+        window.addEventListener('resize', checkArrows);
+      }
+
+      if (leftArrow) {
+        leftArrow.addEventListener('click', () => {
+          console.log('Left arrow clicked');
+          scroll('left');
+        });
+      }
+
+      if (rightArrow) {
+        rightArrow.addEventListener('click', () => {
+          console.log('Right arrow clicked');
+          scroll('right');
+        });
+      }
+
+      // Force initial check after a small delay
+      setTimeout(checkArrows, 100);
     }
 
-    if (carousel) {
-      carousel.addEventListener('scroll', checkArrows);
-      window.addEventListener('resize', checkArrows);
-    }
-
-    if (leftArrow) {
-      leftArrow.addEventListener('click', () => scroll('left'));
-    }
-
-    if (rightArrow) {
-      rightArrow.addEventListener('click', () => scroll('right'));
-    }
-
-    // Initial check
-    checkArrows();
-  }
-
-  // Setup lessons carousel
-  setupCarousel('lessonsCarousel', 'lessonsLeftArrow', 'lessonsRightArrow');
-
-  // Setup units carousel
-  setupCarousel('unitsCarousel', 'unitsLeftArrow', 'unitsRightArrow');
+    // Setup carousels
+    setupCarousel('lessonsCarousel', 'lessonsLeftArrow', 'lessonsRightArrow');
+  });
 </script>
