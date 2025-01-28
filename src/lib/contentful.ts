@@ -2,7 +2,9 @@ import * as contentful from 'contentful'
 
 const contentfulOptions = {
   space: import.meta.env.CONTENTFUL_SPACE_ID,
-  environment: import.meta.env.branch,
+  environment: import.meta.env.branch
+    ? import.meta.env.branch
+    : "dev",
   accessToken: import.meta.env.DEV
     ? import.meta.env.CONTENTFUL_PREVIEW_TOKEN
     : import.meta.env.CONTENTFUL_DELIVERY_TOKEN,
