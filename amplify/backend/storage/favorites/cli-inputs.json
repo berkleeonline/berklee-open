@@ -1,0 +1,14 @@
+{
+  "resourceName": "favorites",
+  "tableName": "favorites",
+  "partitionKey": {
+    "fieldName": "userId",
+    "fieldType": "string"
+  },
+  "sortKey": {
+    "fieldName": "contentId",
+    "fieldType": "string"
+  },
+  "gsi": [],
+  "triggerFunctions": []
+}

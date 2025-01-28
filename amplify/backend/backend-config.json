@@ -1,4 +1,20 @@
 {
+  "api": {
+    "favorites": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "favorites"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "API Gateway"
+    }
+  },
   "auth": {
     "berkleeopen799eb504": {
       "customAuth": false,
@@ -25,6 +41,27 @@
       "service": "Cognito"
     }
   },
+  "function": {
+    "favorites": {
+      "build": true,
+      "dependsOn": [
+        {
+          "attributeEnvMap": {
+            "Arn": "TABLE_ARN",
+            "Name": "TABLE_NAME"
+          },
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "storage",
+          "resourceName": "favorites"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    }
+  },
   "hosting": {
     "amplifyhosting": {
       "providerPlugin": "awscloudformation",
@@ -33,6 +70,22 @@
     }
   },
   "parameters": {
+    "AMPLIFY_function_favorites_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "favorites"
+        }
+      ]
+    },
+    "AMPLIFY_function_favorites_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "favorites"
+        }
+      ]
+    },
     "AMPLIFY_hosting_amplifyhosting_appId": {
       "usedBy": [
         {
@@ -48,6 +101,12 @@
           "resourceName": "amplifyhosting"
         }
       ]
+    }
+  },
+  "storage": {
+    "favorites": {
+      "providerPlugin": "awscloudformation",
+      "service": "DynamoDB"
     }
   }
 }

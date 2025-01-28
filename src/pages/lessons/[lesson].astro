@@ -10,6 +10,7 @@ import MainLayout from "../../layouts/main.astro";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faScroll, faPresentationScreen, faClock, faSignal4, faChalkboardUser, faFilePdf} from '@fortawesome/pro-light-svg-icons';
 import AuthView from '../../components/AuthView';
+import FavoritesLoader from '../../components/account/favorites-loader';
 import SwiperCarousel from '../../components/carousel/carousel';
 import { LessonTabs } from '../../components/tabs/lesson-tabs';
 import styles from './_lesson.module.scss';
@@ -153,6 +154,7 @@ const resolvedLessonSections = await fetchAndResolveSections(lesson_sections || 
       }
     }}
   >
+    <FavoritesLoader client:load />
     <div class="absolute top-0 right-0">
       <img src="" class="h-400" />
     </div>
