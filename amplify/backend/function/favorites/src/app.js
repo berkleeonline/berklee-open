@@ -72,7 +72,8 @@ app.get(path, async function(req, res) {
   };
 
   try {
-    const data = await ddbDocClient.send(new ScanCommand(params));
+    //const data = await ddbDocClient.send(new ScanCommand(params));
+    const data = await ddbDocClient.send(new QueryCommand(params));
     res.json(data.Items);
   } catch (err) {
     res.statusCode = 500;
