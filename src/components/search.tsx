@@ -307,6 +307,7 @@ const Search = () => {
         <CustomSearchBox initialQuery={initialQuery} setSearchTerm={setSearchTerm} />
         <FilterTabs activeFilter={activeFilter} setActiveFilter={setActiveFilter} activeTimeframe={activeTimeframe} setActiveTimeframe={setActiveTimeframe} />
         <SearchResults searchTerm={searchTerm} />
+        <br/><br/><br/>
     </InstantSearch>
   );
 };
