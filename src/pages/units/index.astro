@@ -1,13 +1,11 @@
 ---
-import { contentful } from "../../lib/contentful/server";
+import { getEntries } from "../../lib/contentful";
 import type { Unit } from "../../type/content-blocks";
 
 import MainLayout from "../../layouts/authenticated.astro"
 import UnitCard from "../../components/cards/unit"
 
-const units = await contentful.getEntries<Unit>({
-  content_type: "unit",
-});
+const units = await getEntries('unit');
 ---
 
 <MainLayout title={`Units`} cssClass="unit-index">
@@ -15,7 +13,7 @@ const units = await contentful.getEntries<Unit>({
     <div class="w-full">
       <h1 class="text-4xl font-bold mb-8">Units</h1>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3 gap-8">
-        {units.items.map((unit, index) => (
+        {units.map((unit, index) => (
           <UnitCard 
             key={unit.sys.id}
             id={unit.sys.id}

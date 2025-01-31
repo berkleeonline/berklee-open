@@ -1,12 +1,10 @@
 ---
-import { contentful } from "../../lib/contentful/server";
+import { getEntries } from "../../lib/contentful";
 import type { Module } from "../../type/content-blocks";
 import MainLayout from "../../layouts/authenticated.astro"
 import ModuleCard from "../../components/cards/module"
 
-const modules = await contentful.getEntries<Module>({
-  content_type: "module",
-});
+const modules = await getEntries('module');
 ---
 
 <MainLayout title={`Modules`} cssClass="module-index">
@@ -14,7 +12,7 @@ const modules = await contentful.getEntries<Module>({
     <div class="w-full">
       <h1 class="text-4xl font-bold mb-8">Modules</h1>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3 gap-8">
-        {modules.items.map((module, index) => (
+        {modules.map((module, index) => (
           <ModuleCard 
             key={module.sys.id}
             id={module.sys.id}

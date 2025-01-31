@@ -1,5 +1,5 @@
 ---
-import { contentful } from "../../lib/contentful/server";
+import { getEntries } from "../../lib/contentful";
 import MainLayout from "../../layouts/authenticated.astro"
 import { Button, Chip, Link } from "@heroui/react";
 import type { Unit } from "../../type/content-blocks";
@@ -24,13 +24,11 @@ import FavoritesLoader from '../../components/account/favorites-loader';
 import SyllabusLesson from "../../components/syllabus/syllabus-lesson"
 
 export async function getStaticPaths() {
-  const units = await contentful.getEntries<Unit>({
-  		content_type: "unit",
-	});
+  const units = await getEntries('unit');
 
   let unitsToPublish = [];
 
-  units.items.map((unit) => {
+  units.map((unit) => {
     unitsToPublish.push({
       params: {unit: unit.sys.id},
       props: unit

@@ -1,5 +1,5 @@
 ---
-import { contentful } from "../../lib/contentful/server";
+import { getEntryById, getEntries } from "../../lib/contentful";
 import { calculateLevel } from "../../lib/calculateLevel";
 import { calculateDuration } from "../../lib/calculateDuration";
 import { Button, Link } from "@heroui/react";
@@ -18,13 +18,11 @@ import SyllabusUnitWrapper from '../../components/syllabus/syllabus-unit-wrapper
 import styles from './_module.module.scss';
 
 export async function getStaticPaths() {
-  const modules = await contentful.getEntries<Module>({
-    content_type: "module",
-  });
+  const modules = await getEntries('module');
 
   let modulesToPublish = [];
 
-  modules.items.forEach((module) => {
+  modules.forEach((module) => {
     modulesToPublish.push({
       params: { module: module.sys.id },
       props: module
@@ -78,7 +76,7 @@ if (module_units.length > 0) {
     if (unit.fields && unit.fields.unit_lessons && Array.isArray(unit.fields.unit_lessons)) {
       const unitLessons = await Promise.all(unit.fields.unit_lessons.map(async (lessonLink) => {
         try {
-          const lessonEntry = await contentful.getEntry(lessonLink.sys.id);
+          const lessonEntry = await getEntryById(lessonLink.sys.id);
           lessons.push(lessonEntry);
           return lessonEntry;
         } catch (error) {
@@ -130,7 +128,7 @@ if (module_units.length > 0) {
     if (unit.fields?.unit_concept?.length) {
       const unitConcepts = await Promise.allSettled(
         unit.fields.unit_concept.map(conceptLink => 
-          contentful.getEntry(conceptLink.sys.id)
+          getEntryById(conceptLink.sys.id)
         )
       );
       

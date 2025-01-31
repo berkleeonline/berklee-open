@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart } from '@fortawesome/pro-light-svg-icons';
 import { faHeart as faHeartSolid } from '@fortawesome/pro-solid-svg-icons';
 import { favoriteStore, reloadFavorites } from '../../stores/favorites';
-import { loadEntries } from '../../lib/contentful/client';
+import { getEntriesByIds } from '../../lib/contentful';
 
 const FavoritesList = () => {
   const $favorites = useStore(favoriteStore);
@@ -44,12 +44,12 @@ const FavoritesList = () => {
     for (const contentType in favoritesByType) {
       const contentIds = favoritesByType[contentType].map(f => f.contentId);
 
-      const contentItems = await loadEntries(contentType, contentIds);
+      const contentItems = await getEntriesByIds(contentType, contentIds);
 
-      for (const contentItem of contentItems) {
-        const fav = favoritesByType[contentType].find(f => f.contentId === contentItem.sys.id);
-        fav.content = contentItem;
-      }
+      contentItems.forEach(c => {
+        const fav = favoritesByType[contentType].find(f => f.contentId === c.sys.id);
+        fav.content = c;
+      });
     }
 
     //console.log('favoritesByType, post-content', favoritesByType);

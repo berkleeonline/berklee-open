@@ -1,15 +1,13 @@
 ---
-import { contentful } from "../../lib/contentful/server";
+import { getEntryById, getEntries } from "../../lib/contentful";
 import Slideshow from "../../components/slideshow/Slideshow";
 
 export async function getStaticPaths() {
-  const lessons = await contentful.getEntries({
-    content_type: "lesson",
-  });
+  const lessons = await getEntries('lesson');
 
   let lessonsToPublish = [];
 
-  lessons.items.map((lesson) => {
+  lessons.map((lesson) => {
     lessonsToPublish.push({
       params: { slideshow: lesson?.sys.id },
       props: lesson,
@@ -27,7 +25,7 @@ const lessonSections = Astro.props.fields.lesson_sections || [];
     lessonSections.map(async (section, index) => {
       try {
         if (section?.fields?.interactiveContent?.sys?.id) {
-          const lessonEntry = await contentful.getEntry(section.fields.interactiveContent.sys.id);
+          const lessonEntry = await getEntryById(section.fields.interactiveContent.sys.id);
           
           if (lessonEntry?.fields?.slides) {
             const slides = lessonEntry.fields.slides.filter(slide => slide?.fields);
@@ -35,7 +33,7 @@ const lessonSections = Astro.props.fields.lesson_sections || [];
             await Promise.all(slides.map(async slide => {
               if (slide?.fields?.flashCards?.sys?.id) {
                 try {
-                  const cards = await contentful.getEntry(slide.fields.flashCards.sys.id);
+                  const cards = await getEntryById(slide.fields.flashCards.sys.id);
                   slide.fields.flashCards = cards.fields.flashCards;
                 } catch (error) {
                   console.warn(`Error fetching flashCards: ${error.message}`);
