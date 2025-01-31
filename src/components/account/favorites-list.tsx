@@ -39,7 +39,7 @@ const FavoritesList = () => {
       if (Object.keys(favoritesByType).length > 0) {
         loadFavoritesContent();
       } else {
-        // If no favorites exist, stop loading immediately
+        // If no favorites exist, stop loading
         setIsLoading(false);
       }
     }
@@ -57,7 +57,7 @@ const FavoritesList = () => {
     }
 
     setContentLoaded(true);
-    setIsLoading(false); // Now we are 100% done loading
+    setIsLoading(false); // 100% done loading
   };
 
   return (
