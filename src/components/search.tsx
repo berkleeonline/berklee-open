@@ -5,8 +5,6 @@ import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button } from "@
 import { InstantSearch, SearchBox, Hits, Configure } from 'react-instantsearch';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/pro-light-svg-icons';
-import { getImageUrl } from '../utils/getImageUrl';
-
 
 import ModuleCard from './cards/module';
 import UnitCard from './cards/unit';
@@ -272,11 +270,9 @@ const Search = () => {
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
     const query = searchParams.get('q') || '';
-    // Add this new param
     const timeframe = searchParams.get('timeframe') || '';
     setInitialQuery(query);
     setSearchTerm(query);
-    // Add this new setter
     setActiveTimeframe(timeframe);
   }, []);
 
