@@ -3,12 +3,17 @@ import { getEntries } from "../../lib/contentful";
 import type { Lesson } from "../../type/content-blocks";
 
 import MainLayout from "../../layouts/authenticated.astro";
+import AuthConditionalDisplayWrapper from '../../components/AuthConditionalDisplayWrapper';
 import LessonCard from "../../components/cards/lesson";
+import FavoritesLoader from '../../components/account/favorites-loader';
 
 const lessons = await getEntries('lesson');
 ---
 
 <MainLayout title={`Lessons`} cssClass="lesson-index">
+  <AuthConditionalDisplayWrapper showWhenAuth={true} client:load>
+    <FavoritesLoader client:load />
+  </AuthConditionalDisplayWrapper>
   <div class="flex gap-20">
     <div class="w-full">
       <h1 class="text-4xl font-bold mb-8">Lessons</h1>

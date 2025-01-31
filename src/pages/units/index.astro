@@ -3,12 +3,17 @@ import { getEntries } from "../../lib/contentful";
 import type { Unit } from "../../type/content-blocks";
 
 import MainLayout from "../../layouts/authenticated.astro"
+import AuthConditionalDisplayWrapper from '../../components/AuthConditionalDisplayWrapper';
 import UnitCard from "../../components/cards/unit"
+import FavoritesLoader from '../../components/account/favorites-loader';
 
 const units = await getEntries('unit');
 ---
 
 <MainLayout title={`Units`} cssClass="unit-index">
+  <AuthConditionalDisplayWrapper showWhenAuth={true} client:load>
+    <FavoritesLoader client:load />
+  </AuthConditionalDisplayWrapper>
   <div class="flex gap-20">
     <div class="w-full">
       <h1 class="text-4xl font-bold mb-8">Units</h1>

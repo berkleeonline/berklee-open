@@ -2,12 +2,17 @@
 import { getEntries } from "../../lib/contentful";
 import type { Module } from "../../type/content-blocks";
 import MainLayout from "../../layouts/authenticated.astro"
+import AuthConditionalDisplayWrapper from '../../components/AuthConditionalDisplayWrapper';
 import ModuleCard from "../../components/cards/module"
+import FavoritesLoader from '../../components/account/favorites-loader';
 
 const modules = await getEntries('module');
 ---
 
 <MainLayout title={`Modules`} cssClass="module-index">
+  <AuthConditionalDisplayWrapper showWhenAuth={true} client:load>
+    <FavoritesLoader client:load />
+  </AuthConditionalDisplayWrapper>
   <div class="flex gap-20">
     <div class="w-full">
       <h1 class="text-4xl font-bold mb-8">Modules</h1>
