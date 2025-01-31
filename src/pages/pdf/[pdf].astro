@@ -5,12 +5,12 @@ import path from 'path';
 import { generate } from './generate';
 import AuthView from '../../components/AuthView';
 import PdfLayout from '../../layouts/pdf.astro';
-import { contentfulClient } from '../../lib/contentful';
+import { contentful } from '../../lib/contentful/server';
 
 // API function to fetch entry by ID
 const fetchEntryById = async (id) => {
   try {
-    const entry = await contentfulClient.getEntry(id);
+    const entry = await contentful.getEntry(id);
     return entry;
   } catch (error) {
     console.warn(`Failed to fetch entry ${id}: ${error.message}`);
@@ -67,7 +67,7 @@ const fetchAndResolveSections = async (sections) => {
 // Fetch the lesson data
 const fetchLessonData = async (lessonId) => {
   try {
-    const lessonEntry = await contentfulClient.getEntry(lessonId);
+    const lessonEntry = await contentful.getEntry(lessonId);
     const lessonFields = lessonEntry.fields;
 
     const resolvedSections = await fetchAndResolveSections(lessonFields.lesson_sections || []);
@@ -87,7 +87,7 @@ const fetchLessonData = async (lessonId) => {
 
 // Define getStaticPaths for dynamic routes
 export async function getStaticPaths() {
-  const pdfs = await contentfulClient.getEntries({
+  const pdfs = await contentful.getEntries({
     content_type: "lesson",
   });
 

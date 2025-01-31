@@ -1,5 +1,5 @@
 ---
-import { contentfulClient } from "../../lib/contentful";
+import { contentful } from "../../lib/contentful/server";
 import { documentToHtmlString } from '@contentful/rich-text-html-renderer';
 import { Button, Chip, Link } from "@heroui/react";
 import type { Lesson } from "../../type/content-blocks";
@@ -17,12 +17,12 @@ import styles from './_lesson.module.scss';
 
 // API function to fetch entry by ID
 const fetchEntryById = async (id) => {
-  const entry = await contentfulClient.getEntry(id);
+  const entry = await contentful.getEntry(id);
   return entry;
 };
 
 export async function getStaticPaths() {
-  const lessons = await contentfulClient.getEntries({
+  const lessons = await contentful.getEntries({
     content_type: "lesson",
   });
 

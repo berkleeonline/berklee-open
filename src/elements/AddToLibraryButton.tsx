@@ -34,7 +34,7 @@ export const AddToLibraryButton: FC<AddToLibraryButtonProps> = ({ headerId, type
       setIcon(faHeart);
       setTooltip('Add to Library');
     } else {
-      await addFavorite(hrefId, type.endsWith('s') ? type.substring(0, type.length - 1) : type);
+      await addFavorite(hrefId, type);
       setIcon(faHeartSolid);
       setTooltip('Remove from Library');
     }

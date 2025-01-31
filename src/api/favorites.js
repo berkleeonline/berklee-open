@@ -9,7 +9,9 @@ export const addFavorite = async (contentId, contentType) => {
       options: {
         body: {
           contentId,
-          contentType,
+          contentType: contentType.endsWith('s')
+            ? contentType.substring(0, contentType.length - 1)
+            : contentType,
           createdDate: requestTime,
           updatedDate: requestTime,
         },

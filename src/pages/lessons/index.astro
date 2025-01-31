@@ -1,11 +1,11 @@
 ---
-import { contentfulClient } from "../../lib/contentful";
+import { contentful } from "../../lib/contentful/server";
 import type { Lesson } from "../../type/content-blocks";
 
 import MainLayout from "../../layouts/authenticated.astro";
 import LessonCard from "../../components/cards/lesson";
 
-const lessons = await contentfulClient.getEntries<Lesson>({
+const lessons = await contentful.getEntries<Lesson>({
   content_type: "lesson",
 });
 ---

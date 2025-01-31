@@ -1,12 +1,12 @@
 ---
-	import { contentfulClient } from "../../lib/contentful";
-	import type { Module } from "../../type/content-blocks";
-	import MainLayout from "../../layouts/authenticated.astro"
-	import ModuleCard from "../../components/cards/module"
+import { contentful } from "../../lib/contentful/server";
+import type { Module } from "../../type/content-blocks";
+import MainLayout from "../../layouts/authenticated.astro"
+import ModuleCard from "../../components/cards/module"
 
-	const modules = await contentfulClient.getEntries<Module>({
-  	content_type: "module",
-	});
+const modules = await contentful.getEntries<Module>({
+  content_type: "module",
+});
 ---
 
 <MainLayout title={`Modules`} cssClass="module-index">

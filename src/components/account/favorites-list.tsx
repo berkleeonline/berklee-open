@@ -6,19 +6,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart } from '@fortawesome/pro-light-svg-icons';
 import { faHeart as faHeartSolid } from '@fortawesome/pro-solid-svg-icons';
 import { favoriteStore, reloadFavorites } from '../../stores/favorites';
+import { loadEntries } from '../../lib/contentful/client';
 
 const FavoritesList = () => {
   const $favorites = useStore(favoriteStore);
-  const [isLoaded, setIsLoaded] = useState<boolean>(false);
-
-  useEffect(() => {
-    reloadFavorites().then(() => {
-      setIsLoaded(true);
-    });
-  }, []);
+  const [favoritesLoaded, setFavoritesLoaded] = useState<boolean>(false);
+  const [contentLoaded, setContentLoaded] = useState<boolean>(false);
 
   const favoritesByType = useMemo(() => {
-    if (!isLoaded) {
+    if (!favoritesLoaded) {
       return {};
     }
 
@@ -29,11 +25,41 @@ const FavoritesList = () => {
       acc[cur.contentType].push(cur);
       return acc;
     }, {});
-  }, [isLoaded]);
+  }, [favoritesLoaded]);
+
+  useEffect(() => {
+    reloadFavorites().then(() => {
+      setFavoritesLoaded(true);
+    });
+  }, []);
+
+  useEffect(() => {
+    loadFavoritesContent();
+  }, [favoritesByType]);
+
+  const loadFavoritesContent = async () => {
+
+    //console.log('favoritesByType, pre-content', favoritesByType);
+
+    for (const contentType in favoritesByType) {
+      const contentIds = favoritesByType[contentType].map(f => f.contentId);
+
+      const contentItems = await loadEntries(contentType, contentIds);
+
+      for (const contentItem of contentItems) {
+        const fav = favoritesByType[contentType].find(f => f.contentId === contentItem.sys.id);
+        fav.content = contentItem;
+      }
+    }
+
+    //console.log('favoritesByType, post-content', favoritesByType);
+
+    setContentLoaded(true);
+  };
 
   return (
     <Authenticator.Provider>
-      {isLoaded && Object.keys($favorites).length ? (
+      {favoritesLoaded && contentLoaded && Object.keys(favoritesByType).length ? (
         Object.keys(favoritesByType).map(favType => (
           <div key={`favorite-${favType}s`}>
             <h3 className="text-2xl font-bold mb-8">Favorite {favType.charAt(0).toUpperCase()}{favType.substring(1)}s</h3>

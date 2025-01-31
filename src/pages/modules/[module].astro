@@ -1,5 +1,5 @@
 ---
-import { contentfulClient } from "../../lib/contentful";
+import { contentful } from "../../lib/contentful/server";
 import { calculateLevel } from "../../lib/calculateLevel";
 import { calculateDuration } from "../../lib/calculateDuration";
 import { Button, Link } from "@heroui/react";
@@ -18,7 +18,7 @@ import SyllabusUnitWrapper from '../../components/syllabus/syllabus-unit-wrapper
 import styles from './_module.module.scss';
 
 export async function getStaticPaths() {
-  const modules = await contentfulClient.getEntries<Module>({
+  const modules = await contentful.getEntries<Module>({
     content_type: "module",
   });
 
@@ -78,7 +78,7 @@ if (module_units.length > 0) {
     if (unit.fields && unit.fields.unit_lessons && Array.isArray(unit.fields.unit_lessons)) {
       const unitLessons = await Promise.all(unit.fields.unit_lessons.map(async (lessonLink) => {
         try {
-          const lessonEntry = await contentfulClient.getEntry(lessonLink.sys.id);
+          const lessonEntry = await contentful.getEntry(lessonLink.sys.id);
           lessons.push(lessonEntry);
           return lessonEntry;
         } catch (error) {
@@ -130,7 +130,7 @@ if (module_units.length > 0) {
     if (unit.fields?.unit_concept?.length) {
       const unitConcepts = await Promise.allSettled(
         unit.fields.unit_concept.map(conceptLink => 
-          contentfulClient.getEntry(conceptLink.sys.id)
+          contentful.getEntry(conceptLink.sys.id)
         )
       );
       

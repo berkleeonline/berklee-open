@@ -1,11 +1,11 @@
 ---
-import { contentfulClient } from "../../lib/contentful";
+import { contentful } from "../../lib/contentful/server";
 import type { Unit } from "../../type/content-blocks";
 
 import MainLayout from "../../layouts/authenticated.astro"
 import UnitCard from "../../components/cards/unit"
 
-const units = await contentfulClient.getEntries<Unit>({
+const units = await contentful.getEntries<Unit>({
   content_type: "unit",
 });
 ---

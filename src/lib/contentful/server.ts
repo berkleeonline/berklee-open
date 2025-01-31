@@ -1,19 +1,21 @@
-import * as contentful from 'contentful'
+import * as contentfulLib from 'contentful';
 
 const contentfulOptions = {
   space: import.meta.env.CONTENTFUL_SPACE_ID,
   environment: import.meta.env.branch
     ? import.meta.env.branch
-    : "dev",
+    : 'dev',
   accessToken: import.meta.env.DEV
     ? import.meta.env.CONTENTFUL_PREVIEW_TOKEN
     : import.meta.env.CONTENTFUL_DELIVERY_TOKEN,
-  host: import.meta.env.DEV ? "preview.contentful.com" : "cdn.contentful.com",
-}
+  host: import.meta.env.DEV
+    ? 'preview.contentful.com'
+    : 'cdn.contentful.com',
+};
 
-export const contentfulClient = contentful.createClient
-  ? contentful.createClient(contentfulOptions)
-  : contentful.default.createClient(contentfulOptions)
+export const contentful = contentfulLib.createClient
+  ? contentfulLib.createClient(contentfulOptions)
+  : contentfulLib.default.createClient(contentfulOptions);
 
 // Function to fetch an entry with resolved linked entries (include depth 3)
 export const getLessonWithPrerequisites = async (entryId) => {
@@ -24,11 +26,11 @@ export const getLessonWithPrerequisites = async (entryId) => {
     });
 
     // Log the resolved entry for debugging
-    console.log("Resolved entry:", entry);
+    console.log('Resolved entry:', entry);
 
     return entry;
   } catch (error) {
-    console.error("Error fetching entry:", error);
+    console.error('Error fetching entry:', error);
     throw error;
   }
 };

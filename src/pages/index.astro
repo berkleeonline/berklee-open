@@ -1,6 +1,6 @@
 ---
 import React, { useEffect, useState } from 'react';
-import { contentfulClient } from "../lib/contentful";
+import { contentful } from "../lib/contentful/server";
 import type { Lesson, Unit } from "../type/content-blocks";
 import { Button, Link } from "@heroui/react";
 import HomeCollapsible from '../components/home/collapsible';
@@ -12,13 +12,13 @@ import { faChevronLeft, faChevronRight } from '@fortawesome/pro-light-svg-icons'
 import AuthConditionalDisplayWrapper from '../components/AuthConditionalDisplayWrapper';
 import FavoritesLoader from '../components/account/favorites-loader';
 
-const lessons = await contentfulClient.getEntries<Lesson>({
+const lessons = await contentful.getEntries<Lesson>({
   content_type: "lesson",
   limit: 4,
 
 });
 
-const units = await contentfulClient.getEntries<Unit>({
+const units = await contentful.getEntries<Unit>({
   content_type: "unit",
   limit: 6,
 });
