@@ -1,20 +1,23 @@
 ---
-	import { contentfulClient } from "../../lib/contentful";
-	import type { Module } from "../../type/content-blocks";
-	import MainLayout from "../../layouts/authenticated.astro"
-	import ModuleCard from "../../components/cards/module"
+import { getEntries } from "../../lib/contentful";
+import type { Module } from "../../type/content-blocks";
+import MainLayout from "../../layouts/authenticated.astro"
+import AuthConditionalDisplayWrapper from '../../components/AuthConditionalDisplayWrapper';
+import ModuleCard from "../../components/cards/module"
+import FavoritesLoader from '../../components/account/favorites-loader';
 
-	const modules = await contentfulClient.getEntries<Module>({
-  	content_type: "module",
-	});
+const modules = await getEntries('module');
 ---
 
 <MainLayout title={`Modules`} cssClass="module-index">
+  <AuthConditionalDisplayWrapper showWhenAuth={true} client:load>
+    <FavoritesLoader client:load />
+  </AuthConditionalDisplayWrapper>
   <div class="flex gap-20">
     <div class="w-full">
       <h1 class="text-4xl font-bold mb-8">Modules</h1>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3 gap-8">
-        {modules.items.map((module, index) => (
+        {modules.map((module, index) => (
           <ModuleCard 
             key={module.sys.id}
             id={module.sys.id}

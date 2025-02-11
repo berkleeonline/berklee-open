@@ -1,21 +1,24 @@
 ---
-import { contentfulClient } from "../../lib/contentful";
+import { getEntries } from "../../lib/contentful";
 import type { Unit } from "../../type/content-blocks";
 
 import MainLayout from "../../layouts/authenticated.astro"
+import AuthConditionalDisplayWrapper from '../../components/AuthConditionalDisplayWrapper';
 import UnitCard from "../../components/cards/unit"
+import FavoritesLoader from '../../components/account/favorites-loader';
 
-const units = await contentfulClient.getEntries<Unit>({
-  content_type: "unit",
-});
+const units = await getEntries('unit');
 ---
 
 <MainLayout title={`Units`} cssClass="unit-index">
+  <AuthConditionalDisplayWrapper showWhenAuth={true} client:load>
+    <FavoritesLoader client:load />
+  </AuthConditionalDisplayWrapper>
   <div class="flex gap-20">
     <div class="w-full">
       <h1 class="text-4xl font-bold mb-8">Units</h1>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3 gap-8">
-        {units.items.map((unit, index) => (
+        {units.map((unit, index) => (
           <UnitCard 
             key={unit.sys.id}
             id={unit.sys.id}

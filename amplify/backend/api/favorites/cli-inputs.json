@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "paths": {
+    "/favorite": {
+      "name": "/favorite",
+      "lambdaFunction": "favorites",
+      "permissions": {
+        "setting": "private",
+        "auth": [
+          "create",
+          "read",
+          "update",
+          "delete"
+        ]
+      }
+    }
+  }
+}

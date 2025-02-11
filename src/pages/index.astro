@@ -1,6 +1,6 @@
 ---
 import React, { useEffect, useState } from 'react';
-import { contentfulClient } from "../lib/contentful";
+import { getEntries } from "../lib/contentful";
 import type { Lesson, Unit } from "../type/content-blocks";
 import { Button, Link } from "@heroui/react";
 import HomeCollapsible from '../components/home/collapsible';
@@ -10,21 +10,18 @@ import MainLayout from '../layouts/main.astro';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight } from '@fortawesome/pro-light-svg-icons';
 import AuthConditionalDisplayWrapper from '../components/AuthConditionalDisplayWrapper';
+import FavoritesLoader from '../components/account/favorites-loader';
 
-const lessons = await contentfulClient.getEntries<Lesson>({
-  content_type: "lesson",
-  limit: 4,
+const lessons = await getEntries('lesson', 4);
 
-});
-
-const units = await contentfulClient.getEntries<Unit>({
-  content_type: "unit",
-  limit: 6,
-});
+const units = await getEntries('unit', 6);
 
 ---
 
 <MainLayout title={`Berklee Open`} cssClass="home-page">
+  <AuthConditionalDisplayWrapper showWhenAuth={true} client:load>
+    <FavoritesLoader client:load />
+  </AuthConditionalDisplayWrapper>
   <div class="mb-32">
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 h-500">
       <!-- Left side -->
@@ -86,7 +83,7 @@ const units = await contentfulClient.getEntries<Unit>({
       <div id="lessonsCarousel"
         class="flex space-x-8 overflow-x-auto mb-48 pb-4 scrollbar-hide"
         style="scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;">
-        {lessons.items.map((lesson, index) => (
+        {lessons.map((lesson, index) => (
           <div 
             key={lesson.sys.id}
             class="flex-none w-[400px] grow flex h-full"
@@ -143,7 +140,7 @@ const units = await contentfulClient.getEntries<Unit>({
       <div id="unitsCarousel"
         class="flex space-x-8 overflow-x-auto mb-48 pb-4 scrollbar-hide"
         style="scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;">
-        {units.items.map((unit, index) => (
+        {units.map((unit, index) => (
           <div class="flex-none w-[400px] scroll-snap-align:start flex">
             <div class="w-full">
               <UnitCard 

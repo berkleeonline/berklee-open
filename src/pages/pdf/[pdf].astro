@@ -5,18 +5,7 @@ import path from 'path';
 import { generate } from './generate';
 import AuthView from '../../components/AuthView';
 import PdfLayout from '../../layouts/pdf.astro';
-import { contentfulClient } from '../../lib/contentful';
-
-// API function to fetch entry by ID
-const fetchEntryById = async (id) => {
-  try {
-    const entry = await contentfulClient.getEntry(id);
-    return entry;
-  } catch (error) {
-    console.warn(`Failed to fetch entry ${id}: ${error.message}`);
-    return null;
-  }
-};
+import { getEntryById, getEntries } from '../../lib/contentful';
 
 // Fetch and resolve lesson sections and instructions
 const fetchAndResolveSections = async (sections) => {
@@ -30,7 +19,7 @@ const fetchAndResolveSections = async (sections) => {
 
         // Only try to fetch if we have a valid ID
         if (section?.fields?.interactiveContent?.sys?.id) {
-          const interactiveContentEntry = await fetchEntryById(section.fields.interactiveContent.sys.id);
+          const interactiveContentEntry = await getEntryById(section.fields.interactiveContent.sys.id);
           
           if (interactiveContentEntry) {
             interactiveContent = interactiveContentEntry.fields?.slides || [];
@@ -67,7 +56,7 @@ const fetchAndResolveSections = async (sections) => {
 // Fetch the lesson data
 const fetchLessonData = async (lessonId) => {
   try {
-    const lessonEntry = await contentfulClient.getEntry(lessonId);
+    const lessonEntry = await getEntryById(lessonId);
     const lessonFields = lessonEntry.fields;
 
     const resolvedSections = await fetchAndResolveSections(lessonFields.lesson_sections || []);
@@ -87,11 +76,9 @@ const fetchLessonData = async (lessonId) => {
 
 // Define getStaticPaths for dynamic routes
 export async function getStaticPaths() {
-  const pdfs = await contentfulClient.getEntries({
-    content_type: "lesson",
-  });
+  const pdfs = await getEntries('lesson');
 
-  return pdfs.items.map((pdf) => ({
+  return pdfs.map((pdf) => ({
     params: { pdf: pdf.sys.id },
   }));
 }

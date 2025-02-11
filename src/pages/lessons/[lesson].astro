@@ -1,5 +1,5 @@
 ---
-import { contentfulClient } from "../../lib/contentful";
+import { getEntryById, getEntries } from "../../lib/contentful";
 import { documentToHtmlString } from '@contentful/rich-text-html-renderer';
 import { Button, Chip, Link } from "@heroui/react";
 import type { Lesson } from "../../type/content-blocks";
@@ -10,24 +10,17 @@ import MainLayout from "../../layouts/main.astro";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faScroll, faPresentationScreen, faClock, faSignal4, faChalkboardUser, faFilePdf} from '@fortawesome/pro-light-svg-icons';
 import AuthView from '../../components/AuthView';
+import FavoritesLoader from '../../components/account/favorites-loader';
 import SwiperCarousel from '../../components/carousel/carousel';
 import { LessonTabs } from '../../components/tabs/lesson-tabs';
 import styles from './_lesson.module.scss';
 
-// API function to fetch entry by ID
-const fetchEntryById = async (id) => {
-  const entry = await contentfulClient.getEntry(id);
-  return entry;
-};
-
 export async function getStaticPaths() {
-  const lessons = await contentfulClient.getEntries({
-    content_type: "lesson",
-  });
+  const lessons = await getEntries('lesson');
 
   let lessonsToPublish = [];
 
-  lessons.items.map((lesson) => {
+  lessons.map((lesson) => {
     lessonsToPublish.push({
       params: { lesson: lesson.sys.id },
       props: lesson
@@ -43,7 +36,7 @@ const fetchAndResolveSections = async (sections) => {
     sections.map(async (section) => {
       try {
         if (section.fields?.interactiveContent?.sys?.id) {
-          const interactiveContent = await fetchEntryById(section.fields.interactiveContent.sys.id);
+          const interactiveContent = await getEntryById(section.fields.interactiveContent.sys.id);
           return {
             ...section,
             fields: {
@@ -153,6 +146,7 @@ const resolvedLessonSections = await fetchAndResolveSections(lesson_sections || 
       }
     }}
   >
+    <FavoritesLoader client:load />
     <div class="absolute top-0 right-0">
       <img src="" class="h-400" />
     </div>
