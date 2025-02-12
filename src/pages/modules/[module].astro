@@ -127,9 +127,15 @@ if (module_units.length > 0) {
 
     if (unit.fields?.unit_concept?.length) {
       const unitConcepts = await Promise.allSettled(
-        unit.fields.unit_concept.map(conceptLink => 
-          getEntryById(conceptLink.sys.id)
-        )
+        unit.fields.unit_concept.map(async (conceptLink) => {
+          try {
+            const conceptEntry = await getEntryById(conceptLink.sys.id);
+            return conceptEntry;
+          } catch (error) {
+            console.error(`Error fetching concept with ID ${conceptLink.sys.id}:`, error);
+            return null;
+          }
+        })
       );
       
       unit.fields.unit_concept = unitConcepts
