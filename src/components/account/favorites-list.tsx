@@ -124,10 +124,7 @@ const FavoritesList = () => {
             <div className="upload-upsell-container">
               <FontAwesomeIcon icon={faHeart} className="h-8 mb-6 mt-4 mx-auto border rounded-full p-4 border-slate-400" />
               <h2 className="text-1xl font-bold mb-2 leading-5 mb-8">
-                Favoriting <a href="/modules" className="underline">modules</a>, 
-                <a href="/units" className="underline">units</a>, or 
-                <a href="/lessons" className="underline">lessons</a> 
-                will build your collection of Berklee Open resources here.
+                Favoriting <a href="/modules" className="underline">modules</a>, <a href="/units" className="underline">units</a>, or <a href="/lessons" className="underline">lessons</a> will build your collection of Berklee Open resources here.
               </h2>
               <Button 
                   href={`/search`} 
@@ -142,6 +139,14 @@ const FavoritesList = () => {
               </Button>
             </div>
           </li>
+          <li className="card-placeholder empty-card-item rounded-large"></li>
+          <li className="card-placeholder empty-card-item rounded-large"></li>
+          <li className="card-placeholder empty-card-item rounded-large"></li>
+          <li className="card-placeholder empty-card-item rounded-large"></li>
+          <li className="card-placeholder empty-card-item rounded-large"></li>
+          <li className="card-placeholder empty-card-item rounded-large"></li>
+          <li className="card-placeholder empty-card-item rounded-large"></li>
+          <li className="card-placeholder empty-card-item rounded-large"></li>
         </ul>
       )}
     </Authenticator.Provider>
