@@ -14,7 +14,7 @@ const Header = (props) => {
     "Modules",
     "Units",
     "Lessons",
-    "Dashboard",
+    "Practice Tools",
     "Log Out",
   ];
 

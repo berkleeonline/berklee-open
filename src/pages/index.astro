@@ -171,17 +171,22 @@ const units = await getEntries('unit', 6);
   </div>
   <div class="mb-48"></div>
   <div id="meet"></div>
-  <div class="mb-36 grid grid-cols-12 gap-16">
-    <div class="col-span-5">
-      <h2 class="text-4xl font-bold mb-8">Meet Berklee Open</h2>
-      <HomeCollapsible client:load />
-    </div>
-    <div class="collapsible-related-image col-span-7 border-1 rounded-lg">
+  <div class="mb-36 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16">
+    <!-- Heading is always at the top -->
+    <h2 class="text-4xl font-bold col-span-1 lg:col-span-12">Meet Berklee Open</h2>
+    
+    <!-- Image moves between collapsible and heading -->
+    <div class="collapsible-related-image col-span-1 lg:col-span-7 order-1 lg:order-2 border-1 rounded-lg">
       <img 
         src="//assets.online.berklee.edu/berklee-open-placeholder/bop-pedagogically_sound.png" 
         alt="Berklee Open - Pedagogically Sound"
-        class="rounded-lg" 
+        class="rounded-lg w-full" 
       />
+    </div>
+
+    <!-- Collapsible section -->
+    <div class="col-span-1 lg:col-span-5 order-2 lg:order-1">
+      <HomeCollapsible client:load />
     </div>
   </div>
 
