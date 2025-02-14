@@ -1,21 +1,44 @@
-import React, { useState } from "react";
-import { Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, NavbarMenuToggle, NavbarMenu, NavbarMenuItem, Input, Button} from "@heroui/react";
+import React, { useState, useEffect } from "react";
+import { Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, Button, NavbarMenuToggle, NavbarMenu, NavbarMenuItem, Input, DropdownItem, DropdownTrigger, Dropdown, DropdownMenu} from "@heroui/react";
 import { Authenticator } from '@aws-amplify/ui-react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch } from '@fortawesome/pro-light-svg-icons';
+import { faSearch, faPianoKeyboard, faChevronDown } from '@fortawesome/pro-light-svg-icons';
+import { MetronomeIcon } from "../elements/MetronomeIcon";
+import { Keyboard } from "./music/keyboard/keyboard";
+import { Metronome } from "./metronome";
 import Logo from "./logo";
 import AccountHeader from "./account/header";
+
+
 
 const Header = (props) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [showKeyboard, setShowKeyboard] = useState(false);
+  const [isMetronomeOpen, setIsMetronomeOpen] = useState(false);
+
 
   const menuItems = [
-    "Modules",
-    "Units",
-    "Lessons",
-    "Practice Tools",
-    "Log Out",
+    {
+      label: "Modules",
+      href: "/modules"
+    },
+    {
+      label: "Units",
+      href: "/units"
+    },
+    {
+      label: "Lessons",
+      href: "/lessons"
+    },
+    {
+      label: "Practice Tools",
+      href: "/practice-tools"
+    },
+    {
+      label: "Log Out",
+      href: "/logout"  // or whatever your logout path is
+    }
   ];
 
   const handleSearch = (e) => {
@@ -25,8 +48,25 @@ const Header = (props) => {
     }
   };
 
-  return (
+  const handleMetronomeClick = () => {
+    setIsMetronomeOpen(true);
+  };
+
+  const icons = {
+    metronome: <MetronomeIcon />
+  };
+
+  useEffect(() => {
+    const handlePianoToggle = () => {
+        setShowKeyboard(false);
+    };
     
+    document.addEventListener('togglePiano', handlePianoToggle);
+    return () => document.removeEventListener('togglePiano', handlePianoToggle);
+  }, []);
+
+  return (
+    <>
       <Navbar onMenuOpenChange={setIsMenuOpen} maxWidth="2xl">
         <Authenticator.Provider>
         <NavbarContent justify="start" className="justify-items-start">
@@ -73,25 +113,74 @@ const Header = (props) => {
               Lessons
             </Link>
           </NavbarItem>
+          <Dropdown>
+            <NavbarItem>
+              <DropdownTrigger>
+                <Button
+                  disableRipple
+                  className="p-0 bg-transparent font-bold border-l pl-4 pr-4 practice-tools-toggle"
+                  endContent={<FontAwesomeIcon icon={faChevronDown} />}
+                  radius="sm"
+                  variant="light"
+                >
+                  Practice Tools
+                </Button>
+              </DropdownTrigger>
+            </NavbarItem>
+            <DropdownMenu
+              aria-label="Practice Tools"
+              className="w-[340px]"
+              itemClasses={{
+                base: "gap-4",
+              }}
+            >
+  
+            <DropdownItem
+              key="metronome"
+              description="Time is of the essence."
+              startContent={<MetronomeIcon />}
+              onPress={handleMetronomeClick}
+            >
+              <span className="font-bold">Metronome</span>
+            </DropdownItem>
+            <DropdownItem
+                className="header-piano-toggle"
+                key="piano"
+                description="The right notes at your fingertips."
+                startContent={<FontAwesomeIcon icon={faPianoKeyboard} className="font-bold h-[1.17rem]" />}
+                onPress={() => setShowKeyboard(!showKeyboard)}
+              >
+                <span className="font-bold">Virtual Piano</span>
+              </DropdownItem>
+            </DropdownMenu>
+          </Dropdown>
           <AccountHeader />
         </NavbarContent>
 
         <NavbarMenu>
           {menuItems.map((item, index) => (
-            <NavbarMenuItem key={`${item}-${index}`}>
+            <NavbarMenuItem key={`${item.label}-${index}`}>
               <Link
                 color="foreground"
                 className="w-full"
-                href="#"
+                href={item.href}
                 size="lg"
               >
-                {item}
+                {item.label}
               </Link>
             </NavbarMenuItem>
           ))}
         </NavbarMenu>
         </Authenticator.Provider>
       </Navbar>
+      <div>
+        <Keyboard isVisible={showKeyboard}  />
+      </div>
+      <Metronome 
+        isExpanded={isMetronomeOpen} 
+        onExpandChange={setIsMetronomeOpen}
+      />
+      </>
   );
 };
 

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Navbar, NavbarContent, NavbarItem, Button } from "@heroui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Keyboard } from "../music/keyboard/keyboard";
@@ -12,6 +12,7 @@ import {
     faShare,
     faClose
 } from "@fortawesome/pro-light-svg-icons";
+import { MetronomeIcon } from "src/elements/MetronomeIcon";
 
 interface SlideshowHeaderProps {
     currentSlide: number;
@@ -31,6 +32,20 @@ export const SlideshowHeader: React.FC<SlideshowHeaderProps> = ({
     openNotes
 }) => {
   const [showKeyboard, setShowKeyboard] = useState(false);
+  const [isMetronomeOpen, setIsMetronomeOpen] = useState(false);
+
+  const handleMetronomeClick = () => {
+    setIsMetronomeOpen(true);
+  };
+
+  useEffect(() => {
+    const handlePianoToggle = () => {
+        setShowKeyboard(false);
+    };
+    
+    document.addEventListener('togglePiano', handlePianoToggle);
+    return () => document.removeEventListener('togglePiano', handlePianoToggle);
+  }, []);
 
   return (
     <>
@@ -40,7 +55,7 @@ export const SlideshowHeader: React.FC<SlideshowHeaderProps> = ({
           <NavbarItem className="mr-[40px] font-bold">Features</NavbarItem>
           {hasNotes && (
             <NavbarItem>
-              <Button onClick={openNotes} className="text-md font-bold rounded-full border bg-white flex items-center">
+              <Button onPress={openNotes} className="text-md font-bold rounded-full border bg-white flex items-center">
                 <FontAwesomeIcon icon={faNoteSticky} />
                 <span>Instructor Notes</span>
               </Button>
@@ -60,10 +75,12 @@ export const SlideshowHeader: React.FC<SlideshowHeaderProps> = ({
         </NavbarContent>
         <NavbarContent justify="end" className="sm:flex">
           <NavbarItem className="hidden lg:flex border-r pr-5">
-            <Metronome />
+            <Button isIconOnly className="bg-white text-xl" onPress={handleMetronomeClick}>
+              <MetronomeIcon />
+            </Button>
           </NavbarItem>
           <NavbarItem className="hidden lg:flex border-r pr-5">
-            <Button onClick={() => setShowKeyboard(!showKeyboard)} isIconOnly className="header-piano-toggle bg-white text-xl">
+            <Button onPress={() => setShowKeyboard(!showKeyboard)} isIconOnly className="header-piano-toggle bg-white text-xl">
               <FontAwesomeIcon icon={faPianoKeyboard} />
             </Button>
           </NavbarItem>
@@ -88,6 +105,10 @@ export const SlideshowHeader: React.FC<SlideshowHeaderProps> = ({
     <div>
       <Keyboard isVisible={showKeyboard}  />
     </div>
+    <Metronome 
+        isExpanded={isMetronomeOpen} 
+        onExpandChange={setIsMetronomeOpen}
+      />
     </>
   );
 };

@@ -409,14 +409,15 @@ Piano.prototype.run = function () {
     closeButton.setAttribute('aria-label', 'Close piano');
     // get header piano toggle, so we can let it know when the piano is closed
     const headerPianoToggle = document.querySelector('.header-piano-toggle');
+    const practiceTools = document.querySelector('.practice-tools-toggle');
     closeButton.addEventListener('click', function() {
-      var pianoElement = document.getElementById(id);
-      if (headerPianoToggle) {
-        // This externally sets the state of the header piano toggle
-        // without the extensive state management from ancestor to descendant
-        headerPianoToggle.click(); 
-      }
-      document.piano = false;
+        var pianoElement = document.getElementById(id);
+        if (headerPianoToggle) {
+            // Create and dispatch a custom event
+            const event = new CustomEvent('togglePiano');
+            document.dispatchEvent(event);
+        }
+        document.piano = false;
     });
   
     // Add the close button as the first child of the piano container
