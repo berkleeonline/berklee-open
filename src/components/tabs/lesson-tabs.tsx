@@ -110,7 +110,7 @@ export const LessonTabs = ({
                 )}
                 {lesson_sel && lesson_sel.length > 0 && (
                   <div className={`mt-8 ${styles.richContentInnerStyles}`}>
-                    <h3 className="font-bold text-lg mb-4">Social-emotional Learning</h3>
+                    <h3 className="font-bold text-lg mb-4">Social-Emotional Learning</h3>
                     <div className="grid grid-cols-2 gap-2">
                       {lesson_sel.map((sel, index) => (
                         <div key={index} className="mb-1 flex flex-row items-center">
